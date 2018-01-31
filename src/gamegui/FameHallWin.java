@@ -75,31 +75,31 @@ public class FameHallWin extends javax.swing.JFrame {
         jPanel4.setLayout(new java.awt.GridLayout(5, 1, 0, 30));
 
         t1NameLabel.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
-        t1NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        t1NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         t1NameLabel.setText("Challenger:");
         t1NameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel4.add(t1NameLabel);
 
         t2NameLabel.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
-        t2NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        t2NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         t2NameLabel.setText("Master:");
         t2NameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel4.add(t2NameLabel);
 
         t3NameLabel.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
-        t3NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        t3NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         t3NameLabel.setText("Diamond:");
         t3NameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel4.add(t3NameLabel);
 
         t4NameLabel.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
-        t4NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        t4NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         t4NameLabel.setText("Platinum:");
         t4NameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel4.add(t4NameLabel);
 
         t5NameLabel.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
-        t5NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        t5NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         t5NameLabel.setText("Gold:");
         t5NameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel4.add(t5NameLabel);
@@ -138,7 +138,7 @@ public class FameHallWin extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
+                        .addGap(32, 32, 32)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(challengeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
