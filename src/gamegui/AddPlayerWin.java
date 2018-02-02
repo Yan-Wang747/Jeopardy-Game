@@ -26,7 +26,6 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     private final String titleMessagePrefix;
     private final String warningMessagePrefix;
     private char presentKey;
-    private String presentName;
     private final JeopardyGame gameCore;
     private final String defaultNameText = "First Name Last Name";
     private final Color defaultNameTextColor = Color.GRAY;
@@ -42,7 +41,6 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         titleMessagePrefix = "Total players: ";
         warningMessagePrefix = "Can't start game: ";
         presentKey = 0;
-        presentName = "";
         this.gameCore = gameCore;
         this.thePlayerManager = gameCore.getPlayerManager();
         this.thePlayerManager.addObserver(this);
@@ -270,13 +268,13 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     
     
     private void addNewPlayer() throws DuplicateKeyException, DuplicateNameException, EmptyPlayerNameException, EmptyPlayerKeyException { 
-        thePlayerManager.addNewPlayer(presentName, presentKey);
-        this.presentName = "";
+        thePlayerManager.addNewPlayer(this.nameTextField.getText(), presentKey);
+        this.nameTextField.setText(defaultNameText);
         this.presentKey = 0;
     }
     
     private void modifyPlayer()throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException, EmptyPlayerKeyException{
-        thePlayerManager.modifyPlayer(currentIndex, presentName, presentKey);
+        thePlayerManager.modifyPlayer(currentIndex, this.nameTextField.getText(), presentKey);
     }
     
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
@@ -330,7 +328,6 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
 
     private void nameTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nameTextFieldFocusLost
         // TODO add your handling code here:
-        this.presentName = this.nameTextField.getText();
     }//GEN-LAST:event_nameTextFieldFocusLost
 
     private void formFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusLost
@@ -344,7 +341,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         this.presentKey = thePlayerManager.getcurrentPlayerKey(index);
         this.setKeyLabel.setText(Character.toString(presentKey));
         this.nameTextField.setForeground(Color.BLACK);
-        this.presentName = thePlayerManager.getcurrentPlayerName(index);
+        String presentName = thePlayerManager.getcurrentPlayerName(index);
         this.nameTextField.setText(presentName);
     }
     
@@ -357,7 +354,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         // TODO add your handling code here:
         try{
-            if(!this.presentName.equals("") || this.presentKey != 0)
+            if(!this.nameTextField.getText().equals(this.defaultKeyLabelText) || this.presentKey != 0)
                 this.addNewPlayer();
         
             gameCore.start("questions.txt");
@@ -401,9 +398,8 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     }//GEN-LAST:event_startButtonFocusLost
 
     private void resetNameTextField(){
-        this.presentName = "";
-        this.nameTextField.setText(this.defaultNameText);
         this.nameTextField.setForeground(this.defaultNameTextColor);
+        this.nameTextField.setText(this.defaultNameText); 
     }
     
     private void resetKeyLabel(){

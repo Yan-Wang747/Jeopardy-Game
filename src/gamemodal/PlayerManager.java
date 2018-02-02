@@ -26,7 +26,7 @@ public class PlayerManager extends Observable{
     private final ArrayList<Integer> currPlayerMarks;
     private final int initialMark = 0;
     private int answeringPlayerIndex;
-    private boolean isStarted;
+    private ArrayList<Character> forbiddenKeys;
     
     private class NameMarkPairComparator implements Comparator<Player>{
         @Override
@@ -40,7 +40,7 @@ public class PlayerManager extends Observable{
         currPlayerNames = new ArrayList();
         currPlayerKeys = new ArrayList();
         currPlayerMarks = new ArrayList();
-        isStarted = false;
+        forbiddenKeys = new ArrayList<>();
         answeringPlayerIndex = -1;
     }
     
@@ -48,7 +48,6 @@ public class PlayerManager extends Observable{
         if(currPlayerNames.size() <= 1){
             throw new NotEnoughPlayersException();
         }
-        isStarted = true;
     }
     
     public void end() {
@@ -136,17 +135,36 @@ public class PlayerManager extends Observable{
     }
     
     public boolean setAnsweringPlayer(char key){
-        this.answeringPlayerIndex = currPlayerKeys.indexOf(key);
-        return this.answeringPlayerIndex != -1;
+        boolean success = false;
+        if(!forbiddenKeys.contains(key)){
+            this.answeringPlayerIndex = currPlayerKeys.indexOf(key);
+            success =  this.answeringPlayerIndex != -1;
+        }
+        
+        return success;
     }
     
     public String getAnsweringPlayerName(){
         return answeringPlayerIndex != -1 ? currPlayerNames.get(answeringPlayerIndex) : null;
     }
     
-    public void changeMark(int offset){
-        int mark = currPlayerMarks.get(this.answeringPlayerIndex);
-        currPlayerMarks.set(answeringPlayerIndex, mark + offset);
-        this.answeringPlayerIndex = -1;
+    public void wrong(int offset){
+        char key = currPlayerKeys.get(answeringPlayerIndex);
+        forbiddenKeys.add(key);
+        int mark = currPlayerMarks.get(answeringPlayerIndex) + offset;
+        currPlayerMarks.set(answeringPlayerIndex, mark);
+    }
+    
+    public void right(int offset){
+        int mark = currPlayerMarks.get(answeringPlayerIndex) + offset;
+        currPlayerMarks.set(answeringPlayerIndex, mark);
+    }
+    
+    public void clearForbiddenPlayers(){
+        this.forbiddenKeys.clear();
+    }
+    
+    public int numberOfAllowablePlayers(){
+        return currPlayerNames.size() - forbiddenKeys.size();
     }
 }
