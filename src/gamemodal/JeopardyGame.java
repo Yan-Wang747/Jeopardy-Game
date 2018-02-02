@@ -30,8 +30,14 @@ public class JeopardyGame {
     }
     
     public void start(String filename) throws NotEnoughPlayersException, FileNotFoundException, IOException{
-        theQuestionManager.start(filename);
-        thePlayerManager.start();
+        try{
+            theQuestionManager.start(filename);
+            thePlayerManager.start();
+        }
+        catch(NotEnoughPlayersException e){
+            theQuestionManager.end();
+            throw e;
+        }
     }
     
     public void end(){

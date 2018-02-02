@@ -25,8 +25,10 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private final String answer;
     private final int weight;
     private final Timer theTimer;
+    private final int defaultTime = 30;
     private int time;
     private boolean ignoreInput;
+    private boolean isShowingAnswer;
     
     public QuestionWin(int categoryIndex, int questionIndex, JeopardyGame gameCore, MainWin theMainWindow) {
         initComponents();
@@ -36,10 +38,11 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.qaTextArea.setText(theQuestionManager.getQuestion(categoryIndex, questionIndex));
         this.answer = this.theQuestionManager.getAnswer(categoryIndex, questionIndex);
         this.weight = theQuestionManager.getWeight(categoryIndex, questionIndex);
-        this.time = 30;
+        this.time = defaultTime;
         this.timeLabel.setText(Integer.toString(time));
         this.theTimer = new Timer(1000, this);
         ignoreInput = false;
+        isShowingAnswer = false;
     }
 
     /**
@@ -58,9 +61,15 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         wrongButton = new javax.swing.JButton();
         timeLabel = new javax.swing.JLabel();
         answeringName = new javax.swing.JLabel();
+        goBackButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1920, 1080));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 formKeyTyped(evt);
@@ -83,6 +92,11 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         qaTextArea.setLineWrap(true);
         qaTextArea.setRows(5);
         qaTextArea.setFocusable(false);
+        qaTextArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                qaTextAreaMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(qaTextArea);
 
         rightButton.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
@@ -106,53 +120,68 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         });
 
         timeLabel.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        timeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLabel.setText("Time");
 
         answeringName.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         answeringName.setText("Please type your key");
+
+        goBackButton.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
+        goBackButton.setText("Give Up");
+        goBackButton.setPreferredSize(new java.awt.Dimension(200, 66));
+        goBackButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goBackButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(447, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(rightButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 447, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(goBackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(wrongButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(449, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(45, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1573, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(answeringName)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(46, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1573, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(answerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(answeringName)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(timeLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(answerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(651, 651, 651)
+                .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addContainerGap(31, Short.MAX_VALUE)
                 .addComponent(answeringName)
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addComponent(timeLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addGap(36, 36, 36)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addComponent(answerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rightButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(wrongButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(wrongButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(goBackButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(44, Short.MAX_VALUE))
         );
 
@@ -175,26 +204,28 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.answerButton.setEnabled(false);
     }
     
-    private void changeMark(int offset){
-        this.thePlayerManager.changeMark(offset);
-        this.theMainWindow.setVisible(true);
-        this.dispose();
-    }
-    
     private void answerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_answerButtonActionPerformed
         // TODO add your handling code here:
-        this.qaTextArea.setText(answer);
+        this.isShowingAnswer = true;
+        this.qaTextArea.setText(answer + "\n[Click here to go back]");
     }//GEN-LAST:event_answerButtonActionPerformed
 
+    private void showMainWindow(){
+        this.thePlayerManager.clearForbiddenPlayers();
+        theMainWindow.setVisible(true);
+        this.dispose();
+    }
     private void rightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightButtonActionPerformed
         // TODO add your handling code here:
-        this.changeMark(this.weight);
+        this.thePlayerManager.right(weight);
+        this.showMainWindow();
     }//GEN-LAST:event_rightButtonActionPerformed
 
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
         // TODO add your handling code here:
         if(!ignoreInput && thePlayerManager.setAnsweringPlayer(evt.getKeyChar())){
             this.ignoreInput = true;
+            this.goBackButton.setEnabled(false);
             this.answerButton.setEnabled(true);
             this.rightButton.setEnabled(true);
             this.wrongButton.setEnabled(true);
@@ -203,10 +234,47 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         }
     }//GEN-LAST:event_formKeyTyped
 
+    private void reset(){
+        this.theTimer.stop();
+        this.time = this.defaultTime;
+        this.timeLabel.setText(Integer.toString(this.time));
+        this.ignoreInput = false;
+        this.timeLabel.setText(Integer.toString(this.time));
+        this.rightButton.setEnabled(false);
+        this.answerButton.setEnabled(false);
+        this.wrongButton.setEnabled(false);
+        this.goBackButton.setEnabled(true);
+        this.requestFocus();
+    }
+    
     private void wrongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wrongButtonActionPerformed
         // TODO add your handling code here:
-        this.changeMark(-this.weight);
+        this.thePlayerManager.wrong(-weight);
+        if(thePlayerManager.numberOfAllowablePlayers() == 0){
+            this.answerButtonActionPerformed(null);
+        }
+        else{
+            this.answeringName.setText("Anyone else?");
+            reset();
+        }
     }//GEN-LAST:event_wrongButtonActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        this.requestFocus();
+    }//GEN-LAST:event_formWindowActivated
+
+    private void goBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBackButtonActionPerformed
+        // TODO add your handling code here:
+        this.showMainWindow();
+    }//GEN-LAST:event_goBackButtonActionPerformed
+
+    private void qaTextAreaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_qaTextAreaMouseClicked
+        // TODO add your handling code here:
+        if(isShowingAnswer){
+            this.showMainWindow();
+        }
+    }//GEN-LAST:event_qaTextAreaMouseClicked
   
     /**
      * @param args the command line arguments
@@ -214,6 +282,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton answerButton;
     private javax.swing.JLabel answeringName;
+    private javax.swing.JButton goBackButton;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea qaTextArea;
     private javax.swing.JButton rightButton;
