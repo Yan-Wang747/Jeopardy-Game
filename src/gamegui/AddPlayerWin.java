@@ -7,8 +7,8 @@ package gamegui;
 
 import java.awt.Color;
 import exception.*;
-import gamemodal.JeopardyGame;
-import gamemodal.PlayerManager;
+import gamecontroller.JeopardyGame;
+import gamecontroller.PlayerManager;
 import java.util.Observer;
 import java.util.Observable;
 import java.io.*;
@@ -225,7 +225,6 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
-        this.requestFocus();
     }//GEN-LAST:event_formWindowActivated
 
     private void setKeyLabelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setKeyLabelMouseReleased
@@ -338,10 +337,10 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
 
     private void displayPlayer(int index){
         this.setKeyLabel.setForeground(Color.BLACK);
-        this.presentKey = thePlayerManager.getcurrentPlayerKey(index);
+        this.presentKey = thePlayerManager.getCurrentPlayerKey(index);
         this.setKeyLabel.setText(Character.toString(presentKey));
         this.nameTextField.setForeground(Color.BLACK);
-        String presentName = thePlayerManager.getcurrentPlayerName(index);
+        String presentName = thePlayerManager.getCurrentPlayerName(index);
         this.nameTextField.setText(presentName);
     }
     
@@ -362,6 +361,8 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
             this.dispose();
         }
         catch(NotEnoughPlayersException | IOException e){
+            this.resetKeyLabel();
+            this.resetNameTextField();
             warningLabel.setText(this.warningMessagePrefix + e.getMessage());
         }
         catch(DuplicateNameException e){
@@ -394,12 +395,12 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
 
     private void startButtonFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_startButtonFocusLost
         // TODO add your handling code here:
-        this.warningLabel.setText("");
     }//GEN-LAST:event_startButtonFocusLost
 
     private void resetNameTextField(){
         this.nameTextField.setForeground(this.defaultNameTextColor);
         this.nameTextField.setText(this.defaultNameText); 
+        this.nameTextField.requestFocus();
     }
     
     private void resetKeyLabel(){

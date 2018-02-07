@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gamemodal;
+package gamecontroller;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Comparator;
+import java.util.Random;
 
 /**
  *
@@ -48,6 +49,9 @@ public class PlayerManager extends Observable{
         if(currPlayerNames.size() <= 1){
             throw new NotEnoughPlayersException();
         }
+        
+        Random rnd = new Random();
+        this.answeringPlayerIndex = rnd.nextInt(currPlayerKeys.size());
     }
     
     public void end() {
@@ -106,11 +110,11 @@ public class PlayerManager extends Observable{
         this.currPlayerKeys.set(playerIndex, key);
     }
     
-    public char getcurrentPlayerKey(int playerIndex){
+    public char getCurrentPlayerKey(int playerIndex){
         return currPlayerKeys.get(playerIndex);
     }
     
-    public String getcurrentPlayerName(int playerIndex){
+    public String getCurrentPlayerName(int playerIndex){
         return currPlayerNames.get(playerIndex);
     }
     
@@ -144,8 +148,8 @@ public class PlayerManager extends Observable{
         return success;
     }
     
-    public String getAnsweringPlayerName(){
-        return answeringPlayerIndex != -1 ? currPlayerNames.get(answeringPlayerIndex) : null;
+    public int getAnsweringPlayerIndex(){
+        return answeringPlayerIndex;
     }
     
     public void wrong(int offset){

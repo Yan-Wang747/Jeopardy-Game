@@ -5,7 +5,9 @@
  */
 package gamegui;
 
-import gamemodal.*;
+import gamecontroller.QuestionManager;
+import gamecontroller.JeopardyGame;
+import gamecontroller.PlayerManager;
 import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -37,7 +39,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         initComponents();
         theQuestionManager = gameCore.getQuestionManager();
         thePlayerManager = gameCore.getPlayerManager();
-        this.theMainWindow = theMainWindow;      
+        this.theMainWindow = theMainWindow;
         this.qaTextArea.setText(theQuestionManager.getQuestion(categoryIndex, questionIndex));
         this.answer = this.theQuestionManager.getAnswer(categoryIndex, questionIndex);
         this.weight = theQuestionManager.getWeight(categoryIndex, questionIndex);
@@ -47,6 +49,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.waitTimer = new Timer(1000, new WaitTimerListener(this));
         ignoreInput = false;
         isShowingAnswer = false;
+        waitTimer.start();
     }
 
     /**
@@ -161,7 +164,9 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     }// </editor-fold>//GEN-END:initComponents
     
     private class WaitTimerListener implements ActionListener{
-        private QuestionWin theQuestionWin;
+//<editor-fold defaultstate="collapsed" desc="comment">
+        private final QuestionWin theQuestionWin;
+//</editor-fold>
         public WaitTimerListener(QuestionWin theQuestionWin){
             this.theQuestionWin = theQuestionWin;
         }
@@ -215,9 +220,17 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.showAnswer();
     }//GEN-LAST:event_rightButtonActionPerformed
 
+    public void doubleJeopardy(){
+        this.ignoreInput = true;
+        this.resetWaitTimer();
+        this.showAnsweringPlayer();
+        this.timeLabel.setText(Integer.toString(this.defaultAnswerTime));
+        this.answerTimer.start();
+    }
+    
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
         // TODO add your handling code here:
-        if(!ignoreInput && thePlayerManager.setAnsweringPlayer(evt.getKeyChar())){
+        if(!this.isShowingAnswer && !ignoreInput && thePlayerManager.setAnsweringPlayer(evt.getKeyChar())){
             this.resetWaitTimer();
             this.showAnsweringPlayer();
             this.timeLabel.setText(Integer.toString(this.defaultAnswerTime));
@@ -249,8 +262,10 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         // TODO add your handling code here:
         this.thePlayerManager.wrong(-weight);
         this.reset();
-        if(thePlayerManager.numberOfAllowablePlayers() == 0)
+        if(thePlayerManager.numberOfAllowablePlayers() == 0){
+            this.answeringName.setText("Sorry, all players are wrong");
             this.showAnswer();
+        }
         else{
             this.answeringName.setText("Anyone else?");
             this.waitTimer.start();
@@ -261,13 +276,12 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
             this.ignoreInput = true;
             this.rightButton.setEnabled(true);
             this.wrongButton.setEnabled(true);
-            this.answeringName.setText(thePlayerManager.getAnsweringPlayerName());
+            int answeringPlayerIndex = thePlayerManager.getAnsweringPlayerIndex();
+            this.answeringName.setText(answeringPlayerIndex == -1 ? "Unknown player" : this.thePlayerManager.getCurrentPlayerName(answeringPlayerIndex));
     }
     
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
-        this.reset();
-        this.waitTimer.start();
     }//GEN-LAST:event_formWindowActivated
 
     private void qaTextAreaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_qaTextAreaMouseClicked
