@@ -363,6 +363,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
+        gameCore.end();
         new FameHallWin(this.gameCore).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
