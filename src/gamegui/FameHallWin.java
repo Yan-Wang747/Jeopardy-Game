@@ -5,8 +5,9 @@
  */
 package gamegui;
 
+import gamecontroller.JeopardyGame;
+import gamecontroller.Player;
 import javax.swing.*;
-import gamemodal.*;
 import java.util.Iterator;
 
 /**

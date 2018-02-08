@@ -3,19 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gamemodal;
+package exception;
 
 /**
  *
  * @author student
  */
-public class Player {
-    public final String name;
-    public final int mark;
-    
-    public Player(String name, int mark){
-        this.name = name;
-        this.mark = mark;
+public class CreditRangeException extends Exception {
+    public CreditRangeException(){
+        super("Amount has to be larger than 0 and less than total Credits");
     }
-    
 }

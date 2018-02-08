@@ -9,8 +9,10 @@ package gamegui;
  *
  * @author iqapp
  */
+import gamecontroller.QuestionManager;
+import gamecontroller.JeopardyGame;
+import gamecontroller.PlayerManager;
 import javax.swing.*;
-import gamemodal.*;
 
 public class MainWin extends javax.swing.JFrame {
 
@@ -33,7 +35,7 @@ public class MainWin extends javax.swing.JFrame {
     }
     
     private void showQuestionWindow(int categoryIndex, int questionIndex){
-        new QuestionWin(categoryIndex, questionIndex, gameCore, this).setVisible(true);
+        new QuestionWin(categoryIndex, questionIndex, gameCore, this, false).setVisible(true);
         this.setVisible(false);
     }
     
@@ -79,6 +81,7 @@ public class MainWin extends javax.swing.JFrame {
         
         
     }
+    
     private void initGame(){  
         for(int i = 0; i < this.theQuestionManager.getNumberOfCategories() && i < cLabels.length; i++){
             cLabels[i].setText(theQuestionManager.getCategory(i));
@@ -134,7 +137,8 @@ public class MainWin extends javax.swing.JFrame {
         c5q3Button = new javax.swing.JButton();
         c5q4Button = new javax.swing.JButton();
         c5q5Button = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        endButton = new javax.swing.JButton();
+        pickingPlayerName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1920, 1080));
@@ -417,34 +421,43 @@ public class MainWin extends javax.swing.JFrame {
 
         jPanel6.add(jPanel5);
 
-        jButton1.setLabel("End");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        endButton.setLabel("End");
+        endButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                endButtonActionPerformed(evt);
             }
         });
+
+        pickingPlayerName.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
+        pickingPlayerName.setText("Name");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
+                .addContainerGap(67, Short.MAX_VALUE)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 1720, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(67, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pickingPlayerName)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(endButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(37, Short.MAX_VALUE)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 850, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addContainerGap(55, Short.MAX_VALUE)
+                .addComponent(pickingPlayerName)
+                .addGap(48, 48, 48)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 726, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(endButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -453,165 +466,154 @@ public class MainWin extends javax.swing.JFrame {
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
         //this.setExtendedState(Frame.MAXIMIZED_BOTH);
+        this.pickingPlayerName.setText(thePlayerManager.getCurrentPlayerName(thePlayerManager.getAnsweringPlayerIndex()) + ", please pick a question");
     }//GEN-LAST:event_formWindowActivated
 
     private void c1q1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1q1ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(0, 0);
-        this.qButtons[0][0].setEnabled(false);
+        questionButtonAction(0, 0);
     }//GEN-LAST:event_c1q1ButtonActionPerformed
 
     private void c2q1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c2q1ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(1, 0);
-        this.qButtons[1][0].setEnabled(false);
+        questionButtonAction(1, 0);
     }//GEN-LAST:event_c2q1ButtonActionPerformed
 
     private void c2q4ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c2q4ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(1, 3);
-        this.qButtons[1][3].setEnabled(false);
+        questionButtonAction(1, 3);
     }//GEN-LAST:event_c2q4ButtonActionPerformed
 
     private void c2q5ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c2q5ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(1, 4);
-        this.qButtons[1][4].setEnabled(false);
+        questionButtonAction(1, 4);
     }//GEN-LAST:event_c2q5ButtonActionPerformed
 
     private void c3q1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c3q1ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(2, 0);
-        this.qButtons[2][0].setEnabled(false);
+        questionButtonAction(2, 0);
     }//GEN-LAST:event_c3q1ButtonActionPerformed
 
     private void c4q1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c4q1ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(3, 0);
-        this.qButtons[3][0].setEnabled(false);
+        questionButtonAction(3, 0);
     }//GEN-LAST:event_c4q1ButtonActionPerformed
 
     private void c5q1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c5q1ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(4, 0);
-        this.qButtons[4][0].setEnabled(false);
+        questionButtonAction(4, 0);
     }//GEN-LAST:event_c5q1ButtonActionPerformed
 
     private void c1q2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1q2ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(0, 1);
-        this.qButtons[0][1].setEnabled(false);
+        questionButtonAction(0, 1);
     }//GEN-LAST:event_c1q2ButtonActionPerformed
 
     private void c1q3ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1q3ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(0, 2);
-        this.qButtons[0][2].setEnabled(false);
+        questionButtonAction(0, 2);
     }//GEN-LAST:event_c1q3ButtonActionPerformed
 
     private void c1q4ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1q4ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(0, 3);
-        this.qButtons[0][3].setEnabled(false);
+        questionButtonAction(0, 3);
     }//GEN-LAST:event_c1q4ButtonActionPerformed
 
     private void c1q5ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1q5ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(0, 4);
-        this.qButtons[0][4].setEnabled(false);
+        questionButtonAction(0, 4);
     }//GEN-LAST:event_c1q5ButtonActionPerformed
 
     private void c2q2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c2q2ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(1, 1);
-        this.qButtons[1][1].setEnabled(false);
+        questionButtonAction(1, 1);
     }//GEN-LAST:event_c2q2ButtonActionPerformed
 
     private void c2q3ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c2q3ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(1, 2);
-        this.qButtons[1][2].setEnabled(false);
+        questionButtonAction(1, 2);
     }//GEN-LAST:event_c2q3ButtonActionPerformed
 
     private void c3q2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c3q2ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(2, 1);
-        this.qButtons[2][1].setEnabled(false);
+        questionButtonAction(2, 1);
     }//GEN-LAST:event_c3q2ButtonActionPerformed
 
     private void c3q3ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c3q3ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(2, 2);
-        this.qButtons[2][2].setEnabled(false);
+        questionButtonAction(2, 2);
     }//GEN-LAST:event_c3q3ButtonActionPerformed
 
     private void c3q4ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c3q4ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(2, 3);
-        this.qButtons[2][3].setEnabled(false);
+        questionButtonAction(2, 3);
     }//GEN-LAST:event_c3q4ButtonActionPerformed
 
     private void c3q5ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c3q5ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(2, 4);
-        this.qButtons[2][4].setEnabled(false);
+        questionButtonAction(2, 4);
     }//GEN-LAST:event_c3q5ButtonActionPerformed
 
     private void c4q2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c4q2ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(3, 1);
-        this.qButtons[3][1].setEnabled(false);
+        questionButtonAction(3, 1);
     }//GEN-LAST:event_c4q2ButtonActionPerformed
 
     private void c4q3ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c4q3ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(3, 2);
-        this.qButtons[3][2].setEnabled(false);
+        questionButtonAction(3, 2);
     }//GEN-LAST:event_c4q3ButtonActionPerformed
 
     private void c4q4ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c4q4ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(3, 3);
-        this.qButtons[3][3].setEnabled(false);
+        questionButtonAction(3, 3);
     }//GEN-LAST:event_c4q4ButtonActionPerformed
 
     private void c4q5ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c4q5ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(3, 4);
-        this.qButtons[3][4].setEnabled(false);
+        questionButtonAction(3, 4);
     }//GEN-LAST:event_c4q5ButtonActionPerformed
 
     private void c5q2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c5q2ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(4, 1);
-        this.qButtons[4][1].setEnabled(false);
+        questionButtonAction(4, 1);
     }//GEN-LAST:event_c5q2ButtonActionPerformed
 
     private void c5q3ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c5q3ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(4, 2);
-        this.qButtons[4][2].setEnabled(false);
+        questionButtonAction(4, 2);
     }//GEN-LAST:event_c5q3ButtonActionPerformed
 
     private void c5q4ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c5q4ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(4, 3);
-        this.qButtons[4][3].setEnabled(false);
+        questionButtonAction(4, 3);
     }//GEN-LAST:event_c5q4ButtonActionPerformed
 
     private void c5q5ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c5q5ButtonActionPerformed
         // TODO add your handling code here:
-        showQuestionWindow(4, 4);
-        this.qButtons[4][4].setEnabled(false);
+        questionButtonAction(4, 4);
     }//GEN-LAST:event_c5q5ButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void endButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endButtonActionPerformed
         // TODO add your handling code here:
-        this.thePlayerManager.end();
+        this.gameCore.end();
         new FameHallWin(this.gameCore).setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_endButtonActionPerformed
 
+    private void showDoubleWindow(int categoryIndex, int questionIndex){
+        new BetWin(categoryIndex, questionIndex, gameCore, this).setVisible(true);
+        this.setVisible(false);
+    }
+    
+    private void questionButtonAction(int categoryIndex, int questionIndex){
+        if(this.theQuestionManager.isDoubleJeopardy(categoryIndex, questionIndex))
+            showDoubleWindow(categoryIndex, questionIndex);
+        else
+            showQuestionWindow(categoryIndex, questionIndex);
+        
+        this.qButtons[categoryIndex][questionIndex].setEnabled(false);
+    }
     /**
      * @param args the command line arguments
      */
@@ -647,12 +649,13 @@ public class MainWin extends javax.swing.JFrame {
     private javax.swing.JButton c5q3Button;
     private javax.swing.JButton c5q4Button;
     private javax.swing.JButton c5q5Button;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton endButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JLabel pickingPlayerName;
     // End of variables declaration//GEN-END:variables
 }

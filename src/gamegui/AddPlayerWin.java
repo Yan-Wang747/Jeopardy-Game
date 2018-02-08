@@ -7,8 +7,8 @@ package gamegui;
 
 import java.awt.Color;
 import exception.*;
-import gamemodal.JeopardyGame;
-import gamemodal.PlayerManager;
+import gamecontroller.JeopardyGame;
+import gamecontroller.PlayerManager;
 import java.util.Observer;
 import java.util.Observable;
 import java.io.*;
@@ -27,8 +27,6 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     private final String warningMessagePrefix;
     private char presentKey;
     private final JeopardyGame gameCore;
-    private final String defaultNameText = "First Name Last Name";
-    private final Color defaultNameTextColor = Color.GRAY;
     private final String defaultKeyLabelText = "[Click here to set key]";
     private final Color defaultKeyLabelColor = Color.GRAY;
     private final PlayerManager thePlayerManager;
@@ -36,7 +34,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     
     public AddPlayerWin(JeopardyGame gameCore) {
         initComponents();
-        currentIndex = 0;
+        currentIndex = -1;
         isSettingKey = false;
         titleMessagePrefix = "Total players: ";
         warningMessagePrefix = "Can't start game: ";
@@ -103,7 +101,6 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         jPanel2.setLayout(new java.awt.GridLayout(2, 0, 0, 10));
 
         nameTextField.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        nameTextField.setForeground(new java.awt.Color(153, 153, 153));
         nameTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 nameTextFieldFocusGained(evt);
@@ -120,6 +117,11 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         nameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nameTextFieldActionPerformed(evt);
+            }
+        });
+        nameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                nameTextFieldKeyTyped(evt);
             }
         });
         jPanel2.add(nameTextField);
@@ -174,7 +176,6 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         jPanel3.add(nextButton);
 
         warningLabel.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
-        warningLabel.setText("Debugging");
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -209,7 +210,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                 .addComponent(warningLabel)
                 .addGap(35, 35, 35)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -225,11 +226,11 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
-        this.requestFocus();
     }//GEN-LAST:event_formWindowActivated
 
     private void setKeyLabelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setKeyLabelMouseReleased
         // TODO add your handling code here:
+        this.warningLabel.setText("");
         this.resetKeyLabel();
         this.requestFocus();
         this.setKeyLabel.setText("Press a key [A-Z]");
@@ -251,78 +252,67 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
             this.setKeyLabel.setText(Character.toString(evt.getKeyChar()));
             this.presentKey = evt.getKeyChar();
         }
-        else if(this.isSettingKey)
+        else if(isSettingKey)
             this.setKeyLabel.setText("[A-Z] only");
     }//GEN-LAST:event_formKeyTyped
 
     private void nameTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nameTextFieldMouseClicked
         // TODO add your handling code here:
+        this.warningLabel.setText("");
     }//GEN-LAST:event_nameTextFieldMouseClicked
 
     private void nameTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nameTextFieldFocusGained
         // TODO add your handling code here:
-        this.nameTextField.setText("");
-        this.nameTextField.setForeground(Color.BLACK);
+        this.nameTextField.selectAll();
     }//GEN-LAST:event_nameTextFieldFocusGained
-
-    
-    
-    private void addNewPlayer() throws DuplicateKeyException, DuplicateNameException, EmptyPlayerNameException, EmptyPlayerKeyException { 
-        thePlayerManager.addNewPlayer(this.nameTextField.getText(), presentKey);
-        this.nameTextField.setText(defaultNameText);
-        this.presentKey = 0;
-    }
-    
-    private void modifyPlayer()throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException, EmptyPlayerKeyException{
-        thePlayerManager.modifyPlayer(currentIndex, this.nameTextField.getText(), presentKey);
-    }
-    
-    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-        // TODO add your handling code here:
-        int numberOfCurrentPlayers = thePlayerManager.getNumOfCurrentPlayers();
         
+    private boolean addNewPlayer(){
+        boolean res = false;
         try{
-            if(currentIndex == numberOfCurrentPlayers){
-                addNewPlayer();
-                this.currentIndex++;
-                this.resetKeyLabel();
-                this.resetNameTextField();
+            if(currentIndex == this.thePlayerManager.getNumOfCurrentPlayers() - 1)
+                thePlayerManager.addNewPlayer(this.nameTextField.getText(), presentKey);
                 
-            }
+            else
+                thePlayerManager.modifyPlayer(currentIndex + 1, this.nameTextField.getText(), presentKey);
             
-            else{
-                modifyPlayer();
-
-                if(++currentIndex != numberOfCurrentPlayers)
-                    displayPlayer(currentIndex);
-                else{
-                    this.resetKeyLabel();
-                    this.resetNameTextField();
-                }
-            }
-            
-            this.isSettingKey = false;
-            
+            currentIndex++;
+            res = true;
         }
         catch(DuplicateNameException e){
-            this.resetNameTextField();
-            this.nameTextField.setText("Name exits, please use a different name");
+            this.nameTextField.selectAll();
+            this.warningLabel.setText("Name exits, please use a different name");
         }
         catch(DuplicateKeyException e){
             this.resetKeyLabel();
-            this.setKeyLabel.setText("Key exits, please choose a new one");
+            this.warningLabel.setText("Key exits, please choose a new one");
             this.isSettingKey = true;
             this.requestFocus();
         }
         catch(EmptyPlayerNameException e){
-            this.resetNameTextField();
-            this.nameTextField.setText("Please enter your name here");
+            this.nameTextField.requestFocus();
+            this.warningLabel.setText("Please enter your name");
         }
         catch(EmptyPlayerKeyException e){
             this.resetKeyLabel();
-            this.setKeyLabel.setText("Please press a key");
+            this.warningLabel.setText("Please press a key");
             this.isSettingKey = true;
             this.requestFocus();
+        }
+        
+        return res;
+    }
+    
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        // TODO add your handling code here:
+        if(addNewPlayer()){
+            if(currentIndex != this.thePlayerManager.getNumOfCurrentPlayers() - 1)
+                displayPlayer(currentIndex + 1);
+            else{
+                this.resetKeyLabel();
+                this.resetNameTextField();
+            }
+
+            this.isSettingKey = false;
         }
     }//GEN-LAST:event_nextButtonActionPerformed
 
@@ -337,69 +327,59 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     }//GEN-LAST:event_formFocusLost
 
     private void displayPlayer(int index){
-        this.setKeyLabel.setForeground(Color.BLACK);
-        this.presentKey = thePlayerManager.getcurrentPlayerKey(index);
+        this.presentKey = thePlayerManager.getCurrentPlayerKey(index);
         this.setKeyLabel.setText(Character.toString(presentKey));
-        this.nameTextField.setForeground(Color.BLACK);
-        String presentName = thePlayerManager.getcurrentPlayerName(index);
+        this.nameTextField.setForeground(Color.GRAY);
+        String presentName = thePlayerManager.getCurrentPlayerName(index);
         this.nameTextField.setText(presentName);
     }
     
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
-        // TODO add your handling code here:
-        if(currentIndex > 0)
-            displayPlayer(--currentIndex);
+        // TODO add your handling code here:        
+        if(this.thePlayerManager.getNumOfCurrentPlayers() > 0)
+            if(currentIndex >= 0)
+                displayPlayer(currentIndex--);
+            else
+                displayPlayer(0);
     }//GEN-LAST:event_prevButtonActionPerformed
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         // TODO add your handling code here:
         try{
-            if(!this.nameTextField.getText().equals(this.defaultKeyLabelText) || this.presentKey != 0)
-                this.addNewPlayer();
+            if(!this.nameTextField.getText().equals("") || this.presentKey != 0)
+                if(!this.addNewPlayer())
+                    return;
         
             gameCore.start("questions.txt");
             new MainWin(gameCore).setVisible(true);
             this.dispose();
         }
         catch(NotEnoughPlayersException | IOException e){
+            this.resetKeyLabel();
+            this.resetNameTextField();
             warningLabel.setText(this.warningMessagePrefix + e.getMessage());
-        }
-        catch(DuplicateNameException e){
-            this.resetNameTextField();
-            this.nameTextField.setText("Name exits, please use a different name");
-        }
-        catch(DuplicateKeyException e){
-            this.resetKeyLabel();
-            this.setKeyLabel.setText("Key exits, please choose a new one");
-            this.isSettingKey = true;
-            this.requestFocus();
-        }
-        catch(EmptyPlayerNameException e){
-            this.resetNameTextField();
-            this.nameTextField.setText("Please enter your name here");
-        }
-        catch(EmptyPlayerKeyException e){
-            this.resetKeyLabel();
-            this.setKeyLabel.setText("Please press a key");
-            this.isSettingKey = true;
-            this.requestFocus();
         }
     }//GEN-LAST:event_startButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
+        gameCore.end();
         new FameHallWin(this.gameCore).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void startButtonFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_startButtonFocusLost
         // TODO add your handling code here:
-        this.warningLabel.setText("");
     }//GEN-LAST:event_startButtonFocusLost
 
+    private void nameTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameTextFieldKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameTextFieldKeyTyped
+
     private void resetNameTextField(){
-        this.nameTextField.setForeground(this.defaultNameTextColor);
-        this.nameTextField.setText(this.defaultNameText); 
+        this.nameTextField.setText(""); 
+        this.nameTextField.requestFocus();
+        this.nameTextField.setForeground(Color.BLACK);
     }
     
     private void resetKeyLabel(){
