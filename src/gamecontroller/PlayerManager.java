@@ -24,8 +24,8 @@ public class PlayerManager extends Observable{
     private final HashMap<String, Integer> allPlayerNameMarks;
     private final ArrayList<String> currPlayerNames;
     private final ArrayList<Character> currPlayerKeys;
-    private final ArrayList<Integer> currPlayerMarks;
-    private final int initialMark = 0;
+    private final ArrayList<Integer> currPlayerCredits;
+    private final int initialMark = 1000;
     private int answeringPlayerIndex;
     private ArrayList<Character> forbiddenKeys;
     
@@ -40,7 +40,7 @@ public class PlayerManager extends Observable{
         allPlayerNameMarks = new HashMap();
         currPlayerNames = new ArrayList();
         currPlayerKeys = new ArrayList();
-        currPlayerMarks = new ArrayList();
+        currPlayerCredits = new ArrayList();
         forbiddenKeys = new ArrayList<>();
         answeringPlayerIndex = -1;
     }
@@ -56,7 +56,7 @@ public class PlayerManager extends Observable{
     
     public void end() {
         Iterator<String> nameIterator = currPlayerNames.iterator();
-        Iterator<Integer> markIterator = currPlayerMarks.iterator();
+        Iterator<Integer> markIterator = currPlayerCredits.iterator();
 
         while(nameIterator.hasNext()){
             String name = nameIterator.next();
@@ -66,10 +66,11 @@ public class PlayerManager extends Observable{
         
         currPlayerNames.clear();
         currPlayerKeys.clear();
-        currPlayerMarks.clear();
+        currPlayerCredits.clear();
     }
     
     private void validatePlayer(String name, char key) throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException, EmptyPlayerKeyException{
+        
         if(name.length() == 0)
             throw new EmptyPlayerNameException();
         
@@ -90,7 +91,7 @@ public class PlayerManager extends Observable{
         
         currPlayerNames.add(name);
         currPlayerKeys.add(key);
-        currPlayerMarks.add(initialMark);
+        currPlayerCredits.add(initialMark);
         
         this.setChanged();
         this.notifyObservers(this.getNumOfCurrentPlayers());
@@ -100,14 +101,27 @@ public class PlayerManager extends Observable{
         return currPlayerNames.size();
     }
     
-    public void modifyPlayer(int playerIndex, String name, char key) throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException, EmptyPlayerKeyException{
-        currPlayerNames.set(playerIndex, "");
-        currPlayerKeys.set(playerIndex, (char)0);
+    public void modifyPlayer(int playerIndex, String newName, char newKey) throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException, EmptyPlayerKeyException{
+        String oldName = this.getCurrentPlayerName(playerIndex);
+        char oldKey = this.getCurrentPlayerKey(playerIndex);
         
-        validatePlayer(name, key);
+        try{            
+            currPlayerNames.set(playerIndex, "");
         
-        this.currPlayerNames.set(playerIndex, name);
-        this.currPlayerKeys.set(playerIndex, key);
+            currPlayerKeys.set(playerIndex, (char)0);
+
+            validatePlayer(newName, newKey);
+
+            this.currPlayerNames.set(playerIndex, newName);
+            this.currPlayerKeys.set(playerIndex, newKey);
+        }
+        catch(DuplicateNameException | DuplicateKeyException | EmptyPlayerNameException | EmptyPlayerKeyException e){
+            currPlayerNames.set(playerIndex, oldName);
+            currPlayerKeys.set(playerIndex, oldKey);
+            
+            throw e;
+        }
+        
     }
     
     public char getCurrentPlayerKey(int playerIndex){
@@ -116,6 +130,10 @@ public class PlayerManager extends Observable{
     
     public String getCurrentPlayerName(int playerIndex){
         return currPlayerNames.get(playerIndex);
+    }
+    
+    public int getCurrentPlayerCredits(int playerIndex){
+        return this.currPlayerCredits.get(playerIndex);
     }
     
     public ArrayList<Player> getOrderedPlayers(){
@@ -155,13 +173,13 @@ public class PlayerManager extends Observable{
     public void wrong(int offset){
         char key = currPlayerKeys.get(answeringPlayerIndex);
         forbiddenKeys.add(key);
-        int mark = currPlayerMarks.get(answeringPlayerIndex) + offset;
-        currPlayerMarks.set(answeringPlayerIndex, mark);
+        int mark = currPlayerCredits.get(answeringPlayerIndex) + offset;
+        currPlayerCredits.set(answeringPlayerIndex, mark);
     }
     
     public void right(int offset){
-        int mark = currPlayerMarks.get(answeringPlayerIndex) + offset;
-        currPlayerMarks.set(answeringPlayerIndex, mark);
+        int mark = currPlayerCredits.get(answeringPlayerIndex) + offset;
+        currPlayerCredits.set(answeringPlayerIndex, mark);
     }
     
     public void clearForbiddenPlayers(){

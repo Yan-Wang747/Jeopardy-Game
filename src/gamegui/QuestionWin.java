@@ -28,10 +28,9 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private final int weight;
     private final Timer answerTimer;
     private final Timer waitTimer;
-    private final int defaultAnswerTime = 30;
-    private final int defaultWaitTime = 10;
-    private int answerTime;
-    private int waitTime;
+    private final int maxAnswerTime = 30;
+    private final int maxWaitTime = 10;
+    private int timeRemaining;
     private boolean ignoreInput;
     private boolean isShowingAnswer;
     
@@ -43,16 +42,14 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.qaTextArea.setText(theQuestionManager.getQuestion(categoryIndex, questionIndex));
         this.answer = this.theQuestionManager.getAnswer(categoryIndex, questionIndex);
         this.weight = theQuestionManager.getWeight(categoryIndex, questionIndex);
-        this.answerTime = defaultAnswerTime;
-        this.waitTime = defaultWaitTime;
         this.answerTimer = new Timer(1000, this);
         this.waitTimer = new Timer(1000, new WaitTimerListener(this));
-        ignoreInput = false;
         isShowingAnswer = false;
         if(!isDoubleJeopardy)
-            waitTimer.start();
+            this.startToWait();
         else
             this.startToAnswer();
+
     }
 
     /**
@@ -176,33 +173,30 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         
         @Override
         public void actionPerformed(ActionEvent e){
-        if(waitTime == 1)
+        if(timeRemaining == 1)
             waitTimeUp();
         else
-            timeLabel.setText(Integer.toString(--waitTime));
+            timeLabel.setText(Integer.toString(--timeRemaining));
         }
         
         private void waitTimeUp(){
             waitTimer.stop();
             timeLabel.setText("Sorry, time is up. The answer is: ");
             this.theQuestionWin.showAnswer();
-            rightButton.setEnabled(false);
-            wrongButton.setEnabled(false);
+            
         }
     }
     @Override
     public void actionPerformed(ActionEvent e){
-        if(this.answerTime == 1)
+        if(this.timeRemaining == 1)
             AnswerTimeUp();
         else
-            this.timeLabel.setText(Integer.toString(--this.answerTime));
+            this.timeLabel.setText(Integer.toString(--this.timeRemaining));
     }
     
     private void AnswerTimeUp(){
         this.answerTimer.stop();
         this.timeLabel.setText("Sorry, time is up.");
-        this.rightButton.setEnabled(false);
-        this.wrongButton.setEnabled(false);
         this.wrongButtonActionPerformed(null);
     }
     
@@ -218,20 +212,33 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     }
     private void rightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightButtonActionPerformed
         // TODO add your handling code here:
+        this.answerTimer.stop();
+        rightButton.setEnabled(false);
+        wrongButton.setEnabled(false);
         this.thePlayerManager.right(weight);
-        this.reset();
         this.showAnswer();
     }//GEN-LAST:event_rightButtonActionPerformed
 
-    public void startToAnswer(){
+    private void startToAnswer(){
+        this.waitTimer.stop();
         this.ignoreInput = true;
-        this.resetWaitTimer();
-        this.timeLabel.setText(Integer.toString(this.defaultAnswerTime));
-        this.answerTimer.start();
+        this.timeRemaining = this.maxAnswerTime;
+        this.timeLabel.setText(Integer.toString(this.timeRemaining));
         this.rightButton.setEnabled(true);
         this.wrongButton.setEnabled(true);
         int answeringPlayerIndex = thePlayerManager.getAnsweringPlayerIndex();
         this.answeringName.setText(answeringPlayerIndex == -1 ? "Unknown player" : this.thePlayerManager.getCurrentPlayerName(answeringPlayerIndex));
+        this.answerTimer.start();
+    }
+    
+    private void startToWait(){
+        this.ignoreInput = false;
+        this.timeRemaining = this.maxWaitTime;
+        this.timeLabel.setText(Integer.toString(this.timeRemaining));
+        this.rightButton.setEnabled(false);
+        this.wrongButton.setEnabled(false);
+        this.requestFocus();
+        this.waitTimer.start();
     }
     
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
@@ -239,38 +246,20 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         if(!this.isShowingAnswer && !ignoreInput && thePlayerManager.setAnsweringPlayer(evt.getKeyChar()))
             startToAnswer();
     }//GEN-LAST:event_formKeyTyped
-    
-    private void resetWaitTimer(){
-        this.waitTimer.stop();
-        this.waitTime = this.defaultWaitTime;
-    }
-    
-    private void resetAnswerTimer(){
-        this.answerTimer.stop();
-        this.answerTime = this.defaultAnswerTime;
-    }
-    
-    private void reset(){
-        this.resetAnswerTimer();
-        this.resetWaitTimer();
-        this.timeLabel.setText(Integer.toString(this.defaultWaitTime));
-        this.ignoreInput = false;
-        this.rightButton.setEnabled(false);
-        this.wrongButton.setEnabled(false);
-        this.requestFocus();
-    }
-    
+  
     private void wrongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wrongButtonActionPerformed
         // TODO add your handling code here:
+        this.answerTimer.stop();
+        rightButton.setEnabled(false);
+        wrongButton.setEnabled(false);
         this.thePlayerManager.wrong(-weight);
-        this.reset();
         if(thePlayerManager.numberOfAllowablePlayers() == 0){
             this.answeringName.setText("Sorry, all players are wrong");
             this.showAnswer();
         }
         else{
             this.answeringName.setText("Anyone else?");
-            this.waitTimer.start();
+            this.startToWait();
         }
     }//GEN-LAST:event_wrongButtonActionPerformed
 
