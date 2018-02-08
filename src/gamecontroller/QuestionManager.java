@@ -73,6 +73,10 @@ public class QuestionManager{
         return weights.get(categoryIndex).get(questionIndex);
     }
     
+    public void setWeight(int categoryIndex, int questionIndex, int newWeight){
+        this.weights.get(categoryIndex).set(questionIndex, newWeight);
+    }
+    
     public String getQuestion(int categoryIndex, int questionIndex){
         return questions.get(categoryIndex).get(questionIndex);
     }
@@ -89,7 +93,7 @@ public class QuestionManager{
         return this.questions.get(categoryIndex).size();
     }
     
-    public boolean isDouble(int categoryIndex, int questionIndex){
+    public boolean isDoubleJeopardy(int categoryIndex, int questionIndex){
         return doubleCategoryIndex.contains(categoryIndex) && doubleQuestionIndex.contains(questionIndex);
     }
 }

@@ -35,7 +35,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private boolean ignoreInput;
     private boolean isShowingAnswer;
     
-    public QuestionWin(int categoryIndex, int questionIndex, JeopardyGame gameCore, MainWin theMainWindow) {
+    public QuestionWin(int categoryIndex, int questionIndex, JeopardyGame gameCore, MainWin theMainWindow, boolean isDoubleJeopardy) {
         initComponents();
         theQuestionManager = gameCore.getQuestionManager();
         thePlayerManager = gameCore.getPlayerManager();
@@ -49,7 +49,10 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.waitTimer = new Timer(1000, new WaitTimerListener(this));
         ignoreInput = false;
         isShowingAnswer = false;
-        waitTimer.start();
+        if(!isDoubleJeopardy)
+            waitTimer.start();
+        else
+            this.startToAnswer();
     }
 
     /**
@@ -220,22 +223,21 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.showAnswer();
     }//GEN-LAST:event_rightButtonActionPerformed
 
-    public void doubleJeopardy(){
+    public void startToAnswer(){
         this.ignoreInput = true;
         this.resetWaitTimer();
-        this.showAnsweringPlayer();
         this.timeLabel.setText(Integer.toString(this.defaultAnswerTime));
         this.answerTimer.start();
+        this.rightButton.setEnabled(true);
+        this.wrongButton.setEnabled(true);
+        int answeringPlayerIndex = thePlayerManager.getAnsweringPlayerIndex();
+        this.answeringName.setText(answeringPlayerIndex == -1 ? "Unknown player" : this.thePlayerManager.getCurrentPlayerName(answeringPlayerIndex));
     }
     
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
         // TODO add your handling code here:
-        if(!this.isShowingAnswer && !ignoreInput && thePlayerManager.setAnsweringPlayer(evt.getKeyChar())){
-            this.resetWaitTimer();
-            this.showAnsweringPlayer();
-            this.timeLabel.setText(Integer.toString(this.defaultAnswerTime));
-            this.answerTimer.start();
-        }
+        if(!this.isShowingAnswer && !ignoreInput && thePlayerManager.setAnsweringPlayer(evt.getKeyChar()))
+            startToAnswer();
     }//GEN-LAST:event_formKeyTyped
     
     private void resetWaitTimer(){
@@ -271,15 +273,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
             this.waitTimer.start();
         }
     }//GEN-LAST:event_wrongButtonActionPerformed
-    
-    private void showAnsweringPlayer(){
-            this.ignoreInput = true;
-            this.rightButton.setEnabled(true);
-            this.wrongButton.setEnabled(true);
-            int answeringPlayerIndex = thePlayerManager.getAnsweringPlayerIndex();
-            this.answeringName.setText(answeringPlayerIndex == -1 ? "Unknown player" : this.thePlayerManager.getCurrentPlayerName(answeringPlayerIndex));
-    }
-    
+
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowActivated
