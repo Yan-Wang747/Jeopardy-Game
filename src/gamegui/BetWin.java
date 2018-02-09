@@ -34,12 +34,12 @@ public class BetWin extends javax.swing.JFrame {
         this.thePlayerManager = gameCore.getPlayerManager();
         this.theQuestionManager = gameCore.getQuestionManager();
         int answeringPlayerIndex = this.thePlayerManager.getAnsweringPlayerIndex();
-        totalCredits = this.thePlayerManager.getCurrentPlayerCredits(answeringPlayerIndex);
+        totalCredits = this.thePlayerManager.getPlayerCredits(answeringPlayerIndex);
         this.creditsTextField.setText(Integer.toString(totalCredits));
         this.creditSlider.setMaximum(totalCredits);
         this.creditSlider.setValue(totalCredits);
         this.creditsTextField.selectAll();
-        this.nameLabel.setText(this.thePlayerManager.getCurrentPlayerName(answeringPlayerIndex) + ", please specify the amount.");
+        this.nameLabel.setText(this.thePlayerManager.getPlayerName(answeringPlayerIndex) + ", please specify the amount.");
     }
 
     /**

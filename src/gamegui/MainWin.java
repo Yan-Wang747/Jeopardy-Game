@@ -24,6 +24,7 @@ public class MainWin extends javax.swing.JFrame {
     private final JeopardyGame gameCore;
     private final QuestionManager theQuestionManager;
     private final PlayerManager thePlayerManager;
+    private final MarkBoard theMarkBoard;
     
     public MainWin(JeopardyGame gameCore) {
         initComponents();
@@ -32,6 +33,14 @@ public class MainWin extends javax.swing.JFrame {
         this.thePlayerManager = gameCore.getPlayerManager();
         initButtonArray();
         initGame();
+        theMarkBoard = new MarkBoard(gameCore);
+        theMarkBoard.setVisible(true);
+    }
+    
+    @Override
+    public void dispose(){
+        this.theMarkBoard.dispose();
+        super.dispose();
     }
     
     private void showQuestionWindow(int categoryIndex, int questionIndex){
@@ -421,6 +430,7 @@ public class MainWin extends javax.swing.JFrame {
 
         jPanel6.add(jPanel5);
 
+        endButton.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
         endButton.setLabel("End");
         endButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -436,9 +446,9 @@ public class MainWin extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(67, Short.MAX_VALUE)
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 1720, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(pickingPlayerName)
@@ -451,13 +461,13 @@ public class MainWin extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(55, Short.MAX_VALUE)
+                .addContainerGap(64, Short.MAX_VALUE)
                 .addComponent(pickingPlayerName)
-                .addGap(48, 48, 48)
+                .addGap(49, 49, 49)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 726, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(35, 35, 35)
                 .addComponent(endButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
+                .addGap(28, 28, 28))
         );
 
         pack();
@@ -466,7 +476,7 @@ public class MainWin extends javax.swing.JFrame {
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
         //this.setExtendedState(Frame.MAXIMIZED_BOTH);
-        this.pickingPlayerName.setText(thePlayerManager.getCurrentPlayerName(thePlayerManager.getAnsweringPlayerIndex()) + ", please pick a question");
+        this.pickingPlayerName.setText(thePlayerManager.getPlayerName(thePlayerManager.getAnsweringPlayerIndex()) + ", please pick a question");
     }//GEN-LAST:event_formWindowActivated
 
     private void c1q1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1q1ButtonActionPerformed

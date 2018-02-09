@@ -16,10 +16,12 @@ import java.io.*;
 public class JeopardyGame {
     private final QuestionManager theQuestionManager;
     private final PlayerManager thePlayerManager;
+    private boolean isStarted;
 
     public JeopardyGame(){
         theQuestionManager = new QuestionManager();
         thePlayerManager = new PlayerManager();
+        this.isStarted = false;
     }
     
     public PlayerManager getPlayerManager(){
@@ -34,6 +36,7 @@ public class JeopardyGame {
         try{
             theQuestionManager.start(filename);
             thePlayerManager.start();
+            this.isStarted = true;
         }
         catch(NotEnoughPlayersException e){
             theQuestionManager.end();
@@ -44,6 +47,11 @@ public class JeopardyGame {
     public void end(){
         theQuestionManager.end();
         thePlayerManager.end();
+        this.isStarted = false;
+    }
+    
+    public boolean isStarted(){
+        return isStarted;
     }
     
 }

@@ -215,7 +215,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.answerTimer.stop();
         rightButton.setEnabled(false);
         wrongButton.setEnabled(false);
-        this.thePlayerManager.right(weight);
+        this.thePlayerManager.changeCredit(weight);
         this.showAnswer();
     }//GEN-LAST:event_rightButtonActionPerformed
 
@@ -227,7 +227,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.rightButton.setEnabled(true);
         this.wrongButton.setEnabled(true);
         int answeringPlayerIndex = thePlayerManager.getAnsweringPlayerIndex();
-        this.answeringName.setText(answeringPlayerIndex == -1 ? "Unknown player" : this.thePlayerManager.getCurrentPlayerName(answeringPlayerIndex));
+        this.answeringName.setText(answeringPlayerIndex == -1 ? "Unknown player" : this.thePlayerManager.getPlayerName(answeringPlayerIndex));
         this.answerTimer.start();
     }
     
@@ -252,7 +252,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.answerTimer.stop();
         rightButton.setEnabled(false);
         wrongButton.setEnabled(false);
-        this.thePlayerManager.wrong(-weight);
+        this.thePlayerManager.changeCredit(-weight);
         if(thePlayerManager.numberOfAllowablePlayers() == 0){
             this.answeringName.setText("Sorry, all players are wrong");
             this.showAnswer();

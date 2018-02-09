@@ -46,6 +46,16 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         this.resetNameTextField();
         this.resetKeyLabel();
     }
+    
+    public void dispose(){
+        if(!gameCore.isStarted()){
+            gameCore.end();
+            new FameHallWin(this.gameCore).setVisible(true);
+        }
+        
+        this.thePlayerManager.deleteObserver(this);
+        super.dispose();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -66,7 +76,6 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         startButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
         warningLabel = new javax.swing.JLabel();
-        backButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addFocusListener(new java.awt.event.FocusAdapter() {
@@ -177,36 +186,25 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
 
         warningLabel.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
 
-        backButton.setText("Back");
-        backButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(50, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(backButton)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(warningLabel)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(warningLabel)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(backButton)
-                .addGap(27, 27, 27)
+                .addGap(73, 73, 73)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -327,10 +325,10 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     }//GEN-LAST:event_formFocusLost
 
     private void displayPlayer(int index){
-        this.presentKey = thePlayerManager.getCurrentPlayerKey(index);
+        this.presentKey = thePlayerManager.getPlayerKey(index);
         this.setKeyLabel.setText(Character.toString(presentKey));
         this.nameTextField.setForeground(Color.GRAY);
-        String presentName = thePlayerManager.getCurrentPlayerName(index);
+        String presentName = thePlayerManager.getPlayerName(index);
         this.nameTextField.setText(presentName);
     }
     
@@ -361,13 +359,6 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         }
     }//GEN-LAST:event_startButtonActionPerformed
 
-    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
-        gameCore.end();
-        new FameHallWin(this.gameCore).setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_backButtonActionPerformed
-
     private void startButtonFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_startButtonFocusLost
         // TODO add your handling code here:
     }//GEN-LAST:event_startButtonFocusLost
@@ -394,7 +385,6 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton backButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

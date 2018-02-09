@@ -27,7 +27,7 @@ public class PlayerManager extends Observable{
     private final ArrayList<Integer> currPlayerCredits;
     private final int initialMark = 1000;
     private int answeringPlayerIndex;
-    private ArrayList<Character> forbiddenKeys;
+    private final ArrayList<Character> forbiddenKeys;
     
     private class NameMarkPairComparator implements Comparator<Player>{
         @Override
@@ -67,6 +67,7 @@ public class PlayerManager extends Observable{
         currPlayerNames.clear();
         currPlayerKeys.clear();
         currPlayerCredits.clear();
+        this.deleteObservers();
     }
     
     private void validatePlayer(String name, char key) throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException, EmptyPlayerKeyException{
@@ -102,8 +103,8 @@ public class PlayerManager extends Observable{
     }
     
     public void modifyPlayer(int playerIndex, String newName, char newKey) throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException, EmptyPlayerKeyException{
-        String oldName = this.getCurrentPlayerName(playerIndex);
-        char oldKey = this.getCurrentPlayerKey(playerIndex);
+        String oldName = this.getPlayerName(playerIndex);
+        char oldKey = this.getPlayerKey(playerIndex);
         
         try{            
             currPlayerNames.set(playerIndex, "");
@@ -124,16 +125,27 @@ public class PlayerManager extends Observable{
         
     }
     
-    public char getCurrentPlayerKey(int playerIndex){
+    public char getPlayerKey(int playerIndex){
         return currPlayerKeys.get(playerIndex);
     }
     
-    public String getCurrentPlayerName(int playerIndex){
+    public String getPlayerName(int playerIndex){
         return currPlayerNames.get(playerIndex);
     }
     
-    public int getCurrentPlayerCredits(int playerIndex){
+    public int getPlayerCredits(int playerIndex){
         return this.currPlayerCredits.get(playerIndex);
+    }
+    
+    public ArrayList<Player> getCurrentOrderedPlayers(){
+        ArrayList<Player> orderedPlayers = new ArrayList();
+        
+        for(int i = 0; i < currPlayerNames.size(); i++)
+            orderedPlayers.add(new Player(currPlayerNames.get(i), currPlayerCredits.get(i)));
+
+        orderedPlayers.sort(new NameMarkPairComparator().reversed());
+        
+        return orderedPlayers;
     }
     
     public ArrayList<Player> getOrderedPlayers(){
@@ -143,17 +155,17 @@ public class PlayerManager extends Observable{
         List<String> nameList = Arrays.asList(names);
         Iterator<String> nameIterator = nameList.iterator();
         
-        ArrayList<Player> nameMarks = new ArrayList();
+        ArrayList<Player> orderedPlayers = new ArrayList();
         while(nameIterator.hasNext()){
             String name = nameIterator.next();
             
-            nameMarks.add(new Player(name, allPlayerNameMarks.get(name)));
+            orderedPlayers.add(new Player(name, allPlayerNameMarks.get(name)));
         }
 
-        nameMarks.sort(new NameMarkPairComparator().reversed());
+        orderedPlayers.sort(new NameMarkPairComparator().reversed());
         
         
-        return nameMarks;
+        return orderedPlayers;
     }
     
     public boolean setAnsweringPlayer(char key){
@@ -170,18 +182,18 @@ public class PlayerManager extends Observable{
         return answeringPlayerIndex;
     }
     
-    public void wrong(int offset){
-        char key = currPlayerKeys.get(answeringPlayerIndex);
-        forbiddenKeys.add(key);
+    public void changeCredit(int offset){
+        if(offset < 0){
+            char key = currPlayerKeys.get(answeringPlayerIndex);
+            forbiddenKeys.add(key);
+        }
+        
         int mark = currPlayerCredits.get(answeringPlayerIndex) + offset;
         currPlayerCredits.set(answeringPlayerIndex, mark);
+        
+        this.setChanged();
+        this.notifyObservers();
     }
-    
-    public void right(int offset){
-        int mark = currPlayerCredits.get(answeringPlayerIndex) + offset;
-        currPlayerCredits.set(answeringPlayerIndex, mark);
-    }
-    
     public void clearForbiddenPlayers(){
         this.forbiddenKeys.clear();
     }
