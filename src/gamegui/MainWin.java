@@ -37,6 +37,7 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
         this.gameCore = gameCore;
         this.theQuestionManager = gameCore.getQuestionManager();
         this.thePlayerManager = gameCore.getPlayerManager();
+        this.thePlayerManager.addObserver(this);
         initButtonArray();
         JeopardyColors.setComponentColor(this.rootPane);
         initGame();
@@ -48,7 +49,6 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
         this.markPanel.removeAll();
         this.markPanel.repaint();
         putPlayers();
-        this.setVisible(true);
     }
     
     private void putPlayers(){
@@ -176,7 +176,7 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
         jScrollPane1 = new javax.swing.JScrollPane();
         markPanel = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
         setSize(new java.awt.Dimension(1920, 1080));
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -195,6 +195,11 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
         c1Button.setForeground(new java.awt.Color(204, 153, 0));
         c1Button.setText("jButton1");
         c1Button.setEnabled(false);
+        c1Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c1ButtonActionPerformed(evt);
+            }
+        });
         jPanel1.add(c1Button);
 
         c1q1Button.setBackground(new java.awt.Color(0, 51, 204));
@@ -532,22 +537,22 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(pickingPlayerName)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(37, Short.MAX_VALUE)
+                .addContainerGap(36, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 1720, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1714, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pickingPlayerName)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
+                .addContainerGap(25, Short.MAX_VALUE)
                 .addComponent(pickingPlayerName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 726, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -561,6 +566,7 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
         // TODO add your handling code here:
         //this.setExtendedState(Frame.MAXIMIZED_BOTH);
         this.pickingPlayerName.setText(thePlayerManager.getPlayerName(thePlayerManager.getAnsweringPlayerIndex()) + ", please pick a question");
+        this.setVisible(true);
     }//GEN-LAST:event_formWindowActivated
 
     private void c1q1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1q1ButtonActionPerformed
@@ -687,6 +693,10 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
         // TODO add your handling code here:
         questionButtonAction(4, 4);
     }//GEN-LAST:event_c5q5ButtonActionPerformed
+
+    private void c1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1ButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_c1ButtonActionPerformed
 
     private void showDoubleWindow(int categoryIndex, int questionIndex){
         new BetWin(categoryIndex, questionIndex, gameCore, this).setVisible(true);

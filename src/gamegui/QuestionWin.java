@@ -38,6 +38,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         initComponents();
         theQuestionManager = gameCore.getQuestionManager();
         thePlayerManager = gameCore.getPlayerManager();
+        thePlayerManager.clearForbiddenPlayers();
         this.theMainWindow = theMainWindow;
         this.qaTextArea.setText(theQuestionManager.getQuestion(categoryIndex, questionIndex));
         this.answer = this.theQuestionManager.getAnswer(categoryIndex, questionIndex);
