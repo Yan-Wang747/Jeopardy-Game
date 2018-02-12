@@ -84,8 +84,8 @@ public class MarkBoard extends javax.swing.JFrame implements  Observer{
     @Override
     public void update(Observable o, Object arg){
         this.markPanel.removeAll();
-        System.out.println("am called");
         putPlayers();
+        this.setVisible(true);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane2;
