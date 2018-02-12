@@ -45,6 +45,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.answerTimer = new Timer(1000, this);
         this.waitTimer = new Timer(1000, new WaitTimerListener(this));
         isShowingAnswer = false;
+        JeopardyColors.setComponentColor(this.rootPane);
         if(!isDoubleJeopardy)
             this.startToWait();
         else
@@ -105,7 +106,6 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
 
         wrongButton.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         wrongButton.setText("Wrong");
-        wrongButton.setEnabled(false);
         wrongButton.setPreferredSize(new java.awt.Dimension(200, 66));
         wrongButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,7 +116,6 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
 
         rightButton.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         rightButton.setText("Right");
-        rightButton.setEnabled(false);
         rightButton.setPreferredSize(new java.awt.Dimension(200, 66));
         rightButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -203,6 +202,8 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private void showAnswer(){
         this.isShowingAnswer = true;
         this.qaTextArea.setText(this.answer + "\n[Click here to go back]");
+        this.rightButton.setVisible(false);
+        this.wrongButton.setVisible(false);
     }
     
     private void showMainWindow(){
@@ -213,8 +214,6 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private void rightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightButtonActionPerformed
         // TODO add your handling code here:
         this.answerTimer.stop();
-        rightButton.setEnabled(false);
-        wrongButton.setEnabled(false);
         this.thePlayerManager.changeCredit(weight);
         this.showAnswer();
     }//GEN-LAST:event_rightButtonActionPerformed
@@ -224,8 +223,8 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.ignoreInput = true;
         this.timeRemaining = this.maxAnswerTime;
         this.timeLabel.setText(Integer.toString(this.timeRemaining));
-        this.rightButton.setEnabled(true);
-        this.wrongButton.setEnabled(true);
+        this.rightButton.setVisible(true);
+        this.wrongButton.setVisible(true);
         int answeringPlayerIndex = thePlayerManager.getAnsweringPlayerIndex();
         this.answeringName.setText(answeringPlayerIndex == -1 ? "Unknown player" : this.thePlayerManager.getPlayerName(answeringPlayerIndex));
         this.answerTimer.start();
@@ -235,8 +234,8 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.ignoreInput = false;
         this.timeRemaining = this.maxWaitTime;
         this.timeLabel.setText(Integer.toString(this.timeRemaining));
-        this.rightButton.setEnabled(false);
-        this.wrongButton.setEnabled(false);
+        this.rightButton.setVisible(false);
+        this.wrongButton.setVisible(false);
         this.requestFocus();
         this.waitTimer.start();
     }
@@ -250,8 +249,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private void wrongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wrongButtonActionPerformed
         // TODO add your handling code here:
         this.answerTimer.stop();
-        rightButton.setEnabled(false);
-        wrongButton.setEnabled(false);
+
         this.thePlayerManager.changeCredit(-weight);
         if(thePlayerManager.numberOfAllowablePlayers() == 0){
             this.answeringName.setText("Sorry, all players are wrong");

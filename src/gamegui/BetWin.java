@@ -7,6 +7,9 @@ package gamegui;
 
 import gamecontroller.*;
 import exception.*;
+import java.awt.Component;
+import java.awt.Container;
+import javax.swing.JTextField;
 /**
  *
  * @author student
@@ -40,6 +43,7 @@ public class BetWin extends javax.swing.JFrame {
         this.creditSlider.setValue(totalCredits);
         this.creditsTextField.selectAll();
         this.nameLabel.setText(this.thePlayerManager.getPlayerName(answeringPlayerIndex) + ", please specify the amount.");
+        JeopardyColors.setComponentColor(this.rootPane);
     }
 
     /**

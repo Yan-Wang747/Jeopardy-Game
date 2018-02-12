@@ -12,6 +12,8 @@ import gamecontroller.PlayerManager;
 import java.util.Observer;
 import java.util.Observable;
 import java.io.*;
+import java.awt.*;
+import javax.swing.*;
 /**
  *
  * @author iqapp
@@ -42,6 +44,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         this.gameCore = gameCore;
         this.thePlayerManager = gameCore.getPlayerManager();
         this.thePlayerManager.addObserver(this);
+        JeopardyColors.setComponentColor(this.rootPane);
         this.setTitle(titleMessagePrefix + thePlayerManager.getNumOfCurrentPlayers());
         this.resetNameTextField();
         this.resetKeyLabel();
@@ -78,6 +81,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         warningLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(0, 0, 0));
         addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 formFocusLost(evt);
@@ -246,7 +250,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
         // TODO add your handling code here:
         if(this.isSettingKey && Character.isAlphabetic(evt.getKeyChar())){
-            this.setKeyLabel.setForeground(Color.BLACK);
+            this.setKeyLabel.setForeground(JeopardyColors.FONT);
             this.setKeyLabel.setText(Character.toString(evt.getKeyChar()));
             this.presentKey = evt.getKeyChar();
         }
@@ -370,7 +374,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     private void resetNameTextField(){
         this.nameTextField.setText(""); 
         this.nameTextField.requestFocus();
-        this.nameTextField.setForeground(Color.BLACK);
+        this.nameTextField.setForeground(JeopardyColors.FONT);
     }
     
     private void resetKeyLabel(){

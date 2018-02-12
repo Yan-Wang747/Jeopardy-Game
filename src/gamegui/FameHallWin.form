@@ -33,11 +33,11 @@
               <EmptySpace pref="454" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
+                      <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                      <Component id="jPanel5" min="-2" pref="415" max="-2" attributes="0"/>
+                      <Component id="jPanel2" min="-2" pref="415" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jLabel11" alignment="1" max="32767" attributes="0"/>
+                  <Component id="fameHallLabel" alignment="1" max="32767" attributes="0"/>
                   <Component id="challengeButton" alignment="1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="455" max="32767" attributes="0"/>
@@ -48,11 +48,11 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace pref="56" max="32767" attributes="0"/>
-              <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+              <Component id="fameHallLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jPanel4" max="32767" attributes="0"/>
-                  <Component id="jPanel5" min="-2" pref="596" max="-2" attributes="0"/>
+                  <Component id="jPanel1" max="32767" attributes="0"/>
+                  <Component id="jPanel2" min="-2" pref="596" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="73" max="32767" attributes="0"/>
               <Component id="challengeButton" min="-2" pref="77" max="-2" attributes="0"/>
@@ -62,7 +62,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="jLabel11">
+    <Component class="javax.swing.JLabel" name="fameHallLabel">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Lucida Grande" size="100" style="0"/>
@@ -71,7 +71,7 @@
         <Property name="text" type="java.lang.String" value="FameHall"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JPanel" name="jPanel4">
+    <Container class="javax.swing.JPanel" name="jPanel1">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
         <Property name="columns" type="int" value="1"/>
@@ -131,7 +131,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="jPanel5">
+    <Container class="javax.swing.JPanel" name="jPanel2">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
         <Property name="columns" type="int" value="1"/>

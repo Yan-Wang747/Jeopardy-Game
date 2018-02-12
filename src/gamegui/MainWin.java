@@ -11,20 +11,26 @@ package gamegui;
  */
 import gamecontroller.QuestionManager;
 import gamecontroller.JeopardyGame;
+import gamecontroller.Player;
 import gamecontroller.PlayerManager;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.*;
 
-public class MainWin extends javax.swing.JFrame {
+public class MainWin extends javax.swing.JFrame implements  Observer {
 
     /**
      * Creates new form GameGUI
      */
-    private JLabel[] cLabels;
+    private JButton[] cButtons;
     private JButton[][] qButtons;
     private final JeopardyGame gameCore;
     private final QuestionManager theQuestionManager;
     private final PlayerManager thePlayerManager;
-    private final MarkBoard theMarkBoard;
     
     public MainWin(JeopardyGame gameCore) {
         initComponents();
@@ -32,14 +38,35 @@ public class MainWin extends javax.swing.JFrame {
         this.theQuestionManager = gameCore.getQuestionManager();
         this.thePlayerManager = gameCore.getPlayerManager();
         initButtonArray();
+        JeopardyColors.setComponentColor(this.rootPane);
         initGame();
-        theMarkBoard = new MarkBoard(gameCore);
-        theMarkBoard.setVisible(true);
+        putPlayers();
+    }
+    
+    @Override
+    public void update(Observable o, Object arg){
+        this.markPanel.removeAll();
+        this.markPanel.repaint();
+        putPlayers();
+        this.setVisible(true);
+    }
+    
+    private void putPlayers(){
+        ArrayList<Player> players = this.thePlayerManager.getCurrentOrderedPlayers();
+
+        for(Player player : players){
+            JLabel playerLabel = new JLabel();
+            playerLabel.setForeground(JeopardyColors.FONT);
+            playerLabel.setText(player.name + ": " + player.mark);
+            playerLabel.setFont(new java.awt.Font("Lucida Grande", 0, 36)); 
+            this.markPanel.add(playerLabel);
+        }
     }
     
     @Override
     public void dispose(){
-        this.theMarkBoard.dispose();
+        this.gameCore.end();
+        new FameHallWin(this.gameCore).setVisible(true);
         super.dispose();
     }
     
@@ -49,14 +76,14 @@ public class MainWin extends javax.swing.JFrame {
     }
     
     private void initButtonArray(){
-        cLabels = new JLabel[5];
+        cButtons = new JButton[5];
         qButtons = new JButton[5][5];
         
-        cLabels[0] = this.c1Label;
-        cLabels[1] = this.c2Label;
-        cLabels[2] = this.c3Label;
-        cLabels[3] = this.c4Label;
-        cLabels[4] = this.c5Label;
+        cButtons[0] = this.c1Button;
+        cButtons[1] = this.c2Button;
+        cButtons[2] = this.c3Button;
+        cButtons[3] = this.c4Button;
+        cButtons[4] = this.c5Button;
         
         qButtons[0][0] = this.c1q1Button;
         qButtons[0][1] = this.c1q2Button;
@@ -86,14 +113,13 @@ public class MainWin extends javax.swing.JFrame {
         qButtons[4][1] = this.c5q2Button;
         qButtons[4][2] = this.c5q3Button;
         qButtons[4][3] = this.c5q4Button;
-        qButtons[4][4] = this.c5q5Button;
-        
+        qButtons[4][4] = this.c5q5Button;      
         
     }
     
     private void initGame(){  
-        for(int i = 0; i < this.theQuestionManager.getNumberOfCategories() && i < cLabels.length; i++){
-            cLabels[i].setText(theQuestionManager.getCategory(i));
+        for(int i = 0; i < this.theQuestionManager.getNumberOfCategories() && i < cButtons.length; i++){
+            cButtons[i].setText(theQuestionManager.getCategory(i));
             
             for(int j = 0; j < this.theQuestionManager.getNumberOfQuestions(i) && j < qButtons[i].length; j++){
                 this.qButtons[i][j].setEnabled(true);
@@ -112,44 +138,46 @@ public class MainWin extends javax.swing.JFrame {
 
         jPanel6 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        c1Label = new javax.swing.JLabel();
+        c1Button = new javax.swing.JButton();
         c1q1Button = new javax.swing.JButton();
         c1q2Button = new javax.swing.JButton();
         c1q3Button = new javax.swing.JButton();
         c1q4Button = new javax.swing.JButton();
         c1q5Button = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        c2Label = new javax.swing.JLabel();
+        c2Button = new javax.swing.JButton();
         c2q1Button = new javax.swing.JButton();
         c2q2Button = new javax.swing.JButton();
         c2q3Button = new javax.swing.JButton();
         c2q4Button = new javax.swing.JButton();
         c2q5Button = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        c3Label = new javax.swing.JLabel();
+        c3Button = new javax.swing.JButton();
         c3q1Button = new javax.swing.JButton();
         c3q2Button = new javax.swing.JButton();
         c3q3Button = new javax.swing.JButton();
         c3q4Button = new javax.swing.JButton();
         c3q5Button = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        c4Label = new javax.swing.JLabel();
+        c4Button = new javax.swing.JButton();
         c4q1Button = new javax.swing.JButton();
         c4q2Button = new javax.swing.JButton();
         c4q3Button = new javax.swing.JButton();
         c4q4Button = new javax.swing.JButton();
         c4q5Button = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
-        c5Label = new javax.swing.JLabel();
+        c5Button = new javax.swing.JButton();
         c5q1Button = new javax.swing.JButton();
         c5q2Button = new javax.swing.JButton();
         c5q3Button = new javax.swing.JButton();
         c5q4Button = new javax.swing.JButton();
         c5q5Button = new javax.swing.JButton();
-        endButton = new javax.swing.JButton();
         pickingPlayerName = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        markPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(0, 0, 0));
         setSize(new java.awt.Dimension(1920, 1080));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -160,13 +188,17 @@ public class MainWin extends javax.swing.JFrame {
         jPanel6.setPreferredSize(new java.awt.Dimension(1800, 700));
         jPanel6.setLayout(new java.awt.GridLayout(1, 0, 20, 0));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setLayout(new java.awt.GridLayout(6, 0, 0, 10));
 
-        c1Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        c1Label.setText("-");
-        jPanel1.add(c1Label);
+        c1Button.setBackground(new java.awt.Color(0, 51, 204));
+        c1Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
+        c1Button.setForeground(new java.awt.Color(204, 153, 0));
+        c1Button.setText("jButton1");
+        c1Button.setEnabled(false);
+        jPanel1.add(c1Button);
 
+        c1q1Button.setBackground(new java.awt.Color(0, 51, 204));
+        c1q1Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c1q1Button.setText("-");
         c1q1Button.setEnabled(false);
         c1q1Button.addActionListener(new java.awt.event.ActionListener() {
@@ -176,6 +208,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel1.add(c1q1Button);
 
+        c1q2Button.setBackground(new java.awt.Color(0, 51, 204));
+        c1q2Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c1q2Button.setText("-");
         c1q2Button.setEnabled(false);
         c1q2Button.addActionListener(new java.awt.event.ActionListener() {
@@ -185,6 +219,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel1.add(c1q2Button);
 
+        c1q3Button.setBackground(new java.awt.Color(0, 51, 204));
+        c1q3Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c1q3Button.setText("-");
         c1q3Button.setEnabled(false);
         c1q3Button.addActionListener(new java.awt.event.ActionListener() {
@@ -194,6 +230,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel1.add(c1q3Button);
 
+        c1q4Button.setBackground(new java.awt.Color(0, 51, 204));
+        c1q4Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c1q4Button.setText("-");
         c1q4Button.setEnabled(false);
         c1q4Button.addActionListener(new java.awt.event.ActionListener() {
@@ -203,6 +241,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel1.add(c1q4Button);
 
+        c1q5Button.setBackground(new java.awt.Color(0, 51, 204));
+        c1q5Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c1q5Button.setText("-");
         c1q5Button.setEnabled(false);
         c1q5Button.addActionListener(new java.awt.event.ActionListener() {
@@ -214,13 +254,17 @@ public class MainWin extends javax.swing.JFrame {
 
         jPanel6.add(jPanel1);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setLayout(new java.awt.GridLayout(6, 0, 0, 10));
 
-        c2Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        c2Label.setText("-");
-        jPanel2.add(c2Label);
+        c2Button.setBackground(new java.awt.Color(0, 51, 204));
+        c2Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
+        c2Button.setForeground(new java.awt.Color(204, 153, 0));
+        c2Button.setText("jButton1");
+        c2Button.setEnabled(false);
+        jPanel2.add(c2Button);
 
+        c2q1Button.setBackground(new java.awt.Color(0, 51, 204));
+        c2q1Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c2q1Button.setText("-");
         c2q1Button.setEnabled(false);
         c2q1Button.addActionListener(new java.awt.event.ActionListener() {
@@ -230,6 +274,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel2.add(c2q1Button);
 
+        c2q2Button.setBackground(new java.awt.Color(0, 51, 204));
+        c2q2Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c2q2Button.setText("-");
         c2q2Button.setEnabled(false);
         c2q2Button.addActionListener(new java.awt.event.ActionListener() {
@@ -239,6 +285,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel2.add(c2q2Button);
 
+        c2q3Button.setBackground(new java.awt.Color(0, 51, 204));
+        c2q3Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c2q3Button.setText("-");
         c2q3Button.setEnabled(false);
         c2q3Button.addActionListener(new java.awt.event.ActionListener() {
@@ -248,6 +296,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel2.add(c2q3Button);
 
+        c2q4Button.setBackground(new java.awt.Color(0, 51, 204));
+        c2q4Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c2q4Button.setText("-");
         c2q4Button.setEnabled(false);
         c2q4Button.addActionListener(new java.awt.event.ActionListener() {
@@ -257,6 +307,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel2.add(c2q4Button);
 
+        c2q5Button.setBackground(new java.awt.Color(0, 51, 204));
+        c2q5Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c2q5Button.setText("-");
         c2q5Button.setEnabled(false);
         c2q5Button.addActionListener(new java.awt.event.ActionListener() {
@@ -268,13 +320,17 @@ public class MainWin extends javax.swing.JFrame {
 
         jPanel6.add(jPanel2);
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel3.setLayout(new java.awt.GridLayout(6, 0, 0, 10));
 
-        c3Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        c3Label.setText("-");
-        jPanel3.add(c3Label);
+        c3Button.setBackground(new java.awt.Color(0, 51, 204));
+        c3Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
+        c3Button.setForeground(new java.awt.Color(204, 153, 0));
+        c3Button.setText("jButton1");
+        c3Button.setEnabled(false);
+        jPanel3.add(c3Button);
 
+        c3q1Button.setBackground(new java.awt.Color(0, 51, 204));
+        c3q1Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c3q1Button.setText("-");
         c3q1Button.setEnabled(false);
         c3q1Button.addActionListener(new java.awt.event.ActionListener() {
@@ -284,6 +340,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel3.add(c3q1Button);
 
+        c3q2Button.setBackground(new java.awt.Color(0, 51, 204));
+        c3q2Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c3q2Button.setText("-");
         c3q2Button.setEnabled(false);
         c3q2Button.addActionListener(new java.awt.event.ActionListener() {
@@ -293,6 +351,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel3.add(c3q2Button);
 
+        c3q3Button.setBackground(new java.awt.Color(0, 51, 204));
+        c3q3Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c3q3Button.setText("-");
         c3q3Button.setEnabled(false);
         c3q3Button.addActionListener(new java.awt.event.ActionListener() {
@@ -302,6 +362,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel3.add(c3q3Button);
 
+        c3q4Button.setBackground(new java.awt.Color(0, 51, 204));
+        c3q4Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c3q4Button.setText("-");
         c3q4Button.setEnabled(false);
         c3q4Button.addActionListener(new java.awt.event.ActionListener() {
@@ -311,6 +373,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel3.add(c3q4Button);
 
+        c3q5Button.setBackground(new java.awt.Color(0, 51, 204));
+        c3q5Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c3q5Button.setText("-");
         c3q5Button.setEnabled(false);
         c3q5Button.addActionListener(new java.awt.event.ActionListener() {
@@ -322,13 +386,17 @@ public class MainWin extends javax.swing.JFrame {
 
         jPanel6.add(jPanel3);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel4.setLayout(new java.awt.GridLayout(6, 0, 0, 10));
 
-        c4Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        c4Label.setText("-");
-        jPanel4.add(c4Label);
+        c4Button.setBackground(new java.awt.Color(0, 51, 204));
+        c4Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
+        c4Button.setForeground(new java.awt.Color(204, 153, 0));
+        c4Button.setText("jButton1");
+        c4Button.setEnabled(false);
+        jPanel4.add(c4Button);
 
+        c4q1Button.setBackground(new java.awt.Color(0, 51, 204));
+        c4q1Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c4q1Button.setText("-");
         c4q1Button.setEnabled(false);
         c4q1Button.addActionListener(new java.awt.event.ActionListener() {
@@ -338,6 +406,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel4.add(c4q1Button);
 
+        c4q2Button.setBackground(new java.awt.Color(0, 51, 204));
+        c4q2Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c4q2Button.setText("-");
         c4q2Button.setEnabled(false);
         c4q2Button.addActionListener(new java.awt.event.ActionListener() {
@@ -347,6 +417,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel4.add(c4q2Button);
 
+        c4q3Button.setBackground(new java.awt.Color(0, 51, 204));
+        c4q3Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c4q3Button.setText("-");
         c4q3Button.setEnabled(false);
         c4q3Button.addActionListener(new java.awt.event.ActionListener() {
@@ -356,6 +428,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel4.add(c4q3Button);
 
+        c4q4Button.setBackground(new java.awt.Color(0, 51, 204));
+        c4q4Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c4q4Button.setText("-");
         c4q4Button.setEnabled(false);
         c4q4Button.addActionListener(new java.awt.event.ActionListener() {
@@ -365,6 +439,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel4.add(c4q4Button);
 
+        c4q5Button.setBackground(new java.awt.Color(0, 51, 204));
+        c4q5Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c4q5Button.setText("-");
         c4q5Button.setEnabled(false);
         c4q5Button.addActionListener(new java.awt.event.ActionListener() {
@@ -376,13 +452,17 @@ public class MainWin extends javax.swing.JFrame {
 
         jPanel6.add(jPanel4);
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel5.setLayout(new java.awt.GridLayout(6, 0, 0, 10));
 
-        c5Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        c5Label.setText("-");
-        jPanel5.add(c5Label);
+        c5Button.setBackground(new java.awt.Color(0, 51, 204));
+        c5Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
+        c5Button.setForeground(new java.awt.Color(204, 153, 0));
+        c5Button.setText("jButton1");
+        c5Button.setEnabled(false);
+        jPanel5.add(c5Button);
 
+        c5q1Button.setBackground(new java.awt.Color(0, 51, 204));
+        c5q1Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c5q1Button.setText("-");
         c5q1Button.setEnabled(false);
         c5q1Button.addActionListener(new java.awt.event.ActionListener() {
@@ -392,6 +472,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel5.add(c5q1Button);
 
+        c5q2Button.setBackground(new java.awt.Color(0, 51, 204));
+        c5q2Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c5q2Button.setText("-");
         c5q2Button.setEnabled(false);
         c5q2Button.addActionListener(new java.awt.event.ActionListener() {
@@ -401,6 +483,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel5.add(c5q2Button);
 
+        c5q3Button.setBackground(new java.awt.Color(0, 51, 204));
+        c5q3Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c5q3Button.setText("-");
         c5q3Button.setEnabled(false);
         c5q3Button.addActionListener(new java.awt.event.ActionListener() {
@@ -410,6 +494,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel5.add(c5q3Button);
 
+        c5q4Button.setBackground(new java.awt.Color(0, 51, 204));
+        c5q4Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c5q4Button.setText("-");
         c5q4Button.setEnabled(false);
         c5q4Button.addActionListener(new java.awt.event.ActionListener() {
@@ -419,6 +505,8 @@ public class MainWin extends javax.swing.JFrame {
         });
         jPanel5.add(c5q4Button);
 
+        c5q5Button.setBackground(new java.awt.Color(0, 51, 204));
+        c5q5Button.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c5q5Button.setText("-");
         c5q5Button.setEnabled(false);
         c5q5Button.addActionListener(new java.awt.event.ActionListener() {
@@ -430,44 +518,40 @@ public class MainWin extends javax.swing.JFrame {
 
         jPanel6.add(jPanel5);
 
-        endButton.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
-        endButton.setLabel("End");
-        endButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                endButtonActionPerformed(evt);
-            }
-        });
-
         pickingPlayerName.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         pickingPlayerName.setText("Name");
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(242, 446));
+        jScrollPane1.setSize(new java.awt.Dimension(242, 446));
+
+        markPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 50, 5));
+        jScrollPane1.setViewportView(markPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 1720, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(pickingPlayerName)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(endButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 1720, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1714, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(64, Short.MAX_VALUE)
+                .addContainerGap(27, Short.MAX_VALUE)
                 .addComponent(pickingPlayerName)
-                .addGap(49, 49, 49)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 726, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(endButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         pack();
@@ -604,13 +688,6 @@ public class MainWin extends javax.swing.JFrame {
         questionButtonAction(4, 4);
     }//GEN-LAST:event_c5q5ButtonActionPerformed
 
-    private void endButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endButtonActionPerformed
-        // TODO add your handling code here:
-        this.gameCore.end();
-        new FameHallWin(this.gameCore).setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_endButtonActionPerformed
-
     private void showDoubleWindow(int categoryIndex, int questionIndex){
         new BetWin(categoryIndex, questionIndex, gameCore, this).setVisible(true);
         this.setVisible(false);
@@ -629,43 +706,44 @@ public class MainWin extends javax.swing.JFrame {
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel c1Label;
+    private javax.swing.JButton c1Button;
     private javax.swing.JButton c1q1Button;
     private javax.swing.JButton c1q2Button;
     private javax.swing.JButton c1q3Button;
     private javax.swing.JButton c1q4Button;
     private javax.swing.JButton c1q5Button;
-    private javax.swing.JLabel c2Label;
+    private javax.swing.JButton c2Button;
     private javax.swing.JButton c2q1Button;
     private javax.swing.JButton c2q2Button;
     private javax.swing.JButton c2q3Button;
     private javax.swing.JButton c2q4Button;
     private javax.swing.JButton c2q5Button;
-    private javax.swing.JLabel c3Label;
+    private javax.swing.JButton c3Button;
     private javax.swing.JButton c3q1Button;
     private javax.swing.JButton c3q2Button;
     private javax.swing.JButton c3q3Button;
     private javax.swing.JButton c3q4Button;
     private javax.swing.JButton c3q5Button;
-    private javax.swing.JLabel c4Label;
+    private javax.swing.JButton c4Button;
     private javax.swing.JButton c4q1Button;
     private javax.swing.JButton c4q2Button;
     private javax.swing.JButton c4q3Button;
     private javax.swing.JButton c4q4Button;
     private javax.swing.JButton c4q5Button;
-    private javax.swing.JLabel c5Label;
+    private javax.swing.JButton c5Button;
     private javax.swing.JButton c5q1Button;
     private javax.swing.JButton c5q2Button;
     private javax.swing.JButton c5q3Button;
     private javax.swing.JButton c5q4Button;
     private javax.swing.JButton c5q5Button;
-    private javax.swing.JButton endButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel markPanel;
     private javax.swing.JLabel pickingPlayerName;
     // End of variables declaration//GEN-END:variables
 }
