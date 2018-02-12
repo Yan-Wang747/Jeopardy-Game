@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author student
  */
-public class MarkBoard extends javax.swing.JFrame implements  Observer{
+public final class MarkBoard extends javax.swing.JFrame implements  Observer{
 
     /**
      * Creates new form markBoard
