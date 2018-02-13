@@ -8,15 +8,14 @@ package gamegui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import javax.swing.JTextField;
 
 /**
  *
  * @author student
  */
 public class JeopardyColors {
-    public static final Color BACKGROUND = new Color(3, 67, 122);
-    public static final Color FONT =  new Color(255,204,51);
+    public static final Color BACKGROUND = new Color(0, 50, 91);
+    public static final Color FONT =  new Color(169, 111, 62);
     
     public static void setComponentColor(Component component){
         component.setBackground(JeopardyColors.BACKGROUND);
