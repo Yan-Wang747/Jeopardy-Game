@@ -9,10 +9,7 @@ package gamegui;
  *
  * @author iqapp
  */
-import gamecontroller.QuestionManager;
-import gamecontroller.JeopardyGame;
-import gamecontroller.Player;
-import gamecontroller.PlayerManager;
+import gamecontroller.*;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -25,15 +22,11 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
      * Creates new form GameGUI
      */
     private final JeopardyGame gameCore;
-    private final QuestionManager theQuestionManager;
-    private final PlayerManager thePlayerManager;
          
     public MainWin(JeopardyGame gameCore) {
         initComponents();
         this.gameCore = gameCore;
-        this.theQuestionManager = gameCore.getQuestionManager();
-        this.thePlayerManager = gameCore.getPlayerManager();
-        this.thePlayerManager.addObserver(this);
+        this.gameCore.addObserver(this);
         this.markPanel.setPreferredSize(new Dimension(1871, 124));
         initButtonArray();
         JeopardyColors.setComponentColor(this.rootPane);
@@ -48,12 +41,12 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
     }
     
     private void putPlayers(){
-        ArrayList<Player> players = this.thePlayerManager.getCurrentOrderedPlayers();
-        int fontSize = (int)(80 - 60.0 / 24 * (this.thePlayerManager.getNumOfCurrentPlayers() - 2));
+        ArrayList<Player> players = this.gameCore.getOrderedPlayers(false);
+        int fontSize = (int)(80 - 60.0 / 24 * (this.gameCore.getNumOfCurrentPlayers() - 2));
         for(Player player : players){
             JLabel playerLabel = new JLabel();
             playerLabel.setForeground(JeopardyColors.FONT);
-            playerLabel.setText(player.name + ": " + player.mark);
+            playerLabel.setText(player.getName() + ": " + player.getCredits());
             playerLabel.setFont(new java.awt.Font("Lucida Grande", 0, fontSize)); 
             this.markPanel.add(playerLabel);
         }
@@ -161,7 +154,8 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
         //this.setExtendedState(Frame.MAXIMIZED_BOTH);
-        this.pickingPlayerName.setText(thePlayerManager.getPlayerName(thePlayerManager.getAnsweringPlayerIndex()) + ", please pick a question");
+        Player pickingPlayer = gameCore.getPlayer(gameCore.getAnsweringPlayerIndex());
+        this.pickingPlayerName.setText(pickingPlayer.getName() + ", please pick a question");
         this.setVisible(true);
     }//GEN-LAST:event_formWindowActivated
 
@@ -174,7 +168,7 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
         int categoryIndex = ((QuestionButton)evt.getSource()).categoryIndex;
         int questionIndex = ((QuestionButton)evt.getSource()).questionIndex;
         
-        if(this.theQuestionManager.isDoubleJeopardy(categoryIndex, questionIndex))
+        if(this.gameCore.isDoubleJeopardy(categoryIndex, questionIndex))
             showDoubleWindow(categoryIndex, questionIndex);
         else
             showQuestionWindow(categoryIndex, questionIndex);

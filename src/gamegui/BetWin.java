@@ -7,9 +7,6 @@ package gamegui;
 
 import gamecontroller.*;
 import exception.*;
-import java.awt.Component;
-import java.awt.Container;
-import javax.swing.JTextField;
 /**
  *
  * @author student
@@ -24,8 +21,6 @@ public class BetWin extends javax.swing.JFrame {
     private final int questionIndex;
     private final JeopardyGame gameCore;
     private final MainWin theMainWindow;
-    private final PlayerManager thePlayerManager;
-    private final QuestionManager theQuestionManager;
     private final int totalCredits;
     
     public BetWin(int categoryIndex, int questionIndex, JeopardyGame gameCore, MainWin theMainWindow) {
@@ -34,15 +29,13 @@ public class BetWin extends javax.swing.JFrame {
         this.questionIndex = questionIndex;
         this.gameCore = gameCore;
         this.theMainWindow = theMainWindow;
-        this.thePlayerManager = gameCore.getPlayerManager();
-        this.theQuestionManager = gameCore.getQuestionManager();
-        int answeringPlayerIndex = this.thePlayerManager.getAnsweringPlayerIndex();
-        totalCredits = this.thePlayerManager.getPlayerCredits(answeringPlayerIndex);
+        int answeringPlayerIndex = this.gameCore.getAnsweringPlayerIndex();
+        totalCredits = this.gameCore.getPlayer(answeringPlayerIndex).getCredits();
         this.creditsTextField.setText(Integer.toString(totalCredits));
         this.creditSlider.setMaximum(totalCredits);
         this.creditSlider.setValue(totalCredits);
         this.creditsTextField.selectAll();
-        this.nameLabel.setText(this.thePlayerManager.getPlayerName(answeringPlayerIndex) + ", please specify the amount.");
+        this.nameLabel.setText(this.gameCore.getPlayer(answeringPlayerIndex).getName() + ", please specify the amount.");
         JeopardyColors.setComponentColor(this.rootPane);
     }
 
@@ -144,7 +137,7 @@ public class BetWin extends javax.swing.JFrame {
         // TODO add your handling code here:
         try{
             int newMark = 2 * getCredits();
-            this.theQuestionManager.setWeight(categoryIndex, questionIndex, newMark);
+            this.gameCore.setWeight(categoryIndex, questionIndex, newMark);
             new QuestionWin(this.categoryIndex, this.questionIndex, gameCore, this.theMainWindow, true).setVisible(true);
             this.dispose();
         }

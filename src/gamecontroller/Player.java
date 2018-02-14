@@ -4,18 +4,48 @@
  * and open the template in the editor.
  */
 package gamecontroller;
-
 /**
  *
  * @author student
  */
-public class Player {
-    public final String name;
-    public final int mark;
+public class Player implements Comparable{
+    private String name;
+    private int credits;
+    private char key;
     
-    public Player(String name, int mark){
+    public Player(String name, char key, int credits){
         this.name = name;
-        this.mark = mark;
+        this.credits = credits;
+        this.key = key;
     }
     
+    public void setCredits(int credits){
+        this.credits = credits;
+    }
+    
+    public int getCredits(){
+        return credits;
+    }
+    
+    public void setName(String name){
+        this.name = name;
+    }
+    
+    public String getName(){
+        return this.name;
+    }
+    
+    public void setKey(char key){
+        this.key = key;
+    }
+    
+    public char getKey(){
+        return this.key;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Player anotherPlayer = (Player)o;
+        return this.getCredits() > anotherPlayer.getCredits() ? 1 : -1;
+    }
 }

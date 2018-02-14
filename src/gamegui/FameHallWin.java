@@ -216,11 +216,11 @@ public class FameHallWin extends javax.swing.JFrame {
     }
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
-        Iterator<Player> playerIterator = gameCore.getPlayerManager().getOrderedPlayers().iterator();
+        Iterator<Player> playerIterator = gameCore.getOrderedPlayers(true).iterator();
         
         for(int index = 0; index < 5 && playerIterator.hasNext(); index++){
             Player thePlayer = playerIterator.next();
-            String displayString = thePlayer.name + " " + thePlayer.mark; 
+            String displayString = thePlayer.getName() + " " + thePlayer.getCredits(); 
             nameLabels[index].setText(displayString);
         }
     }//GEN-LAST:event_formWindowActivated

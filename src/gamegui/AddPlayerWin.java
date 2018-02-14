@@ -7,8 +7,7 @@ package gamegui;
 
 import java.awt.Color;
 import exception.*;
-import gamecontroller.JeopardyGame;
-import gamecontroller.PlayerManager;
+import gamecontroller.*;
 import java.util.Observer;
 import java.util.Observable;
 import java.io.*;
@@ -31,7 +30,6 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     private final JeopardyGame gameCore;
     private final String defaultKeyLabelText = "[Click here to set key]";
     private final Color defaultKeyLabelColor = Color.GRAY;
-    private final PlayerManager thePlayerManager;
     
     
     public AddPlayerWin(JeopardyGame gameCore) {
@@ -42,10 +40,9 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         warningMessagePrefix = "Can't start game: ";
         presentKey = 0;
         this.gameCore = gameCore;
-        this.thePlayerManager = gameCore.getPlayerManager();
-        this.thePlayerManager.addObserver(this);
+        this.gameCore.addObserver(this);
         JeopardyColors.setComponentColor(this.rootPane);
-        this.setTitle(titleMessagePrefix + thePlayerManager.getNumOfCurrentPlayers());
+        this.setTitle(titleMessagePrefix + gameCore.getNumOfCurrentPlayers());
         this.resetNameTextField();
         this.resetKeyLabel();
     }
@@ -56,7 +53,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
             new FameHallWin(this.gameCore).setVisible(true);
         }
         
-        this.thePlayerManager.deleteObserver(this);
+        this.gameCore.deleteObserver(this);
         super.dispose();
     }
     /**
@@ -271,11 +268,11 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     private boolean addNewPlayer(){
         boolean res = false;
         try{
-            if(currentIndex == this.thePlayerManager.getNumOfCurrentPlayers() - 1)
-                thePlayerManager.addNewPlayer(this.nameTextField.getText(), presentKey);
+            if(currentIndex == this.gameCore.getNumOfCurrentPlayers() - 1)
+                gameCore.addNewPlayer(this.nameTextField.getText(), presentKey);
                 
             else
-                thePlayerManager.modifyPlayer(currentIndex + 1, this.nameTextField.getText(), presentKey);
+                gameCore.modifyPlayer(currentIndex + 1, this.nameTextField.getText(), presentKey);
             
             currentIndex++;
             res = true;
@@ -307,7 +304,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         // TODO add your handling code here:
         if(addNewPlayer()){
-            if(currentIndex != this.thePlayerManager.getNumOfCurrentPlayers() - 1)
+            if(currentIndex != this.gameCore.getNumOfCurrentPlayers() - 1)
                 displayPlayer(currentIndex + 1);
             else{
                 this.resetKeyLabel();
@@ -329,16 +326,17 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     }//GEN-LAST:event_formFocusLost
 
     private void displayPlayer(int index){
-        this.presentKey = thePlayerManager.getPlayerKey(index);
+        Player player = this.gameCore.getPlayer(index);
+        this.presentKey = player.getKey();
         this.setKeyLabel.setText(Character.toString(presentKey));
         this.nameTextField.setForeground(Color.GRAY);
-        String presentName = thePlayerManager.getPlayerName(index);
+        String presentName = player.getName();
         this.nameTextField.setText(presentName);
     }
     
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
         // TODO add your handling code here:        
-        if(this.thePlayerManager.getNumOfCurrentPlayers() > 0)
+        if(gameCore.getNumOfCurrentPlayers() > 0)
             if(currentIndex >= 0)
                 displayPlayer(currentIndex--);
             else

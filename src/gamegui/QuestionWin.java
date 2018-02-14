@@ -5,9 +5,7 @@
  */
 package gamegui;
 
-import gamecontroller.QuestionManager;
-import gamecontroller.JeopardyGame;
-import gamecontroller.PlayerManager;
+import gamecontroller.*;
 import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -21,8 +19,6 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     /**
      * Creates new form QuestionWin
      */
-    private final QuestionManager theQuestionManager;
-    private final PlayerManager thePlayerManager;
     private final MainWin theMainWindow;
     private final String answer;
     private final int weight;
@@ -33,13 +29,13 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private int timeRemaining;
     private boolean ignoreInput;
     private boolean isShowingAnswer;
+    private JeopardyGame gameCore;
     
     public QuestionWin(int categoryIndex, int questionIndex, JeopardyGame gameCore, MainWin theMainWindow, boolean isDoubleJeopardy) {
         initComponents();
-        theQuestionManager = gameCore.getQuestionManager();
-        thePlayerManager = gameCore.getPlayerManager();
-        thePlayerManager.clearForbiddenPlayers();
+        gameCore.clearForbiddenPlayers();
         this.theMainWindow = theMainWindow;
+        this.gameCore = gameCore;
         this.qaTextArea.setText(theQuestionManager.getQuestion(categoryIndex, questionIndex));
         this.answer = this.theQuestionManager.getAnswer(categoryIndex, questionIndex);
         this.weight = theQuestionManager.getWeight(categoryIndex, questionIndex);
@@ -208,14 +204,14 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     }
     
     private void showMainWindow(){
-        this.thePlayerManager.clearForbiddenPlayers();
+        this.gameCore.clearForbiddenPlayers();
         theMainWindow.setVisible(true);
         this.dispose();
     }
     private void rightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightButtonActionPerformed
         // TODO add your handling code here:
         this.answerTimer.stop();
-        this.thePlayerManager.changeCredit(weight);
+        this.gameCore.changeCredit(weight);
         this.showAnswer();
     }//GEN-LAST:event_rightButtonActionPerformed
 
@@ -226,8 +222,8 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.timeLabel.setText(Integer.toString(this.timeRemaining));
         this.rightButton.setVisible(true);
         this.wrongButton.setVisible(true);
-        int answeringPlayerIndex = thePlayerManager.getAnsweringPlayerIndex();
-        this.answeringName.setText(answeringPlayerIndex == -1 ? "Unknown player" : this.thePlayerManager.getPlayerName(answeringPlayerIndex));
+        int answeringPlayerIndex = gameCore.getAnsweringPlayerIndex();
+        this.answeringName.setText(answeringPlayerIndex == -1 ? "Unknown player" : this.gameCore.getPlayer(answeringPlayerIndex).getName());
         this.answerTimer.start();
     }
     
@@ -243,7 +239,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
         // TODO add your handling code here:
-        if(!this.isShowingAnswer && !ignoreInput && thePlayerManager.setAnsweringPlayer(evt.getKeyChar()))
+        if(!this.isShowingAnswer && !ignoreInput && this.gameCore.setAnsweringPlayer(evt.getKeyChar()))
             startToAnswer();
     }//GEN-LAST:event_formKeyTyped
   
@@ -251,8 +247,8 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         // TODO add your handling code here:
         this.answerTimer.stop();
 
-        this.thePlayerManager.changeCredit(-weight);
-        if(thePlayerManager.numberOfAllowablePlayers() == 0){
+        this.gameCore.changeCredit(-weight);
+        if(this.gameCore.numberOfAllowablePlayers() == 0){
             this.answeringName.setText("Sorry, all players are wrong");
             this.showAnswer();
         }

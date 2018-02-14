@@ -23,6 +23,5 @@ public class CategoryPanel extends Panel{
         categoryButton.setText(categoryString);
         categoryButton.setEnabled(false);
         this.add(categoryButton);
-    }
-    
+    } 
 }
