@@ -29,16 +29,16 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private int timeRemaining;
     private boolean ignoreInput;
     private boolean isShowingAnswer;
-    private JeopardyGame gameCore;
+    private final JeopardyGame gameCore;
     
     public QuestionWin(int categoryIndex, int questionIndex, JeopardyGame gameCore, MainWin theMainWindow, boolean isDoubleJeopardy) {
         initComponents();
         gameCore.clearForbiddenPlayers();
         this.theMainWindow = theMainWindow;
         this.gameCore = gameCore;
-        this.qaTextArea.setText(theQuestionManager.getQuestion(categoryIndex, questionIndex));
-        this.answer = this.theQuestionManager.getAnswer(categoryIndex, questionIndex);
-        this.weight = theQuestionManager.getWeight(categoryIndex, questionIndex);
+        this.qaTextArea.setText(gameCore.getQuestion(categoryIndex, questionIndex));
+        this.answer = this.gameCore.getAnswer(categoryIndex, questionIndex);
+        this.weight = gameCore.getWeight(categoryIndex, questionIndex);
         this.answerTimer = new Timer(1000, this);
         this.waitTimer = new Timer(1000, new WaitTimerListener(this));
         isShowingAnswer = false;

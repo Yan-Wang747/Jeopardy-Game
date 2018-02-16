@@ -53,7 +53,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
             new FameHallWin(this.gameCore).setVisible(true);
         }
         
-        this.gameCore.deleteObserver(this);
+        this.gameCore.deleteObservers();
         super.dispose();
     }
     /**

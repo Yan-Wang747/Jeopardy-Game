@@ -238,6 +238,7 @@ class PlayerManager extends Observable{
             res = (ArrayList<Player>)this.players.clone();
          
         res.sort(null);
+        Collections.reverse(res);
         
         return res;
     }
@@ -265,7 +266,7 @@ class PlayerManager extends Observable{
 }
 
 
-public class JeopardyGame extends Observable {
+public class JeopardyGame extends Observable{
     private final QuestionManager theQuestionManager;
     private final PlayerManager thePlayerManager;
     private boolean isStarted;
@@ -352,6 +353,22 @@ public class JeopardyGame extends Observable {
         this.theQuestionManager.setWeight(categoryIndex, questionIndex, newWeight);
     }
     
+    public String getQuestion(int categoryIndex, int questionIndex){
+        return this.theQuestionManager.getQuestion(categoryIndex, questionIndex);
+    }
+    
+    public String getAnswer(int categoryIndex, int questionIndex){
+        return this.theQuestionManager.getAnswer(categoryIndex, questionIndex);
+    }
+    
+    public int getNumberOfCategories(){
+        return this.theQuestionManager.getNumberOfCategories();
+    }
+    
+    public int getNumberOfQuestions(int categoryIndex){
+        return this.theQuestionManager.getNumberOfQuestions(categoryIndex);
+    }
+    
     public void clearForbiddenPlayers(){
         this.thePlayerManager.clearForbiddenPlayers();
     }
@@ -363,5 +380,4 @@ public class JeopardyGame extends Observable {
     public void changeCredit(int offset){
         this.thePlayerManager.changeCredit(offset);
     }
-    
 }

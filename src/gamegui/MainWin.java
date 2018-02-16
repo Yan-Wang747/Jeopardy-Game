@@ -16,7 +16,7 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
 
-public class MainWin extends javax.swing.JFrame implements  Observer {
+public class MainWin extends javax.swing.JFrame{
 
     /**
      * Creates new form GameGUI
@@ -26,29 +26,21 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
     public MainWin(JeopardyGame gameCore) {
         initComponents();
         this.gameCore = gameCore;
-        this.gameCore.addObserver(this);
-        this.markPanel.setPreferredSize(new Dimension(1871, 124));
+        this.creditPanel.setPreferredSize(new Dimension(1871, 124));
         initButtonArray();
         JeopardyColors.setComponentColor(this.rootPane);
-        putPlayers();
-    }
-    
-    @Override
-    public void update(Observable o, Object arg){
-        this.markPanel.removeAll();
-        this.markPanel.repaint();
-        putPlayers();
     }
     
     private void putPlayers(){
         ArrayList<Player> players = this.gameCore.getOrderedPlayers(false);
         int fontSize = (int)(80 - 60.0 / 24 * (this.gameCore.getNumOfCurrentPlayers() - 2));
+        this.creditPanel.removeAll();
         for(Player player : players){
             JLabel playerLabel = new JLabel();
             playerLabel.setForeground(JeopardyColors.FONT);
             playerLabel.setText(player.getName() + ": " + player.getCredits());
             playerLabel.setFont(new java.awt.Font("Lucida Grande", 0, fontSize)); 
-            this.markPanel.add(playerLabel);
+            this.creditPanel.add(playerLabel);
         }
     }
     
@@ -65,13 +57,11 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
     }
     
     private void initButtonArray(){
-        JPanel allQuestionPanel = new JPanel();
-        allQuestionPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER));
-        for(int categoryIndex = 0; categoryIndex < this.theQuestionManager.getNumberOfCategories(); categoryIndex++){
-            CategoryPanel newPanel = new CategoryPanel(this.theQuestionManager.getCategory(categoryIndex));
-            for(int questionIndex = 0; questionIndex < this.theQuestionManager.getNumberOfQuestions(categoryIndex); questionIndex++){
+        for(int categoryIndex = 0; categoryIndex < this.gameCore.getNumberOfCategories(); categoryIndex++){
+            CategoryPanel newPanel = new CategoryPanel(this.gameCore.getCategory(categoryIndex));
+            for(int questionIndex = 0; questionIndex < this.gameCore.getNumberOfQuestions(categoryIndex); questionIndex++){
                 QuestionButton newQuestionButton = new QuestionButton(categoryIndex, questionIndex);
-                newQuestionButton.setText(Integer.toString(this.theQuestionManager.getWeight(categoryIndex, questionIndex)));
+                newQuestionButton.setText(Integer.toString(this.gameCore.getWeight(categoryIndex, questionIndex)));
                 
                 newQuestionButton.addActionListener(new java.awt.event.ActionListener() {
                     @Override
@@ -100,8 +90,9 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
 
         pickingPlayerName = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
+        allQuestionPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        markPanel = new javax.swing.JPanel();
+        creditPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
@@ -118,11 +109,12 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
         pickingPlayerName.setText("Name");
 
         jScrollPane2.setBorder(null);
+        jScrollPane2.setViewportView(allQuestionPanel);
 
         jScrollPane1.setBorder(null);
 
-        markPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 50, 5));
-        jScrollPane1.setViewportView(markPanel);
+        creditPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 50, 5));
+        jScrollPane1.setViewportView(creditPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -156,6 +148,7 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
         //this.setExtendedState(Frame.MAXIMIZED_BOTH);
         Player pickingPlayer = gameCore.getPlayer(gameCore.getAnsweringPlayerIndex());
         this.pickingPlayerName.setText(pickingPlayer.getName() + ", please pick a question");
+        this.putPlayers();
         this.setVisible(true);
     }//GEN-LAST:event_formWindowActivated
 
@@ -178,9 +171,10 @@ public class MainWin extends javax.swing.JFrame implements  Observer {
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel allQuestionPanel;
+    private javax.swing.JPanel creditPanel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JPanel markPanel;
     private javax.swing.JLabel pickingPlayerName;
     // End of variables declaration//GEN-END:variables
 }
