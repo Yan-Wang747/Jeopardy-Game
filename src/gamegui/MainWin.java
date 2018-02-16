@@ -12,8 +12,6 @@ package gamegui;
 import gamecontroller.*;
 import java.awt.Dimension;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 import javax.swing.*;
 
 public class MainWin extends javax.swing.JFrame{
@@ -63,12 +61,9 @@ public class MainWin extends javax.swing.JFrame{
                 QuestionButton newQuestionButton = new QuestionButton(categoryIndex, questionIndex);
                 newQuestionButton.setText(Integer.toString(this.gameCore.getWeight(categoryIndex, questionIndex)));
                 
-                newQuestionButton.addActionListener(new java.awt.event.ActionListener() {
-                    @Override
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        ((JButton)evt.getSource()).setEnabled(false);
-                        questionButtonAction(evt);
-                    }
+                newQuestionButton.addActionListener((java.awt.event.ActionEvent evt) -> {
+                    ((JButton)evt.getSource()).setEnabled(false);
+                    questionButtonAction(evt);
                 });
                 
                 newPanel.add(newQuestionButton);
