@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jeopardygame.model;
+package jeopardygame.exception;
 
 /**
  *
  * @author student
  */
-public class JeopardyConstants {
-    public static int INITIAL_CREDITS = 1000;
-    public static int NOT_FOUND = -1;
+public class CreditRangeException extends Exception {
+    public CreditRangeException(){
+        super("Amount has to be larger than 0 and less than total Credits");
+    }
 }

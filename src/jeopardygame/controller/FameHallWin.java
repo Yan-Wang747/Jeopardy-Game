@@ -5,7 +5,7 @@
  */
 package jeopardygame.controller;
 
-import jeopardygame.model.JeopardyColors;
+import jeopardygame.constant.JeopardyColors;
 import jeopardygame.model.JeopardyGame;
 import jeopardygame.model.Player;
 import java.awt.Component;

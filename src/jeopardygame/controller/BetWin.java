@@ -5,9 +5,9 @@
  */
 package jeopardygame.controller;
 
-import jeopardygame.model.JeopardyColors;
+import jeopardygame.exception.CreditRangeException;
+import jeopardygame.constant.JeopardyColors;
 import jeopardygame.model.JeopardyGame;
-import exception.*;
 /**
  *
  * @author student

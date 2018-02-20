@@ -5,11 +5,15 @@
  */
 package jeopardygame.controller;
 
-import jeopardygame.model.JeopardyColors;
+import jeopardygame.exception.DuplicateNameException;
+import jeopardygame.exception.NotEnoughPlayersException;
+import jeopardygame.exception.EmptyPlayerNameException;
+import jeopardygame.exception.EmptyPlayerKeyException;
+import jeopardygame.exception.DuplicateKeyException;
+import jeopardygame.constant.JeopardyColors;
 import jeopardygame.model.JeopardyGame;
 import jeopardygame.model.Player;
 import java.awt.Color;
-import exception.*;
 import java.util.Observer;
 import java.util.Observable;
 import java.io.*;

@@ -10,7 +10,7 @@ package jeopardygame.controller;
  * @author iqapp
  */
 import jeopardygame.view.QuestionButton;
-import jeopardygame.model.JeopardyColors;
+import jeopardygame.constant.JeopardyColors;
 import jeopardygame.view.CategoryPanel;
 import jeopardygame.model.JeopardyGame;
 import jeopardygame.model.Player;

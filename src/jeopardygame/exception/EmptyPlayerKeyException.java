@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package exception;
+package jeopardygame.exception;
 
 /**
  *
  * @author student
  */
-public class NotEnoughPlayersException extends Exception {
-    public NotEnoughPlayersException(){
-        super("Not enough players");
+public class EmptyPlayerKeyException extends Exception {
+    public EmptyPlayerKeyException(){
+        super("Empty player key");
     }
 }

@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package exception;
+package jeopardygame.exception;
 
 /**
  *
  * @author student
  */
-public class EmptyPlayerNameException extends Exception {
-    public EmptyPlayerNameException(){
-        super("Empty player name");
+public class DuplicateKeyException extends Exception {
+    public DuplicateKeyException(){
+        super("Key already exists");
     }
 }

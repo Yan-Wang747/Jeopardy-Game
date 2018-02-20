@@ -10,7 +10,12 @@ package jeopardygame.model;
  *
  * @author iqapp
  */
-import exception.*;
+import jeopardygame.constant.JeopardyConstants;
+import jeopardygame.exception.DuplicateNameException;
+import jeopardygame.exception.NotEnoughPlayersException;
+import jeopardygame.exception.EmptyPlayerNameException;
+import jeopardygame.exception.EmptyPlayerKeyException;
+import jeopardygame.exception.DuplicateKeyException;
 import java.io.*;
 import java.util.*;
 
