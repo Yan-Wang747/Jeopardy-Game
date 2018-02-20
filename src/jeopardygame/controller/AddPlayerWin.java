@@ -10,7 +10,7 @@ import jeopardygame.exception.NotEnoughPlayersException;
 import jeopardygame.exception.EmptyPlayerNameException;
 import jeopardygame.exception.EmptyPlayerKeyException;
 import jeopardygame.exception.DuplicateKeyException;
-import jeopardygame.constant.JeopardyColors;
+import jeopardygame.visualeffect.JeopardyColors;
 import jeopardygame.model.JeopardyGame;
 import jeopardygame.model.Player;
 import java.awt.Color;

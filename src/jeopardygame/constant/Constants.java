@@ -9,7 +9,7 @@ package jeopardygame.constant;
  *
  * @author student
  */
-public class JeopardyConstants {
+public class Constants {
     public static int INITIAL_CREDITS = 1000;
     public static int NOT_FOUND = -1;
 }

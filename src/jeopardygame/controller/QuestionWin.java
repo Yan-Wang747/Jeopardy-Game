@@ -5,7 +5,7 @@
  */
 package jeopardygame.controller;
 
-import jeopardygame.constant.JeopardyColors;
+import jeopardygame.visualeffect.JeopardyColors;
 import jeopardygame.model.JeopardyGame;
 import javax.swing.Timer;
 import java.awt.event.ActionListener;

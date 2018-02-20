@@ -10,7 +10,7 @@ package jeopardygame.model;
  *
  * @author iqapp
  */
-import jeopardygame.constant.JeopardyConstants;
+import jeopardygame.constant.Constants;
 import jeopardygame.exception.DuplicateNameException;
 import jeopardygame.exception.NotEnoughPlayersException;
 import jeopardygame.exception.EmptyPlayerNameException;
@@ -128,7 +128,7 @@ class PlayerManager extends Observable{
     public void end() {
         players.forEach((player) -> {
             int loc = this.containsName(this.allPlayers, player.getName());
-            if(loc != JeopardyConstants.NOT_FOUND){
+            if(loc != Constants.NOT_FOUND){
                 if(this.allPlayers.get(loc).getCredits() < player.getCredits())
                     this.allPlayers.get(loc).setCredits(player.getCredits());
             }else
@@ -164,18 +164,18 @@ class PlayerManager extends Observable{
         if(key == 0)
             throw new EmptyPlayerKeyException();
             
-        if(containsName(this.players, name) != JeopardyConstants.NOT_FOUND)
+        if(containsName(this.players, name) != Constants.NOT_FOUND)
             throw new DuplicateNameException();
 
         
-        if(containsKey(this.players, key) != JeopardyConstants.NOT_FOUND)
+        if(containsKey(this.players, key) != Constants.NOT_FOUND)
             throw new DuplicateKeyException();
         
     }
     
     private int containsName(ArrayList<Player> playerList, String name){
-        int res = JeopardyConstants.NOT_FOUND;
-        for(int i = 0; i < playerList.size() && res == JeopardyConstants.NOT_FOUND; i++)
+        int res = Constants.NOT_FOUND;
+        for(int i = 0; i < playerList.size() && res == Constants.NOT_FOUND; i++)
             if(playerList.get(i).getName().toLowerCase().equals(name.toLowerCase()))
                 res = i;
  
@@ -184,8 +184,8 @@ class PlayerManager extends Observable{
     }
     
     private int containsKey(ArrayList<Player> playerList, char key){
-        int res = JeopardyConstants.NOT_FOUND;
-        for(int i = 0; i < playerList.size() && res == JeopardyConstants.NOT_FOUND; i++)
+        int res = Constants.NOT_FOUND;
+        for(int i = 0; i < playerList.size() && res == Constants.NOT_FOUND; i++)
             if(playerList.get(i).getKey() == key)
                 res = i;
  
@@ -196,7 +196,7 @@ class PlayerManager extends Observable{
     public void addNewPlayer(String name, char key) throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException, EmptyPlayerKeyException{
         validatePlayer(name, key);
         
-        Player newPlayer = new Player(name, key, JeopardyConstants.INITIAL_CREDITS);
+        Player newPlayer = new Player(name, key, Constants.INITIAL_CREDITS);
         players.add(newPlayer);
         
         this.setChanged();

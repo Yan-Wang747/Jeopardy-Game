@@ -6,7 +6,7 @@
 package jeopardygame.controller;
 
 import jeopardygame.exception.CreditRangeException;
-import jeopardygame.constant.JeopardyColors;
+import jeopardygame.visualeffect.JeopardyColors;
 import jeopardygame.model.JeopardyGame;
 /**
  *
