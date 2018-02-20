@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gamegui;
+package jeopardygame.controller;
 
-import gamecontroller.*;
+import jeopardygame.model.JeopardyColors;
+import jeopardygame.model.JeopardyGame;
 import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

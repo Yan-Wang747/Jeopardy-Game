@@ -3,13 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gamegui;
+package jeopardygame.controller;
 
 /**
  *
  * @author iqapp
  */
-import gamecontroller.*;
+import jeopardygame.view.QuestionButton;
+import jeopardygame.model.JeopardyColors;
+import jeopardygame.view.CategoryPanel;
+import jeopardygame.model.JeopardyGame;
+import jeopardygame.model.Player;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -91,7 +95,6 @@ public class MainWin extends javax.swing.JFrame{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
-        setPreferredSize(new java.awt.Dimension(1920, 1080));
         setSize(new java.awt.Dimension(1920, 1080));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {

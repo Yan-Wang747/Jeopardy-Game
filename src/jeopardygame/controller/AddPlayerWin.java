@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gamegui;
+package jeopardygame.controller;
 
+import jeopardygame.model.JeopardyColors;
+import jeopardygame.model.JeopardyGame;
+import jeopardygame.model.Player;
 import java.awt.Color;
 import exception.*;
-import gamecontroller.*;
 import java.util.Observer;
 import java.util.Observable;
 import java.io.*;
