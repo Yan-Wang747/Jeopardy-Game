@@ -10,7 +10,10 @@ package jeopardygame.exception;
  * @author student
  */
 public class DuplicateNameException extends Exception {
-    public DuplicateNameException(){
+    public final int playerIndex;
+            
+    public DuplicateNameException(int playerIndex){
         super("Name already exists");
+        this.playerIndex = playerIndex;
     }
 }

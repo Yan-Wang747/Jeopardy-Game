@@ -59,11 +59,11 @@ public class MainWin extends javax.swing.JFrame{
     }
     
     private void initButtonArray(){
-        for(int categoryIndex = 0; categoryIndex < this.gameCore.getNumberOfCategories(); categoryIndex++){
-            CategoryPanel newPanel = new CategoryPanel(this.gameCore.getCategory(categoryIndex));
-            for(int questionIndex = 0; questionIndex < this.gameCore.getNumberOfQuestions(categoryIndex); questionIndex++){
+        for(int categoryIndex = 0; categoryIndex < this.gameCore.getNumOfCategories(); categoryIndex++){
+            CategoryPanel newPanel = new CategoryPanel(this.gameCore.getCategory(categoryIndex).getCategoryText());
+            for(int questionIndex = 0; questionIndex < this.gameCore.getNumOfQuestions(categoryIndex); questionIndex++){
                 QuestionButton newQuestionButton = new QuestionButton(categoryIndex, questionIndex);
-                newQuestionButton.setText(Integer.toString(this.gameCore.getWeight(categoryIndex, questionIndex)));
+                newQuestionButton.setText(Integer.toString(this.gameCore.getQuestion(categoryIndex, questionIndex).getCredits()));
                 
                 newQuestionButton.addActionListener((java.awt.event.ActionEvent evt) -> {
                     ((JButton)evt.getSource()).setEnabled(false);

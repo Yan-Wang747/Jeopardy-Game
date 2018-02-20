@@ -12,11 +12,13 @@ public class Player implements Comparable{
     private String name;
     private int credits;
     private char key;
+    public final int playerIndex;
     
-    public Player(String name, char key, int credits){
+    public Player(String name, char key, int credits, int playerIndex){
         this.name = name;
         this.credits = credits;
         this.key = key;
+        this.playerIndex = playerIndex;
     }
     
     public void setCredits(int credits){

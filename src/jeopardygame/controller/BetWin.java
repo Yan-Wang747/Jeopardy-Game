@@ -137,8 +137,8 @@ public class BetWin extends javax.swing.JFrame {
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         // TODO add your handling code here:
         try{
-            int newMark = 2 * getCredits();
-            this.gameCore.setWeight(categoryIndex, questionIndex, newMark);
+            int newCredits = getCredits();
+            this.gameCore.setCredits(categoryIndex, questionIndex, newCredits);
             new QuestionWin(this.categoryIndex, this.questionIndex, gameCore, this.theMainWindow, true).setVisible(true);
             this.dispose();
         }

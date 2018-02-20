@@ -10,7 +10,7 @@ package jeopardygame.model;
  *
  * @author iqapp
  */
-import jeopardygame.constant.Constants;
+
 import jeopardygame.exception.DuplicateNameException;
 import jeopardygame.exception.NotEnoughPlayersException;
 import jeopardygame.exception.EmptyPlayerNameException;
@@ -18,261 +18,10 @@ import jeopardygame.exception.EmptyPlayerKeyException;
 import jeopardygame.exception.DuplicateKeyException;
 import java.io.*;
 import java.util.*;
-
-class QuestionManager{
-    private ArrayList<String> categories;
-    private final ArrayList<ArrayList<String>> questions;
-    private final ArrayList<ArrayList<Integer>> weights;
-    private final ArrayList<ArrayList<String>> answers;
-    private final ArrayList<Integer> doubleCategoryIndex;
-    private final ArrayList<Integer> doubleQuestionIndex;
-    
-    public QuestionManager(){
-        categories = new ArrayList();
-        weights = new ArrayList();
-        questions = new ArrayList();
-        answers = new ArrayList();
-        doubleCategoryIndex = new ArrayList();
-        doubleQuestionIndex = new ArrayList();
-    }
-
-    public void start(String filename) throws FileNotFoundException, IOException{
-        QuestionReader gameReader = new QuestionReader(filename);
-        categories = gameReader.readCategories();
-        
-        for(int i = 0; i < categories.size(); i++){
-            questions.add(gameReader.readQAs(categories.get(i), 'q'));
-            answers.add(gameReader.readQAs(categories.get(i), 'a'));
-            
-            weights.add(new ArrayList());
-            
-            int j = 0;
-
-            for(; j < questions.get(i).size(); j++){
-                Scanner weightScanner = new Scanner(questions.get(i).get(j));
-                weights.get(i).add(weightScanner.nextInt());
-                questions.get(i).set(j, weightScanner.nextLine()); 
-            }
-        }
-        
-        Random rnd = new Random();
-        doubleCategoryIndex.add(rnd.nextInt(categories.size()));
-        doubleCategoryIndex.add(rnd.nextInt(categories.size()));
-        doubleQuestionIndex.add(rnd.nextInt(questions.get(doubleCategoryIndex.get(0)).size()));
-        doubleQuestionIndex.add(rnd.nextInt(questions.get(doubleCategoryIndex.get(1)).size()));
-    }
-    
-    public void end(){
-        categories.clear();
-        questions.clear();
-        weights.clear();
-        answers.clear();
-        doubleCategoryIndex.clear();
-        doubleQuestionIndex.clear();
-    }
-    
-    public String getCategory(int index){
-        return categories.get(index);
-    }
-    
-    public int getWeight(int categoryIndex, int questionIndex){
-        return weights.get(categoryIndex).get(questionIndex);
-    }
-    
-    public void setWeight(int categoryIndex, int questionIndex, int newWeight){
-        this.weights.get(categoryIndex).set(questionIndex, newWeight);
-    }
-    
-    public String getQuestion(int categoryIndex, int questionIndex){
-        return questions.get(categoryIndex).get(questionIndex);
-    }
-    
-    public String getAnswer(int categoryIndex, int questionIndex){
-        return answers.get(categoryIndex).get(questionIndex);
-    }
-    
-    public int getNumberOfCategories(){
-        return categories.size();
-    }
-    
-    public int getNumberOfQuestions(int categoryIndex){
-        return this.questions.get(categoryIndex).size();
-    }
-    
-    public boolean isDoubleJeopardy(int categoryIndex, int questionIndex){
-        return doubleCategoryIndex.contains(categoryIndex) && doubleQuestionIndex.contains(questionIndex);
-    }
-}
-
-class PlayerManager extends Observable{
-    private final ArrayList<Player> allPlayers;
-    private final ArrayList<Player> players;
-    private int answeringPlayerIndex;
-    private final ArrayList<Character> forbiddenKeys;
-    
-    public PlayerManager(){
-        allPlayers = new ArrayList();
-        players = new ArrayList();
-        forbiddenKeys = new ArrayList<>();
-    }
-    
-    public void start() throws NotEnoughPlayersException{
-        if(players.size() <= 1){
-            throw new NotEnoughPlayersException();
-        }
-        
-        Random rnd = new Random();
-        this.answeringPlayerIndex = rnd.nextInt(players.size());
-    }
-    
-    public void end() {
-        players.forEach((player) -> {
-            int loc = this.containsName(this.allPlayers, player.getName());
-            if(loc != Constants.NOT_FOUND){
-                if(this.allPlayers.get(loc).getCredits() < player.getCredits())
-                    this.allPlayers.get(loc).setCredits(player.getCredits());
-            }else
-                this.allPlayers.add(player);
-                
-        });
-        
-        players.clear();
-        this.deleteObservers();
-    }
-    
-    public boolean setAnsweringPlayer(char key){
-        boolean found = false;
-        for(int i = 0; i < players.size() && !found; i++){
-            if(players.get(i).getKey() == key){
-                this.answeringPlayerIndex = i;
-                found = true;
-            }
-        }
-        
-        return found;
-    }
-    
-    public int getAnsweringPlayerIndex(){
-        return this.answeringPlayerIndex;
-    }
-    
-    private void validatePlayer(String name, char key) throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException, EmptyPlayerKeyException{
-        
-        if(name.length() == 0)
-            throw new EmptyPlayerNameException();
-        
-        if(key == 0)
-            throw new EmptyPlayerKeyException();
-            
-        if(containsName(this.players, name) != Constants.NOT_FOUND)
-            throw new DuplicateNameException();
-
-        
-        if(containsKey(this.players, key) != Constants.NOT_FOUND)
-            throw new DuplicateKeyException();
-        
-    }
-    
-    private int containsName(ArrayList<Player> playerList, String name){
-        int res = Constants.NOT_FOUND;
-        for(int i = 0; i < playerList.size() && res == Constants.NOT_FOUND; i++)
-            if(playerList.get(i).getName().toLowerCase().equals(name.toLowerCase()))
-                res = i;
- 
-        
-        return res;
-    }
-    
-    private int containsKey(ArrayList<Player> playerList, char key){
-        int res = Constants.NOT_FOUND;
-        for(int i = 0; i < playerList.size() && res == Constants.NOT_FOUND; i++)
-            if(playerList.get(i).getKey() == key)
-                res = i;
- 
-        
-        return res;
-    }
-    
-    public void addNewPlayer(String name, char key) throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException, EmptyPlayerKeyException{
-        validatePlayer(name, key);
-        
-        Player newPlayer = new Player(name, key, Constants.INITIAL_CREDITS);
-        players.add(newPlayer);
-        
-        this.setChanged();
-        this.notifyObservers(this.getNumOfCurrentPlayers());
-    }
-    
-    public int getNumOfCurrentPlayers(){
-        return players.size();
-    }
-    
-    public void modifyPlayer(int playerIndex, String newName, char newKey) throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException, EmptyPlayerKeyException{
-        Player editingPlayer = this.getPlayer(playerIndex);
-        String oldName = editingPlayer.getName();
-        char oldKey = editingPlayer.getKey();
-        
-        try{            
-            editingPlayer.setName("");
-        
-            editingPlayer.setKey((char)0);
-
-            validatePlayer(newName, newKey);
-
-            editingPlayer.setName(newName);
-            editingPlayer.setKey(newKey);
-        }
-        catch(DuplicateNameException | DuplicateKeyException | EmptyPlayerNameException | EmptyPlayerKeyException e){
-            editingPlayer.setName(oldName);
-            editingPlayer.setKey(oldKey);
-            
-            throw e;
-        }
-        
-    }
-    
-    public Player getPlayer(int playerIndex){
-        return players.get(playerIndex);
-    }
-    
-    public ArrayList<Player> getOrderedPlayers(boolean forAll){
-        ArrayList<Player> res;
-        if(forAll)
-            res = this.allPlayers;
-        else
-            res = (ArrayList<Player>)this.players.clone();
-         
-        res.sort(null);
-        Collections.reverse(res);
-        
-        return res;
-    }
-    
-    public void changeCredit(int offset){
-        if(offset < 0){
-            char key = players.get(this.answeringPlayerIndex).getKey();
-            forbiddenKeys.add(key);
-        }
-        
-        int newCredits = players.get(this.answeringPlayerIndex).getCredits() + offset;
-        players.get(this.answeringPlayerIndex).setCredits(newCredits);
-        
-        this.setChanged();
-        this.notifyObservers();
-    }
-    
-    public void clearForbiddenPlayers(){
-        this.forbiddenKeys.clear();
-    }
-    
-    public int numberOfAllowablePlayers(){
-        return players.size() - forbiddenKeys.size();
-    }
-}
-
+import jeopardygame.sharedmodel.*;
 
 public class JeopardyGame extends Observable{
-    private final QuestionManager theQuestionManager;
+    private QuestionManager theQuestionManager;
     private final PlayerManager thePlayerManager;
     private boolean isStarted;
 
@@ -282,20 +31,16 @@ public class JeopardyGame extends Observable{
         this.isStarted = false;
     }
     
-    public void start(String filename) throws NotEnoughPlayersException, FileNotFoundException, IOException{
-        try{
-            theQuestionManager.start(filename);
-            thePlayerManager.start();
-            this.isStarted = true;
-        }
-        catch(NotEnoughPlayersException e){
-            theQuestionManager.end();
-            throw e;
-        }
+    public void start(String filename) throws ClassNotFoundException, NotEnoughPlayersException, IOException{
+        thePlayerManager.start();
+        QuestionFileReader theQuestionFileReader = new QuestionFileReader(new File(filename));
+        theQuestionManager = theQuestionFileReader.read();
+        theQuestionManager.start();
+        this.isStarted = true;
     }
     
     public void end(){
-        theQuestionManager.end();
+        theQuestionManager = null;
         thePlayerManager.end();
         this.isStarted = false;
     }
@@ -326,12 +71,8 @@ public class JeopardyGame extends Observable{
         return this.thePlayerManager.getNumOfCurrentPlayers();
     }
     
-    public void addNewPlayer(String name, char key) throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException, EmptyPlayerKeyException{
-        this.thePlayerManager.addNewPlayer(name, key);
-    }
-    
-    public void modifyPlayer(int playerIndex, String newName, char newKey) throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException, EmptyPlayerKeyException{
-        this.thePlayerManager.modifyPlayer(playerIndex, newName, newKey);
+    public void addPlayer(Player newPlayer) throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException{
+        this.thePlayerManager.addPlayer(newPlayer);
     }
     
     public Player getPlayer(int playerIndex){
@@ -346,32 +87,20 @@ public class JeopardyGame extends Observable{
         return this.theQuestionManager.isDoubleJeopardy(categoryIndex, questionIndex);
     }
     
-    public String getCategory(int index){
+    public Category getCategory(int index){
         return this.theQuestionManager.getCategory(index);
     }
     
-    public int getWeight(int categoryIndex, int questionIndex){
-        return this.theQuestionManager.getWeight(categoryIndex, questionIndex);
-    }
-    
-    public void setWeight(int categoryIndex, int questionIndex, int newWeight){
-        this.theQuestionManager.setWeight(categoryIndex, questionIndex, newWeight);
-    }
-    
-    public String getQuestion(int categoryIndex, int questionIndex){
+    public Question getQuestion(int categoryIndex, int questionIndex){
         return this.theQuestionManager.getQuestion(categoryIndex, questionIndex);
     }
     
-    public String getAnswer(int categoryIndex, int questionIndex){
-        return this.theQuestionManager.getAnswer(categoryIndex, questionIndex);
+    public int getNumOfCategories(){
+        return this.theQuestionManager.getNumOfCategories();
     }
     
-    public int getNumberOfCategories(){
-        return this.theQuestionManager.getNumberOfCategories();
-    }
-    
-    public int getNumberOfQuestions(int categoryIndex){
-        return this.theQuestionManager.getNumberOfQuestions(categoryIndex);
+    public int getNumOfQuestions(int categoryIndex){
+        return this.theQuestionManager.getNumOfQuestions(categoryIndex);
     }
     
     public void clearForbiddenPlayers(){
@@ -384,5 +113,9 @@ public class JeopardyGame extends Observable{
     
     public void changeCredit(int offset){
         this.thePlayerManager.changeCredit(offset);
+    }
+    
+    public void setCredits(int categoryIndex, int quesitonIndex, int newCredits){
+        this.theQuestionManager.setCredits(categoryIndex, quesitonIndex, newCredits);
     }
 }

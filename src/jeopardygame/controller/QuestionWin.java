@@ -22,7 +22,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
      */
     private final MainWin theMainWindow;
     private final String answer;
-    private final int weight;
+    private final int credits;
     private final Timer answerTimer;
     private final Timer waitTimer;
     private final int maxAnswerTime = 30;
@@ -37,9 +37,9 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         gameCore.clearForbiddenPlayers();
         this.theMainWindow = theMainWindow;
         this.gameCore = gameCore;
-        this.qaTextArea.setText(gameCore.getQuestion(categoryIndex, questionIndex));
-        this.answer = this.gameCore.getAnswer(categoryIndex, questionIndex);
-        this.weight = gameCore.getWeight(categoryIndex, questionIndex);
+        this.qaTextArea.setText(gameCore.getQuestion(categoryIndex, questionIndex).questionText);
+        this.answer = this.gameCore.getQuestion(categoryIndex, questionIndex).answerText;
+        this.credits = gameCore.getQuestion(categoryIndex, questionIndex).getCredits();
         this.answerTimer = new Timer(1000, this);
         this.waitTimer = new Timer(1000, new WaitTimerListener(this));
         isShowingAnswer = false;
@@ -212,7 +212,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private void rightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightButtonActionPerformed
         // TODO add your handling code here:
         this.answerTimer.stop();
-        this.gameCore.changeCredit(weight);
+        this.gameCore.changeCredit(credits);
         this.showAnswer();
     }//GEN-LAST:event_rightButtonActionPerformed
 
@@ -248,7 +248,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         // TODO add your handling code here:
         this.answerTimer.stop();
 
-        this.gameCore.changeCredit(-weight);
+        this.gameCore.changeCredit(-credits);
         if(this.gameCore.numberOfAllowablePlayers() == 0){
             this.answeringName.setText("Sorry, all players are wrong");
             this.showAnswer();
