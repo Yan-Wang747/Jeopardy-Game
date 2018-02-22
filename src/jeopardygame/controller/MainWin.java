@@ -71,6 +71,7 @@ public class MainWin extends javax.swing.JFrame implements ActionListener{
     private void initQuestionArray(){
         for(int categoryIndex = 0; categoryIndex < this.gameCore.getNumOfCategories(); categoryIndex++){
             CategoryPanel newPanel = new CategoryPanel(this.gameCore.getCategory(categoryIndex).getCategoryText(), categoryIndex,Constants.GAP, Constants.CATEGORY_PANEL_SIZE);
+            newPanel.disableTextField();
             for(int questionIndex = 0; questionIndex < this.gameCore.getNumOfQuestions(categoryIndex); questionIndex++)
                 newPanel.addNewQuestionButton(Integer.toString(gameCore.getQuestion(categoryIndex, questionIndex).getCredits()), this, Constants.BUTTON_SIZE);
             
@@ -157,6 +158,7 @@ public class MainWin extends javax.swing.JFrame implements ActionListener{
     private void questionButtonAction(java.awt.event.ActionEvent evt){
         int categoryIndex = ((CategoryPanel)((QuestionButton)evt.getSource()).getParent()).categoryIndex;
         int questionIndex = ((QuestionButton)evt.getSource()).questionIndex;
+        ((QuestionButton)evt.getSource()).setVisible(false);
         
         if(this.gameCore.isDoubleJeopardy(categoryIndex, questionIndex))
             showDoubleWindow(categoryIndex, questionIndex);
