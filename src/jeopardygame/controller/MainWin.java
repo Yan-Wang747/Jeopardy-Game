@@ -37,13 +37,17 @@ public class MainWin extends javax.swing.JFrame{
         ArrayList<Player> players = this.gameCore.getOrderedPlayers(false);
         int fontSize = (int)(80 - 60.0 / 24 * (this.gameCore.getNumOfCurrentPlayers() - 2));
         this.creditPanel.removeAll();
-        for(Player player : players){
+        players.stream().map((player) -> {
             JLabel playerLabel = new JLabel();
             playerLabel.setForeground(JeopardyColors.FONT);
             playerLabel.setText(player.getName() + ": " + player.getCredits());
-            playerLabel.setFont(new java.awt.Font("Lucida Grande", 0, fontSize)); 
+            return playerLabel; 
+        }).map((playerLabel) -> {
+            playerLabel.setFont(new java.awt.Font("Lucida Grande", 0, fontSize));
+            return playerLabel;
+        }).forEachOrdered((playerLabel) -> {
             this.creditPanel.add(playerLabel);
-        }
+        });
     }
     
     @Override

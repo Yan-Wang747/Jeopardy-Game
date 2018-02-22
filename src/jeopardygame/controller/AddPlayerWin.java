@@ -37,11 +37,12 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         titleMessagePrefix = "Total players: ";
         warningMessagePrefix = "Can't start game: ";
         this.gameCore = gameCore;
-        this.gameCore.addObserver(this);
+        
         JeopardyColors.setComponentColor(this.rootPane);
         this.setTitle(titleMessagePrefix + gameCore.getNumOfCurrentPlayers());
         this.resetNameTextField();
         this.resetKeyTextField();
+        this.gameCore.addObserver(this);
     }
     
     @Override
@@ -77,6 +78,11 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setLayout(new java.awt.GridLayout(2, 0, 0, 10));
 
@@ -311,6 +317,11 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         this.keyTextField.setText(Character.toString(evt.getKeyChar()));
         this.warningLabel.setText("");
     }//GEN-LAST:event_keyTextFieldKeyTyped
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        System.out.println("IM OPend");
+    }//GEN-LAST:event_formWindowOpened
 
     private void resetNameTextField(){
         this.nameTextField.setText(""); 
