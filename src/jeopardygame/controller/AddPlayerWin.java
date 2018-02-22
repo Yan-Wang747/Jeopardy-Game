@@ -5,6 +5,7 @@
  */
 package jeopardygame.controller;
 
+import java.awt.Color;
 import jeopardygame.exception.DuplicateNameException;
 import jeopardygame.exception.EmptyPlayerNameException;
 import jeopardygame.exception.EmptyPlayerKeyException;
@@ -39,6 +40,8 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         this.gameCore = gameCore;
         
         JeopardyColors.setComponentColor(this.rootPane);
+        this.nameTextField.setBackground(Color.white);
+        this.keyTextField.setBackground(Color.white);
         this.setTitle(titleMessagePrefix + gameCore.getNumOfCurrentPlayers());
         this.resetNameTextField();
         this.resetKeyTextField();
@@ -98,6 +101,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
 
         nameTextField.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         nameTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        nameTextField.setBorder(null);
         nameTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 nameTextFieldFocusGained(evt);
@@ -113,9 +117,9 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         });
         jPanel2.add(nameTextField);
 
-        keyTextField.setEditable(false);
         keyTextField.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
         keyTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        keyTextField.setBorder(null);
         keyTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 keyTextFieldKeyTyped(evt);
@@ -159,11 +163,11 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
                 .addContainerGap(50, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(warningLabel)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -173,7 +177,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                 .addComponent(warningLabel)
                 .addGap(35, 35, 35)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -314,13 +318,12 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
     }
     private void keyTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyTextFieldKeyTyped
         // TODO add your handling code here:
-        this.keyTextField.setText(Character.toString(evt.getKeyChar()));
+        this.keyTextField.setText("");
         this.warningLabel.setText("");
     }//GEN-LAST:event_keyTextFieldKeyTyped
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-        System.out.println("IM OPend");
     }//GEN-LAST:event_formWindowOpened
 
     private void resetNameTextField(){
