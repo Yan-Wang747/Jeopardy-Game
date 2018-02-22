@@ -281,8 +281,8 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         try{
             if(!this.nameTextField.getText().equals("") || !this.keyTextField.getText().equals(""))
                 this.addPlayer();
-            else
-                this.startGame();
+
+            this.startGame();
         }catch(DuplicateNameException e){
             this.nameTextField.selectAll();
             this.warningLabel.setText("Name exits, please use a different name");

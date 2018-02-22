@@ -9,16 +9,18 @@ package jeopardygame.controller;
  *
  * @author iqapp
  */
-import jeopardygame.view.QuestionButton;
 import jeopardygame.visualeffect.JeopardyColors;
-import jeopardygame.view.CategoryPanel;
 import jeopardygame.model.JeopardyGame;
 import jeopardygame.model.Player;
+import jeopardygame.sharedview.*;
+import jeopardygame.constant.Constants;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.swing.*;
+import java.awt.event.ActionListener;
 
-public class MainWin extends javax.swing.JFrame{
+public class MainWin extends javax.swing.JFrame implements ActionListener{
 
     /**
      * Creates new form GameGUI
@@ -28,9 +30,13 @@ public class MainWin extends javax.swing.JFrame{
     public MainWin(JeopardyGame gameCore) {
         initComponents();
         this.gameCore = gameCore;
-        this.creditPanel.setPreferredSize(new Dimension(1871, 124));
-        initButtonArray();
+        this.creditPanel.setPreferredSize(Constants.CREDIT_PANEL_SIZE);
+        initQuestionArray();
         JeopardyColors.setComponentColor(this.rootPane);
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        this.questionButtonAction(e);
     }
     
     private void putPlayers(){
@@ -62,25 +68,14 @@ public class MainWin extends javax.swing.JFrame{
         this.setVisible(false);
     }
     
-    private void initButtonArray(){
+    private void initQuestionArray(){
         for(int categoryIndex = 0; categoryIndex < this.gameCore.getNumOfCategories(); categoryIndex++){
-            CategoryPanel newPanel = new CategoryPanel(this.gameCore.getCategory(categoryIndex).getCategoryText());
-            for(int questionIndex = 0; questionIndex < this.gameCore.getNumOfQuestions(categoryIndex); questionIndex++){
-                QuestionButton newQuestionButton = new QuestionButton(categoryIndex, questionIndex);
-                newQuestionButton.setText(Integer.toString(this.gameCore.getQuestion(categoryIndex, questionIndex).getCredits()));
-                
-                newQuestionButton.addActionListener((java.awt.event.ActionEvent evt) -> {
-                    ((JButton)evt.getSource()).setEnabled(false);
-                    questionButtonAction(evt);
-                });
-                
-                newPanel.add(newQuestionButton);
-            }
+            CategoryPanel newPanel = new CategoryPanel(this.gameCore.getCategory(categoryIndex).getCategoryText(), categoryIndex,Constants.GAP, Constants.CATEGORY_PANEL_SIZE);
+            for(int questionIndex = 0; questionIndex < this.gameCore.getNumOfQuestions(categoryIndex); questionIndex++)
+                newPanel.addNewQuestionButton(Integer.toString(gameCore.getQuestion(categoryIndex, questionIndex).getCredits()), this, Constants.BUTTON_SIZE);
             
            allQuestionPanel.add(newPanel);
         }
-        
-        jScrollPane2.setViewportView(allQuestionPanel);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -160,7 +155,7 @@ public class MainWin extends javax.swing.JFrame{
     }
     
     private void questionButtonAction(java.awt.event.ActionEvent evt){
-        int categoryIndex = ((QuestionButton)evt.getSource()).categoryIndex;
+        int categoryIndex = ((CategoryPanel)((QuestionButton)evt.getSource()).getParent()).categoryIndex;
         int questionIndex = ((QuestionButton)evt.getSource()).questionIndex;
         
         if(this.gameCore.isDoubleJeopardy(categoryIndex, questionIndex))
@@ -179,4 +174,5 @@ public class MainWin extends javax.swing.JFrame{
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel pickingPlayerName;
     // End of variables declaration//GEN-END:variables
+
 }
