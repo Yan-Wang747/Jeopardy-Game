@@ -11,31 +11,42 @@ package jeopardygame.model;
  * @author iqapp
  */
 
-import jeopardygame.exception.DuplicateNameException;
 import jeopardygame.exception.NotEnoughPlayersException;
-import jeopardygame.exception.EmptyPlayerNameException;
-import jeopardygame.exception.DuplicateKeyException;
 import java.io.*;
 import java.util.*;
 import jeopardygame.sharedmodel.*;
+import jeopardygame.exception.*;
 
 public class JeopardyGame extends Observable{
     private QuestionManager theQuestionManager;
     private final PlayerManager thePlayerManager;
     private boolean isStarted;
+    private int fileIndex;
 
     public JeopardyGame(){
         theQuestionManager = new QuestionManager();
         thePlayerManager = new PlayerManager();
         this.isStarted = false;
+        fileIndex = 0;
     }
     
-    public void start(String filename) throws ClassNotFoundException, NotEnoughPlayersException, IOException{
+    public void start() throws ClassNotFoundException, NotEnoughPlayersException, FileNotFoundException, IOException{
+        String filename = "Question" + Integer.toString(fileIndex);
         thePlayerManager.start();
         QuestionFileReader theQuestionFileReader = new QuestionFileReader(new File(filename));
-        theQuestionManager = theQuestionFileReader.read();
-        theQuestionManager.start();
-        this.isStarted = true;
+        try{
+            theQuestionManager = theQuestionFileReader.read();
+            theQuestionManager.start();
+            this.isStarted = true;
+            fileIndex++;
+        }catch (FileNotFoundException e){
+            if(fileIndex != 0){
+                fileIndex = 0;
+                start();
+            }else
+                throw e;
+   
+        }
     }
     
     public void end(){

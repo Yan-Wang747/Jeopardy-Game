@@ -45,17 +45,17 @@ public class PlayerManager extends Observable{
     public void end() {
         if(started)
             players.forEach((player) -> {
-                try{
-                    validatePlayer(this.allPlayers, player);
-                    this.allPlayers.add(player);
-                }catch(DuplicateNameException e){
-                    int loc = e.playerIndex;
-                    if(this.allPlayers.get(loc).getCredits() < player.getCredits())
-                        this.allPlayers.get(loc).setCredits(player.getCredits());
-                }catch(DuplicateKeyException | EmptyPlayerNameException e){
-
-                }     
+                int loc = this.locatePlayerInAllPlayerList(player);
+                if(loc != -1){
+                    int oldCredits = allPlayers.get(loc).getCredits();
+                    int largerCredits = player.getCredits() > oldCredits ? player.getCredits() : oldCredits;
+                    player.setCredits(largerCredits);
+                    allPlayers.remove(loc);
+                }
+                
+                this.allPlayers.add(player);
             });
+        
         
         players.clear();
         this.deleteObservers();
@@ -63,7 +63,7 @@ public class PlayerManager extends Observable{
     
     public boolean setAnsweringPlayer(char key){
         boolean found = false;
-        for(int i = 0; i < players.size() && !found; i++){
+        for(int i = 0; i < players.size() && !found && !forbiddenKeys.contains(key); i++){
             if(players.get(i).getKey() == key){
                 this.answeringPlayerIndex = i;
                 found = true;
@@ -75,6 +75,16 @@ public class PlayerManager extends Observable{
     
     public int getAnsweringPlayerIndex(){
         return this.answeringPlayerIndex;
+    }
+    
+    private int locatePlayerInAllPlayerList(Player player){
+        int res = -1;
+        
+        for(int i = 0; i < allPlayers.size() && res == -1; i++)
+            if(allPlayers.get(i).getName().equals(player.getName()))
+                res = i;
+
+        return res;
     }
     
     private void validatePlayer(ArrayList<Player> players, Player newPlayer)throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException{
@@ -100,6 +110,7 @@ public class PlayerManager extends Observable{
     }
     
     public void addPlayer(Player newPlayer) throws DuplicateNameException, DuplicateKeyException, EmptyPlayerNameException{
+        newPlayer.setName(newPlayer.getName().trim().toUpperCase());
         validatePlayer(this.players, newPlayer);
         
         if(newPlayer.playerIndex < this.players.size())

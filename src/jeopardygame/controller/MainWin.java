@@ -148,7 +148,7 @@ public class MainWin extends javax.swing.JFrame implements ActionListener{
         this.pickingPlayerName.setText(pickingPlayer.getName() + ", please pick a question");
         this.putPlayers();
         this.setLocationRelativeTo(null);
-        this.setVisible(true);
+        this.creditPanel.repaint();
     }//GEN-LAST:event_formWindowActivated
 
     private void showDoubleWindow(int categoryIndex, int questionIndex){

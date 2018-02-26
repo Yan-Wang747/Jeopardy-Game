@@ -31,6 +31,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private int timeRemaining;
     private boolean ignoreInput;
     private boolean isShowingAnswer;
+    private boolean isDoubleJeopardy;
     private final JeopardyGame gameCore;
     private Clip themeClip;
     
@@ -46,6 +47,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.waitTimer = new Timer(1000, new WaitTimerListener(this));
         isShowingAnswer = false;
         JeopardyColors.setComponentColor(this.rootPane);
+        this.isDoubleJeopardy = isDoubleJeopardy;
         if(!isDoubleJeopardy)
             this.startToWait();
         else
@@ -259,12 +261,16 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.stopAnswer();
 
         this.gameCore.changeCredit(-credits);
-        if(this.gameCore.numberOfAllowablePlayers() == 0){
+        if(isDoubleJeopardy){
+            this.answeringName.setText("Sorry, that is wrong.");
+            this.showAnswer();
+        }
+        else if(this.gameCore.numberOfAllowablePlayers() == 0){
             this.answeringName.setText("Sorry, nobody got it right");
             this.showAnswer();
         }
         else{
-            this.answeringName.setText("Anyone else?");
+            this.answeringName.setText("Sorry, that is wrong.\nAnyone else?");
             this.startToWait();
         }
     }//GEN-LAST:event_wrongButtonActionPerformed

@@ -13,7 +13,7 @@ import jeopardygame.exception.DuplicateKeyException;
 import jeopardygame.visualeffect.JeopardyColors;
 import jeopardygame.model.JeopardyGame;
 import jeopardygame.model.Player;
-import java.io.IOException;
+import java.io.*;
 import java.util.Observer;
 import java.util.Observable;
 import jeopardygame.constant.*;
@@ -308,13 +308,17 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
 
     private void startGame(){
         try{
-            this.gameCore.start("Question0");
+            this.gameCore.start();
             new MainWin(this.gameCore).setVisible(true);
             this.dispose();
-        }catch(NotEnoughPlayersException | IOException e){
+        }catch(NotEnoughPlayersException e){
             this.warningLabel.setText(this.warningMessagePrefix + e.getMessage());
         }catch(ClassNotFoundException e){
             this.warningLabel.setText(this.warningMessagePrefix + "It is not a question file");
+        }catch(FileNotFoundException e){
+            this.warningLabel.setText(this.warningMessagePrefix + "No question file");
+        }catch(IOException e){
+            this.warningLabel.setText(this.warningMessagePrefix + "something weird happened");
         }
     }
     private void keyTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyTextFieldKeyTyped
