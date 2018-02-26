@@ -6,7 +6,7 @@
 package jeopardygame.constant;
 
 import java.awt.Dimension;
-
+import java.awt.Font;
 /**
  *
  * @author student
@@ -17,4 +17,5 @@ public class Constants {
     public static final Dimension CATEGORY_PANEL_SIZE = new Dimension(350, 100);
     public static final Dimension CREDIT_PANEL_SIZE = new Dimension(1871, 124);
     public static final int GAP = 10;
+    public static final Font DEFAULT_FONT = new Font("Lucida Grande", 0, 48);
 }

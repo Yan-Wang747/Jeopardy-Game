@@ -14,8 +14,8 @@ import java.awt.Container;
  * @author student
  */
 public class JeopardyColors {
-    public static final Color BACKGROUND = new Color(0, 50, 91);
-    public static final Color FONT =  new Color(169, 111, 62);
+    public static final Color BACKGROUND = new Color(0, 0, 120);
+    public static final Color FONT =  new Color(200, 200, 200);
     
     public static void setComponentColor(Component component){
         component.setBackground(JeopardyColors.BACKGROUND);
@@ -29,7 +29,5 @@ public class JeopardyColors {
             for(Component comp : subComponents)
                 setComponentColor(comp);
         }
-
-        return;
     }
 }

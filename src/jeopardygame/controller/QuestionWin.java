@@ -10,6 +10,7 @@ import jeopardygame.model.JeopardyGame;
 import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.sound.sampled.Clip;
 /**
  *
  * @author student
@@ -31,6 +32,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private boolean ignoreInput;
     private boolean isShowingAnswer;
     private final JeopardyGame gameCore;
+    private Clip themeClip;
     
     public QuestionWin(int categoryIndex, int questionIndex, JeopardyGame gameCore, MainWin theMainWindow, boolean isDoubleJeopardy) {
         initComponents();
@@ -68,9 +70,12 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         wrongButton = new javax.swing.JButton();
         rightButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setSize(new java.awt.Dimension(1920, 1080));
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
             }
@@ -209,9 +214,14 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         theMainWindow.setVisible(true);
         this.dispose();
     }
+    
+    private void stopAnswer(){
+        this.answerTimer.stop();
+    }
+    
     private void rightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightButtonActionPerformed
         // TODO add your handling code here:
-        this.answerTimer.stop();
+        this.stopAnswer();
         this.gameCore.changeCredit(credits);
         this.showAnswer();
     }//GEN-LAST:event_rightButtonActionPerformed
@@ -246,11 +256,11 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
   
     private void wrongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wrongButtonActionPerformed
         // TODO add your handling code here:
-        this.answerTimer.stop();
+        this.stopAnswer();
 
         this.gameCore.changeCredit(-credits);
         if(this.gameCore.numberOfAllowablePlayers() == 0){
-            this.answeringName.setText("Sorry, all players are wrong");
+            this.answeringName.setText("Sorry, nobody got it right");
             this.showAnswer();
         }
         else{
@@ -268,6 +278,11 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         if(isShowingAnswer)
             this.showMainWindow();
     }//GEN-LAST:event_qaTextAreaMouseClicked
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        this.setLocationRelativeTo(null);
+    }//GEN-LAST:event_formWindowOpened
   
     /**
      * @param args the command line arguments

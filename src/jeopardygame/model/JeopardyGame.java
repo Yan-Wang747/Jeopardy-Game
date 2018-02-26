@@ -14,7 +14,6 @@ package jeopardygame.model;
 import jeopardygame.exception.DuplicateNameException;
 import jeopardygame.exception.NotEnoughPlayersException;
 import jeopardygame.exception.EmptyPlayerNameException;
-import jeopardygame.exception.EmptyPlayerKeyException;
 import jeopardygame.exception.DuplicateKeyException;
 import java.io.*;
 import java.util.*;

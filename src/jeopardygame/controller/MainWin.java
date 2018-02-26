@@ -14,7 +14,6 @@ import jeopardygame.model.JeopardyGame;
 import jeopardygame.model.Player;
 import jeopardygame.sharedview.*;
 import jeopardygame.constant.Constants;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -72,8 +71,9 @@ public class MainWin extends javax.swing.JFrame implements ActionListener{
         for(int categoryIndex = 0; categoryIndex < this.gameCore.getNumOfCategories(); categoryIndex++){
             CategoryPanel newPanel = new CategoryPanel(this.gameCore.getCategory(categoryIndex).getCategoryText(), categoryIndex,Constants.GAP, Constants.CATEGORY_PANEL_SIZE);
             newPanel.disableTextField();
+            newPanel.setCategoryTextFieldFont(Constants.DEFAULT_FONT);
             for(int questionIndex = 0; questionIndex < this.gameCore.getNumOfQuestions(categoryIndex); questionIndex++)
-                newPanel.addNewQuestionButton(Integer.toString(gameCore.getQuestion(categoryIndex, questionIndex).getCredits()), this, Constants.BUTTON_SIZE);
+                newPanel.addNewQuestionButton(Integer.toString(gameCore.getQuestion(categoryIndex, questionIndex).getCredits()), this, Constants.BUTTON_SIZE).setFont(Constants.DEFAULT_FONT);
             
            allQuestionPanel.add(newPanel);
         }
@@ -147,6 +147,7 @@ public class MainWin extends javax.swing.JFrame implements ActionListener{
         Player pickingPlayer = gameCore.getPlayer(gameCore.getAnsweringPlayerIndex());
         this.pickingPlayerName.setText(pickingPlayer.getName() + ", please pick a question");
         this.putPlayers();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }//GEN-LAST:event_formWindowActivated
 

@@ -40,12 +40,9 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         this.gameCore = gameCore;
         
         JeopardyColors.setComponentColor(this.rootPane);
-        this.nameTextField.setBackground(Color.white);
-        this.keyTextField.setBackground(Color.white);
-        this.setTitle(titleMessagePrefix + gameCore.getNumOfCurrentPlayers());
+        
         this.resetNameTextField();
-        this.resetKeyTextField();
-        this.gameCore.addObserver(this);
+        this.resetKeyTextField();      
     }
     
     @Override
@@ -79,8 +76,9 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         nextButton = new javax.swing.JButton();
         warningLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -129,6 +127,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
 
         jPanel3.setLayout(new java.awt.GridLayout(1, 0, 50, 0));
 
+        prevButton.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
         prevButton.setText("Prev");
         prevButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,6 +136,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         });
         jPanel3.add(prevButton);
 
+        startButton.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
         startButton.setText("Start");
         startButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -145,6 +145,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         });
         jPanel3.add(startButton);
 
+        nextButton.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
         nextButton.setText("Next");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -324,15 +325,22 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
+        this.setTitle(titleMessagePrefix + gameCore.getNumOfCurrentPlayers());
+        this.gameCore.addObserver(this);
+        this.setLocationRelativeTo(null);
     }//GEN-LAST:event_formWindowOpened
 
     private void resetNameTextField(){
         this.nameTextField.setText(""); 
         this.nameTextField.requestFocus();
+        this.nameTextField.setForeground(Color.BLACK);
+        this.nameTextField.setBackground(Color.white);
     }
     
     private void resetKeyTextField(){
         this.keyTextField.setText("");
+        this.keyTextField.setForeground(Color.BLACK);
+        this.keyTextField.setBackground(Color.white);
     }
     
     @Override

@@ -8,8 +8,6 @@ package jeopardygame.controller;
 import jeopardygame.visualeffect.JeopardyColors;
 import jeopardygame.model.JeopardyGame;
 import jeopardygame.model.Player;
-import java.awt.Component;
-import java.awt.Container;
 import javax.swing.*;
 import java.util.Iterator;
 import javax.sound.sampled.*;
@@ -23,8 +21,8 @@ public class FameHallWin extends javax.swing.JFrame {
     /**
      * Creates new form FrameHall
      */
-    private JeopardyGame gameCore;
-    private JLabel[] nameLabels;
+    private final JeopardyGame gameCore;
+    private final JLabel[] nameLabels;
     private Clip themeClip;
     
     public FameHallWin(JeopardyGame gameCore) {
@@ -87,8 +85,14 @@ public class FameHallWin extends javax.swing.JFrame {
         challengeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Jeopardy Game");
+        setLocation(new java.awt.Point(500, 500));
         setMinimumSize(new java.awt.Dimension(1920, 1080));
+        setPreferredSize(new java.awt.Dimension(1920, 1080));
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
             }
@@ -96,7 +100,8 @@ public class FameHallWin extends javax.swing.JFrame {
 
         fameHallLabel.setFont(new java.awt.Font("Lucida Grande", 0, 100)); // NOI18N
         fameHallLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        fameHallLabel.setText("FameHall");
+        fameHallLabel.setText("Jeopardy Game");
+        fameHallLabel.setToolTipText("");
 
         jPanel1.setLayout(new java.awt.GridLayout(5, 1, 0, 30));
 
@@ -177,7 +182,7 @@ public class FameHallWin extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(275, Short.MAX_VALUE)
+                .addContainerGap(276, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -225,6 +230,11 @@ public class FameHallWin extends javax.swing.JFrame {
             nameLabels[index].setText(displayString);
         }
     }//GEN-LAST:event_formWindowActivated
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        this.setLocationRelativeTo(null);
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments

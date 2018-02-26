@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Observable;
 import java.util.Random;
-import jeopardygame.constant.Constants;
 import jeopardygame.exception.DuplicateKeyException;
 import jeopardygame.exception.DuplicateNameException;
-import jeopardygame.exception.EmptyPlayerKeyException;
 import jeopardygame.exception.EmptyPlayerNameException;
 import jeopardygame.exception.NotEnoughPlayersException;
 
@@ -25,11 +23,13 @@ public class PlayerManager extends Observable{
     private final ArrayList<Player> players;
     private int answeringPlayerIndex;
     private final ArrayList<Character> forbiddenKeys;
+    private boolean started;
     
     public PlayerManager(){
         allPlayers = new ArrayList();
         players = new ArrayList();
         forbiddenKeys = new ArrayList<>();
+        started = false;
     }
     
     public void start() throws NotEnoughPlayersException{
@@ -39,21 +39,23 @@ public class PlayerManager extends Observable{
         
         Random rnd = new Random();
         this.answeringPlayerIndex = rnd.nextInt(players.size());
+        started = true;
     }
     
     public void end() {
-        players.forEach((player) -> {
-            try{
-                validatePlayer(this.allPlayers, player);
-                this.allPlayers.add(player);
-            }catch(DuplicateNameException e){
-                int loc = e.playerIndex;
-                if(this.allPlayers.get(loc).getCredits() < player.getCredits())
-                    this.allPlayers.get(loc).setCredits(player.getCredits());
-            }catch(DuplicateKeyException | EmptyPlayerNameException e){
-                
-            }     
-        });
+        if(started)
+            players.forEach((player) -> {
+                try{
+                    validatePlayer(this.allPlayers, player);
+                    this.allPlayers.add(player);
+                }catch(DuplicateNameException e){
+                    int loc = e.playerIndex;
+                    if(this.allPlayers.get(loc).getCredits() < player.getCredits())
+                        this.allPlayers.get(loc).setCredits(player.getCredits());
+                }catch(DuplicateKeyException | EmptyPlayerNameException e){
+
+                }     
+            });
         
         players.clear();
         this.deleteObservers();
