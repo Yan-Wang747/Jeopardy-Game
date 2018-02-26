@@ -42,7 +42,8 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         JeopardyColors.setComponentColor(this.rootPane);
         
         this.resetNameTextField();
-        this.resetKeyTextField();      
+        this.resetKeyTextField();    
+        this.setLocationRelativeTo(null);
     }
     
     @Override
@@ -331,7 +332,6 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         // TODO add your handling code here:
         this.setTitle(titleMessagePrefix + gameCore.getNumOfCurrentPlayers());
         this.gameCore.addObserver(this);
-        this.setLocationRelativeTo(null);
     }//GEN-LAST:event_formWindowOpened
 
     private void resetNameTextField(){

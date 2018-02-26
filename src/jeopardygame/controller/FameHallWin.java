@@ -33,6 +33,7 @@ public class FameHallWin extends javax.swing.JFrame {
         JeopardyColors.setComponentColor(this.rootPane);
         initLabelArray();
         playThemeMusic();
+        this.setLocationRelativeTo(null);
     }
 
     private void playThemeMusic(){
@@ -90,9 +91,6 @@ public class FameHallWin extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(1920, 1080));
         setPreferredSize(new java.awt.Dimension(1920, 1080));
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
             }
@@ -230,11 +228,6 @@ public class FameHallWin extends javax.swing.JFrame {
             nameLabels[index].setText(displayString);
         }
     }//GEN-LAST:event_formWindowActivated
-
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        // TODO add your handling code here:
-        this.setLocationRelativeTo(null);
-    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments

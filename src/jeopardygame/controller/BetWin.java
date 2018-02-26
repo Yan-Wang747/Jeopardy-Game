@@ -38,6 +38,7 @@ public class BetWin extends javax.swing.JFrame {
         this.creditsTextField.selectAll();
         this.nameLabel.setText(this.gameCore.getPlayer(answeringPlayerIndex).getName() + ", please specify the amount.");
         JeopardyColors.setComponentColor(this.rootPane);
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -58,11 +59,6 @@ public class BetWin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
 
         okButton.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
         okButton.setText("OK");
@@ -163,11 +159,6 @@ public class BetWin extends javax.swing.JFrame {
             this.creditsTextField.selectAll();
         }
     }//GEN-LAST:event_okButtonActionPerformed
-
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        // TODO add your handling code here:
-        this.setLocationRelativeTo(null);
-    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments

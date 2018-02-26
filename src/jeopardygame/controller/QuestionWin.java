@@ -31,7 +31,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private int timeRemaining;
     private boolean ignoreInput;
     private boolean isShowingAnswer;
-    private boolean isDoubleJeopardy;
+    private final boolean isDoubleJeopardy;
     private final JeopardyGame gameCore;
     private Clip themeClip;
     
@@ -52,6 +52,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
             this.startToWait();
         else
             this.startToAnswer();
+        this.setLocationRelativeTo(null);
 
     }
 
@@ -75,9 +76,6 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setSize(new java.awt.Dimension(1920, 1080));
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
             }
@@ -284,11 +282,6 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         if(isShowingAnswer)
             this.showMainWindow();
     }//GEN-LAST:event_qaTextAreaMouseClicked
-
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        // TODO add your handling code here:
-        this.setLocationRelativeTo(null);
-    }//GEN-LAST:event_formWindowOpened
   
     /**
      * @param args the command line arguments
