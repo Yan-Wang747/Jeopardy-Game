@@ -5,6 +5,7 @@
  */
 package jeopardygame.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Observable;
@@ -18,7 +19,7 @@ import jeopardygame.exception.NotEnoughPlayersException;
  *
  * @author student
  */
-public class PlayerManager extends Observable{
+public class PlayerManager extends Observable implements Serializable{
     private final ArrayList<Player> allPlayers;
     private final ArrayList<Player> players;
     private int answeringPlayerIndex;

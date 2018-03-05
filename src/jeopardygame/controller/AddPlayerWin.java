@@ -203,7 +203,7 @@ public class AddPlayerWin extends javax.swing.JFrame implements  Observer{
         if(this.keyTextField.getText().equals(""))
             throw new EmptyPlayerKeyException();
         
-        Player newPlayer = new Player(this.nameTextField.getText(), this.keyTextField.getText().charAt(0), Constants.INITIAL_CREDITS, this.currentPlayerIndex);
+        Player newPlayer = new Player(this.nameTextField.getText(), this.keyTextField.getText().charAt(0), JeopardyGameConstants.INITIAL_CREDITS, this.currentPlayerIndex);
         gameCore.addPlayer(newPlayer);
         
     }

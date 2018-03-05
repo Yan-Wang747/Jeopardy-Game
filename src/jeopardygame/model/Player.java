@@ -4,11 +4,13 @@
  * and open the template in the editor.
  */
 package jeopardygame.model;
+
+import java.io.*;
 /**
  *
  * @author student
  */
-public class Player implements Comparable{
+public class Player implements Comparable, Serializable{
     private String name;
     private int credits;
     private char key;

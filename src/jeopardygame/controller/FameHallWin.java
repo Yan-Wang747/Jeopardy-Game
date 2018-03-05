@@ -58,7 +58,6 @@ public class FameHallWin extends javax.swing.JFrame {
         nameLabels[2] = top3Label;
         nameLabels[3] = top4Label;
         nameLabels[4] = top5Label;
-
     }
     /**
      * This method is called from within the constructor to initialize the form.

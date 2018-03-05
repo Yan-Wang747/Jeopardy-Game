@@ -13,7 +13,7 @@ import jeopardygame.visualeffect.JeopardyColors;
 import jeopardygame.model.JeopardyGame;
 import jeopardygame.model.Player;
 import jeopardygame.sharedview.*;
-import jeopardygame.constant.Constants;
+import jeopardygame.constant.JeopardyGameConstants;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -29,7 +29,7 @@ public class MainWin extends javax.swing.JFrame implements ActionListener{
     public MainWin(JeopardyGame gameCore) {
         initComponents();
         this.gameCore = gameCore;
-        this.creditPanel.setPreferredSize(Constants.CREDIT_PANEL_SIZE);
+        this.creditPanel.setPreferredSize(JeopardyGameConstants.CREDIT_PANEL_SIZE);
         initQuestionArray();
         JeopardyColors.setComponentColor(this.rootPane);
     }
@@ -69,11 +69,11 @@ public class MainWin extends javax.swing.JFrame implements ActionListener{
     
     private void initQuestionArray(){
         for(int categoryIndex = 0; categoryIndex < this.gameCore.getNumOfCategories(); categoryIndex++){
-            CategoryPanel newPanel = new CategoryPanel(this.gameCore.getCategory(categoryIndex).getCategoryText(), categoryIndex,Constants.GAP, Constants.CATEGORY_PANEL_SIZE);
+            CategoryPanel newPanel = new CategoryPanel(this.gameCore.getCategory(categoryIndex).getCategoryText(), categoryIndex,JeopardyGameConstants.GAP, JeopardyGameConstants.CATEGORY_PANEL_SIZE);
             newPanel.disableTextField();
-            newPanel.setCategoryTextFieldFont(Constants.DEFAULT_FONT);
+            newPanel.setCategoryTextFieldFont(JeopardyGameConstants.DEFAULT_FONT);
             for(int questionIndex = 0; questionIndex < this.gameCore.getNumOfQuestions(categoryIndex); questionIndex++)
-                newPanel.addNewQuestionButton(Integer.toString(gameCore.getQuestion(categoryIndex, questionIndex).getCredits()), this, Constants.BUTTON_SIZE).setFont(Constants.DEFAULT_FONT);
+                newPanel.addNewQuestionButton(Integer.toString(gameCore.getQuestion(categoryIndex, questionIndex).getCredits()), this, JeopardyGameConstants.BUTTON_SIZE).setFont(JeopardyGameConstants.DEFAULT_FONT);
             
            allQuestionPanel.add(newPanel);
         }

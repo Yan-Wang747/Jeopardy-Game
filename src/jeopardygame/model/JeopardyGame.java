@@ -19,15 +19,19 @@ import jeopardygame.exception.*;
 
 public class JeopardyGame extends Observable{
     private QuestionManager theQuestionManager;
-    private final PlayerManager thePlayerManager;
-    private boolean isStarted;
-    private int fileIndex;
+    private PlayerManager thePlayerManager;
+    private boolean isStarted = false;
+    private int fileIndex = 0;
 
     public JeopardyGame(){
-        theQuestionManager = new QuestionManager();
         thePlayerManager = new PlayerManager();
-        this.isStarted = false;
-        fileIndex = 0;
+        
+        try{
+            thePlayerManager = PlayerFileReader.read();
+        }catch (ClassNotFoundException | IOException e){
+            //doNothing
+            System.out.print(e);
+        }
     }
     
     public void start() throws ClassNotFoundException, NotEnoughPlayersException, FileNotFoundException, IOException{
@@ -45,7 +49,6 @@ public class JeopardyGame extends Observable{
                 start();
             }else
                 throw e;
-   
         }
     }
     
@@ -53,6 +56,11 @@ public class JeopardyGame extends Observable{
         theQuestionManager = null;
         thePlayerManager.end();
         this.isStarted = false;
+        try{
+            PlayerFileWriter.write(thePlayerManager);
+        }catch (IOException e){
+            //do nothing
+        }
     }
     
     public boolean setAnsweringPlayer(char key){
