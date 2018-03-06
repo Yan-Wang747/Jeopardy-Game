@@ -88,7 +88,9 @@ public class FameHallWin extends javax.swing.JFrame {
         setTitle("Jeopardy Game");
         setLocation(new java.awt.Point(500, 500));
         setMinimumSize(new java.awt.Dimension(1920, 1080));
-        setPreferredSize(new java.awt.Dimension(1920, 1080));
+        setPreferredSize(null);
+        setResizable(false);
+        setSize(new java.awt.Dimension(1920, 1080));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
@@ -200,7 +202,7 @@ public class FameHallWin extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 596, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(92, 92, 92)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addGap(42, 42, 42))
         );
 
         pack();

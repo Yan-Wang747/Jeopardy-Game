@@ -17,6 +17,7 @@ public class JeopardyGameConstants {
     public static final Dimension CATEGORY_PANEL_SIZE = new Dimension(350, 100);
     public static final Dimension CREDIT_PANEL_SIZE = new Dimension(1871, 124);
     public static final int GAP = 10;
-    public static final Font DEFAULT_FONT = new Font("Lucida Grande", 0, 48);
+    public static final Font DEFAULT_FONT = new Font("Lucida Grande", 0, 36);
     public static final String ALL_PLAYERS_FILE_PATH = "AllPlayers.ser";
+    public static final Font TEXT_FIELD_FONT = new Font("Lucida Grande", 0, 36);
 }
