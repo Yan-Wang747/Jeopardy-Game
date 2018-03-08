@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package jeopardygame.controller;
+
 import jeopardygame.visualeffect.JeopardyColors;
 import jeopardygame.model.JeopardyGame;
 import jeopardygame.model.Player;
@@ -119,7 +120,7 @@ public class MainWin extends javax.swing.JFrame{
              
              for(int questionIndex = 0; questionIndex < category.getNumberOfQuestions(); questionIndex++) {
                  Question question = category.questions.get(questionIndex);
-                 buttons[categoryIndex][questionIndex].setText(Integer.toString(question.getCredits()));
+                 buttons[categoryIndex][questionIndex].setText("$" + Integer.toString(question.getCredits()));
                  buttons[categoryIndex][questionIndex].setVisible(true);
              }
         }
@@ -208,7 +209,10 @@ public class MainWin extends javax.swing.JFrame{
         jPanel2.setBackground(new java.awt.Color(0, 0, 0));
         jPanel2.setLayout(new java.awt.GridLayout(1, 6, 10, 10));
 
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
         category0Text.setColumns(20);
+        category0Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         category0Text.setLineWrap(true);
         category0Text.setRows(5);
         category0Text.setSize(new java.awt.Dimension(240, 70));
@@ -216,36 +220,50 @@ public class MainWin extends javax.swing.JFrame{
 
         jPanel2.add(jScrollPane1);
 
+        jScrollPane8.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
         category1Text.setColumns(20);
+        category1Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         category1Text.setLineWrap(true);
         category1Text.setRows(5);
-        category1Text.setPreferredSize(new java.awt.Dimension(240, 70));
         jScrollPane8.setViewportView(category1Text);
 
         jPanel2.add(jScrollPane8);
 
+        jScrollPane9.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
         category2Text.setColumns(20);
+        category2Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         category2Text.setLineWrap(true);
         category2Text.setRows(5);
         jScrollPane9.setViewportView(category2Text);
 
         jPanel2.add(jScrollPane9);
 
+        jScrollPane10.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
         category3Text.setColumns(20);
+        category3Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         category3Text.setLineWrap(true);
         category3Text.setRows(5);
         jScrollPane10.setViewportView(category3Text);
 
         jPanel2.add(jScrollPane10);
 
+        jScrollPane11.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
         category4Text.setColumns(20);
+        category4Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         category4Text.setLineWrap(true);
         category4Text.setRows(5);
         jScrollPane11.setViewportView(category4Text);
 
         jPanel2.add(jScrollPane11);
 
+        jScrollPane12.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
         category5Text.setColumns(20);
+        category5Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         category5Text.setLineWrap(true);
         category5Text.setRows(5);
         jScrollPane12.setViewportView(category5Text);
@@ -255,7 +273,7 @@ public class MainWin extends javax.swing.JFrame{
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
         jPanel1.setLayout(new java.awt.GridLayout(5, 6, 10, 5));
 
-        c0q0.setText("jToggleButton2");
+        c0q0.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c0q0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c0q0ActionPerformed(evt);
@@ -263,7 +281,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c0q0);
 
-        c1q0.setText("jToggleButton4");
+        c1q0.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c1q0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c1q0ActionPerformed(evt);
@@ -271,7 +289,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c1q0);
 
-        c2q0.setText("jToggleButton6");
+        c2q0.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c2q0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c2q0ActionPerformed(evt);
@@ -279,7 +297,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c2q0);
 
-        c3q0.setText("jToggleButton11");
+        c3q0.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c3q0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c3q0ActionPerformed(evt);
@@ -287,7 +305,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c3q0);
 
-        c4q0.setText("jToggleButton9");
+        c4q0.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c4q0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c4q0ActionPerformed(evt);
@@ -295,7 +313,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c4q0);
 
-        c5q0.setText("jToggleButton13");
+        c5q0.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c5q0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c5q0ActionPerformed(evt);
@@ -303,7 +321,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c5q0);
 
-        c0q1.setText("jToggleButton23");
+        c0q1.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c0q1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c0q1ActionPerformed(evt);
@@ -311,7 +329,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c0q1);
 
-        c1q1.setText("jToggleButton21");
+        c1q1.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c1q1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c1q1ActionPerformed(evt);
@@ -319,7 +337,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c1q1);
 
-        c2q1.setText("jToggleButton26");
+        c2q1.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c2q1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c2q1ActionPerformed(evt);
@@ -327,7 +345,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c2q1);
 
-        c3q1.setText("jToggleButton29");
+        c3q1.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c3q1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c3q1ActionPerformed(evt);
@@ -335,7 +353,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c3q1);
 
-        c4q1.setText("jToggleButton30");
+        c4q1.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c4q1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c4q1ActionPerformed(evt);
@@ -343,7 +361,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c4q1);
 
-        c5q1.setText("jToggleButton25");
+        c5q1.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c5q1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c5q1ActionPerformed(evt);
@@ -351,7 +369,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c5q1);
 
-        c0q2.setText("jToggleButton24");
+        c0q2.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c0q2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c0q2ActionPerformed(evt);
@@ -359,7 +377,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c0q2);
 
-        c1q2.setText("jToggleButton20");
+        c1q2.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c1q2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c1q2ActionPerformed(evt);
@@ -367,7 +385,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c1q2);
 
-        c2q2.setText("jToggleButton19");
+        c2q2.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c2q2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c2q2ActionPerformed(evt);
@@ -375,7 +393,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c2q2);
 
-        c3q2.setText("jToggleButton18");
+        c3q2.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c3q2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c3q2ActionPerformed(evt);
@@ -383,7 +401,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c3q2);
 
-        c4q2.setText("jToggleButton17");
+        c4q2.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c4q2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c4q2ActionPerformed(evt);
@@ -391,7 +409,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c4q2);
 
-        c5q2.setText("jToggleButton27");
+        c5q2.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c5q2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c5q2ActionPerformed(evt);
@@ -399,7 +417,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c5q2);
 
-        c0q3.setText("jToggleButton28");
+        c0q3.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c0q3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c0q3ActionPerformed(evt);
@@ -407,7 +425,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c0q3);
 
-        c1q3.setText("jToggleButton5");
+        c1q3.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c1q3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c1q3ActionPerformed(evt);
@@ -415,7 +433,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c1q3);
 
-        c2q3.setText("jToggleButton22");
+        c2q3.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c2q3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c2q3ActionPerformed(evt);
@@ -423,7 +441,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c2q3);
 
-        c3q3.setText("jToggleButton16");
+        c3q3.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c3q3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c3q3ActionPerformed(evt);
@@ -431,7 +449,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c3q3);
 
-        c4q3.setText("jToggleButton15");
+        c4q3.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c4q3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c4q3ActionPerformed(evt);
@@ -439,7 +457,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c4q3);
 
-        c5q3.setText("jToggleButton10");
+        c5q3.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c5q3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c5q3ActionPerformed(evt);
@@ -447,7 +465,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c5q3);
 
-        c0q4.setText("jToggleButton14");
+        c0q4.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c0q4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c0q4ActionPerformed(evt);
@@ -455,7 +473,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c0q4);
 
-        c1q4.setText("jToggleButton3");
+        c1q4.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c1q4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c1q4ActionPerformed(evt);
@@ -463,7 +481,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c1q4);
 
-        c2q4.setText("jToggleButton12");
+        c2q4.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c2q4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c2q4ActionPerformed(evt);
@@ -471,7 +489,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c2q4);
 
-        c3q4.setText("jToggleButton7");
+        c3q4.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c3q4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c3q4ActionPerformed(evt);
@@ -479,7 +497,8 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c3q4);
 
-        c4q4.setText("jToggleButton8");
+        c4q4.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
+        c4q4.setToolTipText("");
         c4q4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c4q4ActionPerformed(evt);
@@ -487,7 +506,7 @@ public class MainWin extends javax.swing.JFrame{
         });
         jPanel1.add(c4q4);
 
-        c5q4.setText("jToggleButton1");
+        c5q4.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c5q4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 c5q4ActionPerformed(evt);
@@ -500,34 +519,32 @@ public class MainWin extends javax.swing.JFrame{
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(52, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(pickingPlayerName)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(endGameButton))))
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(endGameButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1033, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap(23, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pickingPlayerName)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(23, 23, 23)
                 .addComponent(endGameButton)
-                .addGap(7, 7, 7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pickingPlayerName)
-                .addGap(34, 34, 34)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(16, 16, 16))
         );
 
         pack();

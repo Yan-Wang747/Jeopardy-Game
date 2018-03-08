@@ -10,7 +10,13 @@ import jeopardygame.model.JeopardyGame;
 import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 /**
  *
  * @author student
@@ -33,7 +39,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private boolean isShowingAnswer;
     private final boolean isDoubleJeopardy;
     private final JeopardyGame gameCore;
-    private Clip themeClip;
+    private Clip thinkingClip;
     
     public QuestionWin(int categoryIndex, int questionIndex, JeopardyGame gameCore, MainWin theMainWindow, boolean isDoubleJeopardy) {
         initComponents();
@@ -56,6 +62,20 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.backButton.setVisible(false);
     }
 
+    private void playThinkingMusic(){
+        try{
+            thinkingClip = AudioSystem.getClip();
+
+            AudioInputStream themeStream = AudioSystem.getAudioInputStream(new File("theme.wav"));
+            thinkingClip.open(themeStream);
+            thinkingClip.start();
+            
+        }
+        catch(LineUnavailableException | UnsupportedAudioFileException | IOException e){
+            System.err.println("Can't play theme music");
+        }
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -191,6 +211,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
             
         }
     }
+    
     @Override
     public void actionPerformed(ActionEvent e){
         if(this.timeRemaining == 1)
@@ -221,6 +242,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     
     private void stopAnswer(){
         this.answerTimer.stop();
+        this.thinkingClip.stop();
     }
     
     private void rightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightButtonActionPerformed
@@ -232,6 +254,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
 
     private void startToAnswer(){
         this.waitTimer.stop();
+        this.playThinkingMusic();
         this.ignoreInput = true;
         this.timeRemaining = this.maxAnswerTime;
         this.timeLabel.setText(Integer.toString(this.timeRemaining));
