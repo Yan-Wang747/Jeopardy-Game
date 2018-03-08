@@ -136,4 +136,8 @@ public class JeopardyGame extends Observable{
     public void setCredits(int categoryIndex, int quesitonIndex, int newCredits){
         this.theQuestionManager.setCredits(categoryIndex, quesitonIndex, newCredits);
     }
+    
+    public int getNumOfTotalQuestions(){
+        return this.theQuestionManager.getNumOfTotalQuestions();
+    }
 }

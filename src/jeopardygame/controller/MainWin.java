@@ -7,30 +7,29 @@ package jeopardygame.controller;
 import jeopardygame.visualeffect.JeopardyColors;
 import jeopardygame.model.JeopardyGame;
 import jeopardygame.model.Player;
-import jeopardygame.sharedview.*;
 import jeopardygame.constant.JeopardyGameConstants;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.swing.*;
-import java.awt.event.ActionListener;
+import jeopardygame.sharedmodel.Category;
+import jeopardygame.sharedmodel.Question;
 
-public class MainWin extends javax.swing.JFrame implements ActionListener{
+public class MainWin extends javax.swing.JFrame{
 
     /**
      * Creates new form GameGUI
      */
     private final JeopardyGame gameCore;
+    private int answeredQuestions = 0;
+    private final JToggleButton[][] buttons = new JToggleButton[6][5];
+    private final JTextArea[] categoryTextAreas = new JTextArea[6];
          
     public MainWin(JeopardyGame gameCore) {
         initComponents();
         this.gameCore = gameCore;
         this.creditPanel.setPreferredSize(JeopardyGameConstants.CREDIT_PANEL_SIZE);
+        initQuestionButtons();
         initQuestionArray();
-        JeopardyColors.setComponentColor(this.rootPane);
-    }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        this.questionButtonAction(e);
+        JeopardyColors.setComponentColor(rootPane);
     }
     
     private void putPlayers(){
@@ -51,55 +50,136 @@ public class MainWin extends javax.swing.JFrame implements ActionListener{
     }
     
     @Override
-    public void dispose(){
+    public void dispose(){    
         this.gameCore.end();
         new FameHallWin(this.gameCore).setVisible(true);
         super.dispose();
     }
     
     private void showQuestionWindow(int categoryIndex, int questionIndex){
-        new QuestionWin(categoryIndex, questionIndex, gameCore, this, false).setVisible(true);
+        if(gameCore.isDoubleJeopardy(categoryIndex, questionIndex))
+            new BetWin(categoryIndex, questionIndex, gameCore, this).setVisible(true);
+        else
+            new QuestionWin(categoryIndex, questionIndex, gameCore, this, false).setVisible(true);
+        
         this.setVisible(false);
+        answeredQuestions++;
+    }
+    
+    private void initQuestionButtons(){
+        buttons[0][0] = c0q0;
+        buttons[0][1] = c0q1;
+        buttons[0][2] = c0q2;
+        buttons[0][3] = c0q3;
+        buttons[0][4] = c0q4;
+        buttons[1][0] = c1q0;
+        buttons[1][1] = c1q1;
+        buttons[1][2] = c1q2;
+        buttons[1][3] = c1q3;
+        buttons[1][4] = c1q4;
+        buttons[2][0] = c2q0;
+        buttons[2][1] = c2q1;
+        buttons[2][2] = c2q2;
+        buttons[2][3] = c2q3;
+        buttons[2][4] = c2q4;
+        buttons[3][0] = c3q0;
+        buttons[3][1] = c3q1;
+        buttons[3][2] = c3q2;
+        buttons[3][3] = c3q3;
+        buttons[3][4] = c3q4;
+        buttons[4][0] = c4q0;
+        buttons[4][1] = c4q1;
+        buttons[4][2] = c4q2;
+        buttons[4][3] = c4q3;
+        buttons[4][4] = c4q4;
+        buttons[5][0] = c5q0;
+        buttons[5][1] = c5q1;
+        buttons[5][2] = c5q2;
+        buttons[5][3] = c5q3;
+        buttons[5][4] = c5q4;
+        
+        for (JToggleButton[] button : buttons) {
+            for (JToggleButton button1 : button) {
+                button1.setVisible(false);
+            }
+        }
+        
+        categoryTextAreas[0] = category0Text;
+        categoryTextAreas[1] = category1Text;
+        categoryTextAreas[2] = category2Text;
+        categoryTextAreas[3] = category3Text;
+        categoryTextAreas[4] = category4Text;
+        categoryTextAreas[5] = category5Text;
     }
     
     private void initQuestionArray(){
         for(int categoryIndex = 0; categoryIndex < this.gameCore.getNumOfCategories(); categoryIndex++){
-            CategoryPanel newPanel = new CategoryPanel(this.gameCore.getCategory(categoryIndex).getCategoryText(), categoryIndex,JeopardyGameConstants.GAP, JeopardyGameConstants.CATEGORY_PANEL_SIZE);
-            newPanel.disableTextField();
-            newPanel.setCategoryTextFieldFont(JeopardyGameConstants.TEXT_FIELD_FONT);
-            for(int questionIndex = 0; questionIndex < this.gameCore.getNumOfQuestions(categoryIndex); questionIndex++)
-                newPanel.addNewQuestionButton(Integer.toString(gameCore.getQuestion(categoryIndex, questionIndex).getCredits()), this, JeopardyGameConstants.BUTTON_SIZE).setFont(JeopardyGameConstants.DEFAULT_FONT);
-            
-           allQuestionPanel.add(newPanel);
+             Category category = gameCore.getCategory(categoryIndex);
+             categoryTextAreas[categoryIndex].setText(category.getCategoryText());
+             
+             for(int questionIndex = 0; questionIndex < category.getNumberOfQuestions(); questionIndex++) {
+                 Question question = category.questions.get(questionIndex);
+                 buttons[categoryIndex][questionIndex].setText(Integer.toString(question.getCredits()));
+                 buttons[categoryIndex][questionIndex].setVisible(true);
+             }
         }
     }                             
 
-    private void showDoubleWindow(int categoryIndex, int questionIndex){
-        new BetWin(categoryIndex, questionIndex, gameCore, this).setVisible(true);
-        this.setVisible(false);
-    }
-    
-    private void questionButtonAction(java.awt.event.ActionEvent evt){
-        int categoryIndex = ((CategoryPanel)((QuestionButton)evt.getSource()).getParent()).categoryIndex;
-        int questionIndex = ((QuestionButton)evt.getSource()).questionIndex;
-        ((QuestionButton)evt.getSource()).setVisible(false);
-        
-        if(this.gameCore.isDoubleJeopardy(categoryIndex, questionIndex))
-            showDoubleWindow(categoryIndex, questionIndex);
-        else
-            showQuestionWindow(categoryIndex, questionIndex);
-    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        allQuestionPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         creditPanel = new javax.swing.JPanel();
         pickingPlayerName = new javax.swing.JLabel();
+        endGameButton = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        category0Text = new javax.swing.JTextArea();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        category1Text = new javax.swing.JTextArea();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        category2Text = new javax.swing.JTextArea();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        category3Text = new javax.swing.JTextArea();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        category4Text = new javax.swing.JTextArea();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        category5Text = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
+        c0q0 = new javax.swing.JToggleButton();
+        c1q0 = new javax.swing.JToggleButton();
+        c2q0 = new javax.swing.JToggleButton();
+        c3q0 = new javax.swing.JToggleButton();
+        c4q0 = new javax.swing.JToggleButton();
+        c5q0 = new javax.swing.JToggleButton();
+        c0q1 = new javax.swing.JToggleButton();
+        c1q1 = new javax.swing.JToggleButton();
+        c2q1 = new javax.swing.JToggleButton();
+        c3q1 = new javax.swing.JToggleButton();
+        c4q1 = new javax.swing.JToggleButton();
+        c5q1 = new javax.swing.JToggleButton();
+        c0q2 = new javax.swing.JToggleButton();
+        c1q2 = new javax.swing.JToggleButton();
+        c2q2 = new javax.swing.JToggleButton();
+        c3q2 = new javax.swing.JToggleButton();
+        c4q2 = new javax.swing.JToggleButton();
+        c5q2 = new javax.swing.JToggleButton();
+        c0q3 = new javax.swing.JToggleButton();
+        c1q3 = new javax.swing.JToggleButton();
+        c2q3 = new javax.swing.JToggleButton();
+        c3q3 = new javax.swing.JToggleButton();
+        c4q3 = new javax.swing.JToggleButton();
+        c5q3 = new javax.swing.JToggleButton();
+        c0q4 = new javax.swing.JToggleButton();
+        c1q4 = new javax.swing.JToggleButton();
+        c2q4 = new javax.swing.JToggleButton();
+        c3q4 = new javax.swing.JToggleButton();
+        c4q4 = new javax.swing.JToggleButton();
+        c5q4 = new javax.swing.JToggleButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setBackground(new java.awt.Color(102, 102, 102));
         setPreferredSize(new java.awt.Dimension(1920, 1080));
         setResizable(false);
         setSize(new java.awt.Dimension(1920, 1080));
@@ -109,45 +189,343 @@ public class MainWin extends javax.swing.JFrame implements ActionListener{
             }
         });
 
-        jScrollPane1.setBorder(null);
-
-        allQuestionPanel.setPreferredSize(null);
-        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout();
-        flowLayout1.setAlignOnBaseline(true);
-        allQuestionPanel.setLayout(flowLayout1);
-        jScrollPane1.setViewportView(allQuestionPanel);
-
         jScrollPane2.setBorder(null);
 
         creditPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 100, 5));
         jScrollPane2.setViewportView(creditPanel);
 
         pickingPlayerName.setFont(new java.awt.Font("SimSun", 0, 48)); // NOI18N
-        pickingPlayerName.setText("jLabel1");
+        pickingPlayerName.setText("Name");
+
+        endGameButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        endGameButton.setText("End Game");
+        endGameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                endGameButtonActionPerformed(evt);
+            }
+        });
+
+        jPanel2.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel2.setLayout(new java.awt.GridLayout(1, 6, 10, 10));
+
+        category0Text.setColumns(20);
+        category0Text.setLineWrap(true);
+        category0Text.setRows(5);
+        category0Text.setSize(new java.awt.Dimension(240, 70));
+        jScrollPane1.setViewportView(category0Text);
+
+        jPanel2.add(jScrollPane1);
+
+        category1Text.setColumns(20);
+        category1Text.setLineWrap(true);
+        category1Text.setRows(5);
+        category1Text.setPreferredSize(new java.awt.Dimension(240, 70));
+        jScrollPane8.setViewportView(category1Text);
+
+        jPanel2.add(jScrollPane8);
+
+        category2Text.setColumns(20);
+        category2Text.setLineWrap(true);
+        category2Text.setRows(5);
+        jScrollPane9.setViewportView(category2Text);
+
+        jPanel2.add(jScrollPane9);
+
+        category3Text.setColumns(20);
+        category3Text.setLineWrap(true);
+        category3Text.setRows(5);
+        jScrollPane10.setViewportView(category3Text);
+
+        jPanel2.add(jScrollPane10);
+
+        category4Text.setColumns(20);
+        category4Text.setLineWrap(true);
+        category4Text.setRows(5);
+        jScrollPane11.setViewportView(category4Text);
+
+        jPanel2.add(jScrollPane11);
+
+        category5Text.setColumns(20);
+        category5Text.setLineWrap(true);
+        category5Text.setRows(5);
+        jScrollPane12.setViewportView(category5Text);
+
+        jPanel2.add(jScrollPane12);
+
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setLayout(new java.awt.GridLayout(5, 6, 10, 5));
+
+        c0q0.setText("jToggleButton2");
+        c0q0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c0q0ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c0q0);
+
+        c1q0.setText("jToggleButton4");
+        c1q0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c1q0ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c1q0);
+
+        c2q0.setText("jToggleButton6");
+        c2q0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c2q0ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c2q0);
+
+        c3q0.setText("jToggleButton11");
+        c3q0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c3q0ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c3q0);
+
+        c4q0.setText("jToggleButton9");
+        c4q0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c4q0ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c4q0);
+
+        c5q0.setText("jToggleButton13");
+        c5q0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c5q0ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c5q0);
+
+        c0q1.setText("jToggleButton23");
+        c0q1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c0q1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c0q1);
+
+        c1q1.setText("jToggleButton21");
+        c1q1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c1q1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c1q1);
+
+        c2q1.setText("jToggleButton26");
+        c2q1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c2q1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c2q1);
+
+        c3q1.setText("jToggleButton29");
+        c3q1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c3q1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c3q1);
+
+        c4q1.setText("jToggleButton30");
+        c4q1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c4q1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c4q1);
+
+        c5q1.setText("jToggleButton25");
+        c5q1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c5q1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c5q1);
+
+        c0q2.setText("jToggleButton24");
+        c0q2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c0q2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c0q2);
+
+        c1q2.setText("jToggleButton20");
+        c1q2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c1q2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c1q2);
+
+        c2q2.setText("jToggleButton19");
+        c2q2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c2q2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c2q2);
+
+        c3q2.setText("jToggleButton18");
+        c3q2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c3q2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c3q2);
+
+        c4q2.setText("jToggleButton17");
+        c4q2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c4q2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c4q2);
+
+        c5q2.setText("jToggleButton27");
+        c5q2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c5q2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c5q2);
+
+        c0q3.setText("jToggleButton28");
+        c0q3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c0q3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c0q3);
+
+        c1q3.setText("jToggleButton5");
+        c1q3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c1q3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c1q3);
+
+        c2q3.setText("jToggleButton22");
+        c2q3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c2q3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c2q3);
+
+        c3q3.setText("jToggleButton16");
+        c3q3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c3q3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c3q3);
+
+        c4q3.setText("jToggleButton15");
+        c4q3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c4q3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c4q3);
+
+        c5q3.setText("jToggleButton10");
+        c5q3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c5q3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c5q3);
+
+        c0q4.setText("jToggleButton14");
+        c0q4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c0q4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c0q4);
+
+        c1q4.setText("jToggleButton3");
+        c1q4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c1q4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c1q4);
+
+        c2q4.setText("jToggleButton12");
+        c2q4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c2q4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c2q4);
+
+        c3q4.setText("jToggleButton7");
+        c3q4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c3q4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c3q4);
+
+        c4q4.setText("jToggleButton8");
+        c4q4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c4q4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c4q4);
+
+        c5q4.setText("jToggleButton1");
+        c5q4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c5q4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(c5q4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane2)
+                .addContainerGap(52, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(pickingPlayerName)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(pickingPlayerName)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(endGameButton))))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(51, 51, 51)
+                .addContainerGap()
+                .addComponent(endGameButton)
+                .addGap(7, 7, 7)
                 .addComponent(pickingPlayerName)
+                .addGap(34, 34, 34)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -164,11 +542,240 @@ public class MainWin extends javax.swing.JFrame implements ActionListener{
         this.creditPanel.setVisible(true);
     }//GEN-LAST:event_formWindowActivated
 
+    private void endGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endGameButtonActionPerformed
+        // TODO add your handling code here:
+        new EndGameDialog(this).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_endGameButtonActionPerformed
+
+    private void c1q0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1q0ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[1][0].setVisible(false);
+        this.showQuestionWindow(1, 0);
+    }//GEN-LAST:event_c1q0ActionPerformed
+
+    private void c0q0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c0q0ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[0][0].setVisible(false);
+        this.showQuestionWindow(0, 0);
+    }//GEN-LAST:event_c0q0ActionPerformed
+
+    private void c0q1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c0q1ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[0][1].setVisible(false);
+        this.showQuestionWindow(0, 1);
+    }//GEN-LAST:event_c0q1ActionPerformed
+
+    private void c0q2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c0q2ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[0][2].setVisible(false);
+        this.showQuestionWindow(0, 2);
+    }//GEN-LAST:event_c0q2ActionPerformed
+
+    private void c0q3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c0q3ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[0][3].setVisible(false);
+        this.showQuestionWindow(0, 3);
+    }//GEN-LAST:event_c0q3ActionPerformed
+
+    private void c0q4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c0q4ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[0][4].setVisible(false);
+        this.showQuestionWindow(0, 4);
+    }//GEN-LAST:event_c0q4ActionPerformed
+
+    private void c1q1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1q1ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[1][1].setVisible(false);
+        this.showQuestionWindow(1, 1);
+    }//GEN-LAST:event_c1q1ActionPerformed
+
+    private void c1q2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1q2ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[1][2].setVisible(false);
+        this.showQuestionWindow(1, 2);
+    }//GEN-LAST:event_c1q2ActionPerformed
+
+    private void c1q3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1q3ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[1][3].setVisible(false);
+        this.showQuestionWindow(1, 3);
+    }//GEN-LAST:event_c1q3ActionPerformed
+
+    private void c1q4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1q4ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[1][4].setVisible(false);
+        this.showQuestionWindow(1, 4);
+    }//GEN-LAST:event_c1q4ActionPerformed
+
+    private void c2q0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c2q0ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[2][0].setVisible(false);
+        this.showQuestionWindow(2, 0);
+    }//GEN-LAST:event_c2q0ActionPerformed
+
+    private void c2q1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c2q1ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[2][1].setVisible(false);
+        this.showQuestionWindow(2, 1);
+    }//GEN-LAST:event_c2q1ActionPerformed
+
+    private void c2q2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c2q2ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[2][2].setVisible(false);
+        this.showQuestionWindow(2, 2);
+    }//GEN-LAST:event_c2q2ActionPerformed
+
+    private void c2q3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c2q3ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[2][3].setVisible(false);
+        this.showQuestionWindow(2, 3);
+    }//GEN-LAST:event_c2q3ActionPerformed
+
+    private void c2q4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c2q4ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[2][4].setVisible(false);
+        this.showQuestionWindow(2, 4);
+    }//GEN-LAST:event_c2q4ActionPerformed
+
+    private void c3q0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c3q0ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[3][0].setVisible(false);
+        this.showQuestionWindow(3, 0);
+    }//GEN-LAST:event_c3q0ActionPerformed
+
+    private void c3q1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c3q1ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[3][1].setVisible(false);
+        this.showQuestionWindow(3, 1);
+    }//GEN-LAST:event_c3q1ActionPerformed
+
+    private void c3q2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c3q2ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[3][2].setVisible(false);
+        this.showQuestionWindow(3, 2);
+    }//GEN-LAST:event_c3q2ActionPerformed
+
+    private void c3q3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c3q3ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[3][3].setVisible(false);
+        this.showQuestionWindow(3, 3);
+    }//GEN-LAST:event_c3q3ActionPerformed
+
+    private void c3q4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c3q4ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[3][4].setVisible(false);
+        this.showQuestionWindow(3, 4);
+    }//GEN-LAST:event_c3q4ActionPerformed
+
+    private void c4q0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c4q0ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[4][0].setVisible(false);
+        this.showQuestionWindow(4, 0);
+    }//GEN-LAST:event_c4q0ActionPerformed
+
+    private void c4q1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c4q1ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[4][1].setVisible(false);
+        this.showQuestionWindow(4, 1);
+    }//GEN-LAST:event_c4q1ActionPerformed
+
+    private void c4q2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c4q2ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[4][2].setVisible(false);
+        this.showQuestionWindow(4, 2);
+    }//GEN-LAST:event_c4q2ActionPerformed
+
+    private void c4q3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c4q3ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[4][3].setVisible(false);
+        this.showQuestionWindow(4, 3);
+    }//GEN-LAST:event_c4q3ActionPerformed
+
+    private void c4q4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c4q4ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[4][4].setVisible(false);
+        this.showQuestionWindow(4, 4);
+    }//GEN-LAST:event_c4q4ActionPerformed
+
+    private void c5q0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c5q0ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[5][0].setVisible(false);
+        this.showQuestionWindow(5, 0);
+    }//GEN-LAST:event_c5q0ActionPerformed
+
+    private void c5q1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c5q1ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[5][1].setVisible(false);
+        this.showQuestionWindow(5, 1);
+    }//GEN-LAST:event_c5q1ActionPerformed
+
+    private void c5q2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c5q2ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[5][2].setVisible(false);
+        this.showQuestionWindow(5, 2);
+    }//GEN-LAST:event_c5q2ActionPerformed
+
+    private void c5q3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c5q3ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[5][3].setVisible(false);
+        this.showQuestionWindow(5, 3);
+    }//GEN-LAST:event_c5q3ActionPerformed
+
+    private void c5q4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c5q4ActionPerformed
+        // TODO add your handling code here:
+        this.buttons[5][4].setVisible(false);
+        this.showQuestionWindow(5, 4);
+    }//GEN-LAST:event_c5q4ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel allQuestionPanel;
+    private javax.swing.JToggleButton c0q0;
+    private javax.swing.JToggleButton c0q1;
+    private javax.swing.JToggleButton c0q2;
+    private javax.swing.JToggleButton c0q3;
+    private javax.swing.JToggleButton c0q4;
+    private javax.swing.JToggleButton c1q0;
+    private javax.swing.JToggleButton c1q1;
+    private javax.swing.JToggleButton c1q2;
+    private javax.swing.JToggleButton c1q3;
+    private javax.swing.JToggleButton c1q4;
+    private javax.swing.JToggleButton c2q0;
+    private javax.swing.JToggleButton c2q1;
+    private javax.swing.JToggleButton c2q2;
+    private javax.swing.JToggleButton c2q3;
+    private javax.swing.JToggleButton c2q4;
+    private javax.swing.JToggleButton c3q0;
+    private javax.swing.JToggleButton c3q1;
+    private javax.swing.JToggleButton c3q2;
+    private javax.swing.JToggleButton c3q3;
+    private javax.swing.JToggleButton c3q4;
+    private javax.swing.JToggleButton c4q0;
+    private javax.swing.JToggleButton c4q1;
+    private javax.swing.JToggleButton c4q2;
+    private javax.swing.JToggleButton c4q3;
+    private javax.swing.JToggleButton c4q4;
+    private javax.swing.JToggleButton c5q0;
+    private javax.swing.JToggleButton c5q1;
+    private javax.swing.JToggleButton c5q2;
+    private javax.swing.JToggleButton c5q3;
+    private javax.swing.JToggleButton c5q4;
+    private javax.swing.JTextArea category0Text;
+    private javax.swing.JTextArea category1Text;
+    private javax.swing.JTextArea category2Text;
+    private javax.swing.JTextArea category3Text;
+    private javax.swing.JTextArea category4Text;
+    private javax.swing.JTextArea category5Text;
     private javax.swing.JPanel creditPanel;
+    private javax.swing.JButton endGameButton;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JLabel pickingPlayerName;
     // End of variables declaration//GEN-END:variables
 }
