@@ -15,7 +15,7 @@ import java.awt.Container;
  */
 public class JeopardyColors {
     public static final Color BACKGROUND = new Color(0, 0, 120);
-    public static final Color FONT =  new Color(200, 200, 200);
+    public static final Color FONT =  new Color(235, 176, 82);
     
     public static void setComponentColor(Component component){
         component.setBackground(JeopardyColors.BACKGROUND);

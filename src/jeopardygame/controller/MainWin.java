@@ -5,6 +5,7 @@
  */
 package jeopardygame.controller;
 
+import java.awt.Color;
 import jeopardygame.visualeffect.JeopardyColors;
 import jeopardygame.model.JeopardyGame;
 import jeopardygame.model.Player;
@@ -26,11 +27,16 @@ public class MainWin extends javax.swing.JFrame{
          
     public MainWin(JeopardyGame gameCore) {
         initComponents();
+        JeopardyColors.setComponentColor(rootPane);
         this.gameCore = gameCore;
         this.creditPanel.setPreferredSize(JeopardyGameConstants.CREDIT_PANEL_SIZE);
         initQuestionButtons();
         initQuestionArray();
-        JeopardyColors.setComponentColor(rootPane);
+        this.getContentPane().setBackground(Color.DARK_GRAY);
+        this.categoryTextPanel.setBackground(Color.BLACK);
+        this.questionPanel.setBackground(Color.BLACK);
+        this.creditPanel.setBackground(Color.DARK_GRAY);
+        this.jPanel1.setBackground(Color.DARK_GRAY);
     }
     
     private void putPlayers(){
@@ -111,6 +117,10 @@ public class MainWin extends javax.swing.JFrame{
         categoryTextAreas[3] = category3Text;
         categoryTextAreas[4] = category4Text;
         categoryTextAreas[5] = category5Text;
+        
+        for (JTextArea categoryTextArea : categoryTextAreas) {
+            categoryTextArea.setBackground(new Color(14, 14, 200));
+        }
     }
     
     private void initQuestionArray(){
@@ -132,9 +142,8 @@ public class MainWin extends javax.swing.JFrame{
 
         jScrollPane2 = new javax.swing.JScrollPane();
         creditPanel = new javax.swing.JPanel();
-        pickingPlayerName = new javax.swing.JLabel();
         endGameButton = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        categoryTextPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         category0Text = new javax.swing.JTextArea();
         jScrollPane8 = new javax.swing.JScrollPane();
@@ -147,7 +156,7 @@ public class MainWin extends javax.swing.JFrame{
         category4Text = new javax.swing.JTextArea();
         jScrollPane12 = new javax.swing.JScrollPane();
         category5Text = new javax.swing.JTextArea();
-        jPanel1 = new javax.swing.JPanel();
+        questionPanel = new javax.swing.JPanel();
         c0q0 = new javax.swing.JToggleButton();
         c1q0 = new javax.swing.JToggleButton();
         c2q0 = new javax.swing.JToggleButton();
@@ -178,6 +187,8 @@ public class MainWin extends javax.swing.JFrame{
         c3q4 = new javax.swing.JToggleButton();
         c4q4 = new javax.swing.JToggleButton();
         c5q4 = new javax.swing.JToggleButton();
+        jPanel1 = new javax.swing.JPanel();
+        pickingNameLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 102));
@@ -195,9 +206,6 @@ public class MainWin extends javax.swing.JFrame{
         creditPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 100, 5));
         jScrollPane2.setViewportView(creditPanel);
 
-        pickingPlayerName.setFont(new java.awt.Font("SimSun", 0, 48)); // NOI18N
-        pickingPlayerName.setText("Name");
-
         endGameButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         endGameButton.setText("End Game");
         endGameButton.addActionListener(new java.awt.event.ActionListener() {
@@ -206,11 +214,12 @@ public class MainWin extends javax.swing.JFrame{
             }
         });
 
-        jPanel2.setBackground(new java.awt.Color(0, 0, 0));
-        jPanel2.setLayout(new java.awt.GridLayout(1, 6, 10, 10));
+        categoryTextPanel.setBackground(new java.awt.Color(0, 0, 0));
+        categoryTextPanel.setLayout(new java.awt.GridLayout(1, 6, 10, 10));
 
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        category0Text.setEditable(false);
         category0Text.setColumns(20);
         category0Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         category0Text.setLineWrap(true);
@@ -218,60 +227,65 @@ public class MainWin extends javax.swing.JFrame{
         category0Text.setSize(new java.awt.Dimension(240, 70));
         jScrollPane1.setViewportView(category0Text);
 
-        jPanel2.add(jScrollPane1);
+        categoryTextPanel.add(jScrollPane1);
 
         jScrollPane8.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        category1Text.setEditable(false);
         category1Text.setColumns(20);
         category1Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         category1Text.setLineWrap(true);
         category1Text.setRows(5);
         jScrollPane8.setViewportView(category1Text);
 
-        jPanel2.add(jScrollPane8);
+        categoryTextPanel.add(jScrollPane8);
 
         jScrollPane9.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        category2Text.setEditable(false);
         category2Text.setColumns(20);
         category2Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         category2Text.setLineWrap(true);
         category2Text.setRows(5);
         jScrollPane9.setViewportView(category2Text);
 
-        jPanel2.add(jScrollPane9);
+        categoryTextPanel.add(jScrollPane9);
 
         jScrollPane10.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        category3Text.setEditable(false);
         category3Text.setColumns(20);
         category3Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         category3Text.setLineWrap(true);
         category3Text.setRows(5);
         jScrollPane10.setViewportView(category3Text);
 
-        jPanel2.add(jScrollPane10);
+        categoryTextPanel.add(jScrollPane10);
 
         jScrollPane11.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        category4Text.setEditable(false);
         category4Text.setColumns(20);
         category4Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         category4Text.setLineWrap(true);
         category4Text.setRows(5);
         jScrollPane11.setViewportView(category4Text);
 
-        jPanel2.add(jScrollPane11);
+        categoryTextPanel.add(jScrollPane11);
 
         jScrollPane12.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        category5Text.setEditable(false);
         category5Text.setColumns(20);
         category5Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         category5Text.setLineWrap(true);
         category5Text.setRows(5);
         jScrollPane12.setViewportView(category5Text);
 
-        jPanel2.add(jScrollPane12);
+        categoryTextPanel.add(jScrollPane12);
 
-        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
-        jPanel1.setLayout(new java.awt.GridLayout(5, 6, 10, 5));
+        questionPanel.setBackground(new java.awt.Color(0, 0, 0));
+        questionPanel.setLayout(new java.awt.GridLayout(5, 6, 10, 5));
 
         c0q0.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c0q0.addActionListener(new java.awt.event.ActionListener() {
@@ -279,7 +293,7 @@ public class MainWin extends javax.swing.JFrame{
                 c0q0ActionPerformed(evt);
             }
         });
-        jPanel1.add(c0q0);
+        questionPanel.add(c0q0);
 
         c1q0.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c1q0.addActionListener(new java.awt.event.ActionListener() {
@@ -287,7 +301,7 @@ public class MainWin extends javax.swing.JFrame{
                 c1q0ActionPerformed(evt);
             }
         });
-        jPanel1.add(c1q0);
+        questionPanel.add(c1q0);
 
         c2q0.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c2q0.addActionListener(new java.awt.event.ActionListener() {
@@ -295,7 +309,7 @@ public class MainWin extends javax.swing.JFrame{
                 c2q0ActionPerformed(evt);
             }
         });
-        jPanel1.add(c2q0);
+        questionPanel.add(c2q0);
 
         c3q0.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c3q0.addActionListener(new java.awt.event.ActionListener() {
@@ -303,7 +317,7 @@ public class MainWin extends javax.swing.JFrame{
                 c3q0ActionPerformed(evt);
             }
         });
-        jPanel1.add(c3q0);
+        questionPanel.add(c3q0);
 
         c4q0.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c4q0.addActionListener(new java.awt.event.ActionListener() {
@@ -311,7 +325,7 @@ public class MainWin extends javax.swing.JFrame{
                 c4q0ActionPerformed(evt);
             }
         });
-        jPanel1.add(c4q0);
+        questionPanel.add(c4q0);
 
         c5q0.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c5q0.addActionListener(new java.awt.event.ActionListener() {
@@ -319,7 +333,7 @@ public class MainWin extends javax.swing.JFrame{
                 c5q0ActionPerformed(evt);
             }
         });
-        jPanel1.add(c5q0);
+        questionPanel.add(c5q0);
 
         c0q1.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c0q1.addActionListener(new java.awt.event.ActionListener() {
@@ -327,7 +341,7 @@ public class MainWin extends javax.swing.JFrame{
                 c0q1ActionPerformed(evt);
             }
         });
-        jPanel1.add(c0q1);
+        questionPanel.add(c0q1);
 
         c1q1.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c1q1.addActionListener(new java.awt.event.ActionListener() {
@@ -335,7 +349,7 @@ public class MainWin extends javax.swing.JFrame{
                 c1q1ActionPerformed(evt);
             }
         });
-        jPanel1.add(c1q1);
+        questionPanel.add(c1q1);
 
         c2q1.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c2q1.addActionListener(new java.awt.event.ActionListener() {
@@ -343,7 +357,7 @@ public class MainWin extends javax.swing.JFrame{
                 c2q1ActionPerformed(evt);
             }
         });
-        jPanel1.add(c2q1);
+        questionPanel.add(c2q1);
 
         c3q1.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c3q1.addActionListener(new java.awt.event.ActionListener() {
@@ -351,7 +365,7 @@ public class MainWin extends javax.swing.JFrame{
                 c3q1ActionPerformed(evt);
             }
         });
-        jPanel1.add(c3q1);
+        questionPanel.add(c3q1);
 
         c4q1.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c4q1.addActionListener(new java.awt.event.ActionListener() {
@@ -359,7 +373,7 @@ public class MainWin extends javax.swing.JFrame{
                 c4q1ActionPerformed(evt);
             }
         });
-        jPanel1.add(c4q1);
+        questionPanel.add(c4q1);
 
         c5q1.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c5q1.addActionListener(new java.awt.event.ActionListener() {
@@ -367,7 +381,7 @@ public class MainWin extends javax.swing.JFrame{
                 c5q1ActionPerformed(evt);
             }
         });
-        jPanel1.add(c5q1);
+        questionPanel.add(c5q1);
 
         c0q2.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c0q2.addActionListener(new java.awt.event.ActionListener() {
@@ -375,7 +389,7 @@ public class MainWin extends javax.swing.JFrame{
                 c0q2ActionPerformed(evt);
             }
         });
-        jPanel1.add(c0q2);
+        questionPanel.add(c0q2);
 
         c1q2.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c1q2.addActionListener(new java.awt.event.ActionListener() {
@@ -383,7 +397,7 @@ public class MainWin extends javax.swing.JFrame{
                 c1q2ActionPerformed(evt);
             }
         });
-        jPanel1.add(c1q2);
+        questionPanel.add(c1q2);
 
         c2q2.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c2q2.addActionListener(new java.awt.event.ActionListener() {
@@ -391,7 +405,7 @@ public class MainWin extends javax.swing.JFrame{
                 c2q2ActionPerformed(evt);
             }
         });
-        jPanel1.add(c2q2);
+        questionPanel.add(c2q2);
 
         c3q2.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c3q2.addActionListener(new java.awt.event.ActionListener() {
@@ -399,7 +413,7 @@ public class MainWin extends javax.swing.JFrame{
                 c3q2ActionPerformed(evt);
             }
         });
-        jPanel1.add(c3q2);
+        questionPanel.add(c3q2);
 
         c4q2.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c4q2.addActionListener(new java.awt.event.ActionListener() {
@@ -407,7 +421,7 @@ public class MainWin extends javax.swing.JFrame{
                 c4q2ActionPerformed(evt);
             }
         });
-        jPanel1.add(c4q2);
+        questionPanel.add(c4q2);
 
         c5q2.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c5q2.addActionListener(new java.awt.event.ActionListener() {
@@ -415,7 +429,7 @@ public class MainWin extends javax.swing.JFrame{
                 c5q2ActionPerformed(evt);
             }
         });
-        jPanel1.add(c5q2);
+        questionPanel.add(c5q2);
 
         c0q3.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c0q3.addActionListener(new java.awt.event.ActionListener() {
@@ -423,7 +437,7 @@ public class MainWin extends javax.swing.JFrame{
                 c0q3ActionPerformed(evt);
             }
         });
-        jPanel1.add(c0q3);
+        questionPanel.add(c0q3);
 
         c1q3.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c1q3.addActionListener(new java.awt.event.ActionListener() {
@@ -431,7 +445,7 @@ public class MainWin extends javax.swing.JFrame{
                 c1q3ActionPerformed(evt);
             }
         });
-        jPanel1.add(c1q3);
+        questionPanel.add(c1q3);
 
         c2q3.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c2q3.addActionListener(new java.awt.event.ActionListener() {
@@ -439,7 +453,7 @@ public class MainWin extends javax.swing.JFrame{
                 c2q3ActionPerformed(evt);
             }
         });
-        jPanel1.add(c2q3);
+        questionPanel.add(c2q3);
 
         c3q3.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c3q3.addActionListener(new java.awt.event.ActionListener() {
@@ -447,7 +461,7 @@ public class MainWin extends javax.swing.JFrame{
                 c3q3ActionPerformed(evt);
             }
         });
-        jPanel1.add(c3q3);
+        questionPanel.add(c3q3);
 
         c4q3.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c4q3.addActionListener(new java.awt.event.ActionListener() {
@@ -455,7 +469,7 @@ public class MainWin extends javax.swing.JFrame{
                 c4q3ActionPerformed(evt);
             }
         });
-        jPanel1.add(c4q3);
+        questionPanel.add(c4q3);
 
         c5q3.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c5q3.addActionListener(new java.awt.event.ActionListener() {
@@ -463,7 +477,7 @@ public class MainWin extends javax.swing.JFrame{
                 c5q3ActionPerformed(evt);
             }
         });
-        jPanel1.add(c5q3);
+        questionPanel.add(c5q3);
 
         c0q4.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c0q4.addActionListener(new java.awt.event.ActionListener() {
@@ -471,7 +485,7 @@ public class MainWin extends javax.swing.JFrame{
                 c0q4ActionPerformed(evt);
             }
         });
-        jPanel1.add(c0q4);
+        questionPanel.add(c0q4);
 
         c1q4.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c1q4.addActionListener(new java.awt.event.ActionListener() {
@@ -479,7 +493,7 @@ public class MainWin extends javax.swing.JFrame{
                 c1q4ActionPerformed(evt);
             }
         });
-        jPanel1.add(c1q4);
+        questionPanel.add(c1q4);
 
         c2q4.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c2q4.addActionListener(new java.awt.event.ActionListener() {
@@ -487,7 +501,7 @@ public class MainWin extends javax.swing.JFrame{
                 c2q4ActionPerformed(evt);
             }
         });
-        jPanel1.add(c2q4);
+        questionPanel.add(c2q4);
 
         c3q4.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c3q4.addActionListener(new java.awt.event.ActionListener() {
@@ -495,7 +509,7 @@ public class MainWin extends javax.swing.JFrame{
                 c3q4ActionPerformed(evt);
             }
         });
-        jPanel1.add(c3q4);
+        questionPanel.add(c3q4);
 
         c4q4.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c4q4.setToolTipText("");
@@ -504,7 +518,7 @@ public class MainWin extends javax.swing.JFrame{
                 c4q4ActionPerformed(evt);
             }
         });
-        jPanel1.add(c4q4);
+        questionPanel.add(c4q4);
 
         c5q4.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         c5q4.addActionListener(new java.awt.event.ActionListener() {
@@ -512,7 +526,12 @@ public class MainWin extends javax.swing.JFrame{
                 c5q4ActionPerformed(evt);
             }
         });
-        jPanel1.add(c5q4);
+        questionPanel.add(c5q4);
+
+        pickingNameLabel.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
+        pickingNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pickingNameLabel.setText("Name");
+        jPanel1.add(pickingNameLabel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -522,27 +541,24 @@ public class MainWin extends javax.swing.JFrame{
                 .addContainerGap(22, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(endGameButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1033, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(categoryTextPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(questionPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1033, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(23, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(pickingPlayerName)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(endGameButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pickingPlayerName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(categoryTextPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addComponent(questionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
@@ -553,7 +569,7 @@ public class MainWin extends javax.swing.JFrame{
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
         Player pickingPlayer = gameCore.getPlayer(gameCore.getAnsweringPlayerIndex());
-        this.pickingPlayerName.setText(pickingPlayer.getName() + ", please pick a question");
+        this.pickingNameLabel.setText(pickingPlayer.getName() + ", please pick a question");
         this.putPlayers();
         this.setLocationRelativeTo(null);
         this.creditPanel.setVisible(true);
@@ -782,10 +798,10 @@ public class MainWin extends javax.swing.JFrame{
     private javax.swing.JTextArea category3Text;
     private javax.swing.JTextArea category4Text;
     private javax.swing.JTextArea category5Text;
+    private javax.swing.JPanel categoryTextPanel;
     private javax.swing.JPanel creditPanel;
     private javax.swing.JButton endGameButton;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
@@ -793,6 +809,7 @@ public class MainWin extends javax.swing.JFrame{
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
-    private javax.swing.JLabel pickingPlayerName;
+    private javax.swing.JLabel pickingNameLabel;
+    private javax.swing.JPanel questionPanel;
     // End of variables declaration//GEN-END:variables
 }
