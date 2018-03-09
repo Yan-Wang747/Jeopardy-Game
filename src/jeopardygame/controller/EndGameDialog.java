@@ -100,7 +100,8 @@ public class EndGameDialog extends javax.swing.JFrame {
 
     private void yesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yesButtonActionPerformed
         // TODO add your handling code here:
-        mainWindow.dispose();
+        mainWindow.endGame();
+        mainWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_yesButtonActionPerformed
 

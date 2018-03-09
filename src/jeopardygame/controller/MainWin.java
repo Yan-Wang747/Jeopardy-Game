@@ -23,7 +23,8 @@ public class MainWin extends javax.swing.JFrame{
     private final JeopardyGame gameCore;
     private int answeredQuestions = 0;
     private final JToggleButton[][] buttons = new JToggleButton[6][5];
-    private final JTextArea[] categoryTextAreas = new JTextArea[6];
+    private final JButton[] categoryTextButtons = new JButton[6];
+    private boolean gameIsEnded = false;
          
     public MainWin(JeopardyGame gameCore) {
         initComponents();
@@ -57,8 +58,29 @@ public class MainWin extends javax.swing.JFrame{
     }
     
     @Override
-    public void dispose(){    
-        this.gameCore.end();
+    public void dispose(){
+        if(gameIsEnded){
+            gameCore.end();
+            disposeWindow();
+        }else {
+            new EndGameDialog(this).setVisible(true);
+            this.setVisible(false);
+        }
+    }
+    
+    public void endGame(){
+        for(int categoryIndex = 0; categoryIndex < this.gameCore.getNumOfCategories(); categoryIndex++){
+            Category category = gameCore.getCategory(categoryIndex);
+
+            for(int questionIndex = 0; questionIndex < category.getNumberOfQuestions(); questionIndex++) 
+                buttons[categoryIndex][questionIndex].setVisible(false);
+        }
+        
+        gameIsEnded = true;
+        this.pickingNameLabel.setText("Game ends, please click on the close button to return.");
+    }
+    
+    private void disposeWindow(){
         new FameHallWin(this.gameCore).setVisible(true);
         super.dispose();
     }
@@ -111,22 +133,18 @@ public class MainWin extends javax.swing.JFrame{
             }
         }
         
-        categoryTextAreas[0] = category0Text;
-        categoryTextAreas[1] = category1Text;
-        categoryTextAreas[2] = category2Text;
-        categoryTextAreas[3] = category3Text;
-        categoryTextAreas[4] = category4Text;
-        categoryTextAreas[5] = category5Text;
-        
-        for (JTextArea categoryTextArea : categoryTextAreas) {
-            categoryTextArea.setBackground(new Color(14, 14, 200));
-        }
+        categoryTextButtons[0] = category1TextButton;
+        categoryTextButtons[1] = category2TextButton;
+        categoryTextButtons[2] = category3TextButton;
+        categoryTextButtons[3] = category4TextButton;
+        categoryTextButtons[4] = category5TextButton;
+        categoryTextButtons[5] = category6TextButton;
     }
     
     private void initQuestionArray(){
         for(int categoryIndex = 0; categoryIndex < this.gameCore.getNumOfCategories(); categoryIndex++){
              Category category = gameCore.getCategory(categoryIndex);
-             categoryTextAreas[categoryIndex].setText(category.getCategoryText());
+             categoryTextButtons[categoryIndex].setText(category.getCategoryText());
              
              for(int questionIndex = 0; questionIndex < category.getNumberOfQuestions(); questionIndex++) {
                  Question question = category.questions.get(questionIndex);
@@ -142,20 +160,13 @@ public class MainWin extends javax.swing.JFrame{
 
         jScrollPane2 = new javax.swing.JScrollPane();
         creditPanel = new javax.swing.JPanel();
-        endGameButton = new javax.swing.JButton();
         categoryTextPanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        category0Text = new javax.swing.JTextArea();
-        jScrollPane8 = new javax.swing.JScrollPane();
-        category1Text = new javax.swing.JTextArea();
-        jScrollPane9 = new javax.swing.JScrollPane();
-        category2Text = new javax.swing.JTextArea();
-        jScrollPane10 = new javax.swing.JScrollPane();
-        category3Text = new javax.swing.JTextArea();
-        jScrollPane11 = new javax.swing.JScrollPane();
-        category4Text = new javax.swing.JTextArea();
-        jScrollPane12 = new javax.swing.JScrollPane();
-        category5Text = new javax.swing.JTextArea();
+        category1TextButton = new javax.swing.JButton();
+        category2TextButton = new javax.swing.JButton();
+        category3TextButton = new javax.swing.JButton();
+        category4TextButton = new javax.swing.JButton();
+        category5TextButton = new javax.swing.JButton();
+        category6TextButton = new javax.swing.JButton();
         questionPanel = new javax.swing.JPanel();
         c0q0 = new javax.swing.JToggleButton();
         c1q0 = new javax.swing.JToggleButton();
@@ -190,7 +201,7 @@ public class MainWin extends javax.swing.JFrame{
         jPanel1 = new javax.swing.JPanel();
         pickingNameLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 102));
         setPreferredSize(new java.awt.Dimension(1920, 1080));
         setResizable(false);
@@ -206,83 +217,31 @@ public class MainWin extends javax.swing.JFrame{
         creditPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 100, 5));
         jScrollPane2.setViewportView(creditPanel);
 
-        endGameButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        endGameButton.setText("End Game");
-        endGameButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                endGameButtonActionPerformed(evt);
-            }
-        });
-
         categoryTextPanel.setBackground(new java.awt.Color(0, 0, 0));
         categoryTextPanel.setLayout(new java.awt.GridLayout(1, 6, 10, 10));
 
-        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        category1TextButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        categoryTextPanel.add(category1TextButton);
 
-        category0Text.setEditable(false);
-        category0Text.setColumns(20);
-        category0Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        category0Text.setLineWrap(true);
-        category0Text.setRows(5);
-        category0Text.setSize(new java.awt.Dimension(240, 70));
-        jScrollPane1.setViewportView(category0Text);
+        category2TextButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        categoryTextPanel.add(category2TextButton);
 
-        categoryTextPanel.add(jScrollPane1);
+        category3TextButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        categoryTextPanel.add(category3TextButton);
 
-        jScrollPane8.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        category4TextButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        categoryTextPanel.add(category4TextButton);
 
-        category1Text.setEditable(false);
-        category1Text.setColumns(20);
-        category1Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        category1Text.setLineWrap(true);
-        category1Text.setRows(5);
-        jScrollPane8.setViewportView(category1Text);
+        category5TextButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        categoryTextPanel.add(category5TextButton);
 
-        categoryTextPanel.add(jScrollPane8);
-
-        jScrollPane9.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-
-        category2Text.setEditable(false);
-        category2Text.setColumns(20);
-        category2Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        category2Text.setLineWrap(true);
-        category2Text.setRows(5);
-        jScrollPane9.setViewportView(category2Text);
-
-        categoryTextPanel.add(jScrollPane9);
-
-        jScrollPane10.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-
-        category3Text.setEditable(false);
-        category3Text.setColumns(20);
-        category3Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        category3Text.setLineWrap(true);
-        category3Text.setRows(5);
-        jScrollPane10.setViewportView(category3Text);
-
-        categoryTextPanel.add(jScrollPane10);
-
-        jScrollPane11.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-
-        category4Text.setEditable(false);
-        category4Text.setColumns(20);
-        category4Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        category4Text.setLineWrap(true);
-        category4Text.setRows(5);
-        jScrollPane11.setViewportView(category4Text);
-
-        categoryTextPanel.add(jScrollPane11);
-
-        jScrollPane12.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-
-        category5Text.setEditable(false);
-        category5Text.setColumns(20);
-        category5Text.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        category5Text.setLineWrap(true);
-        category5Text.setRows(5);
-        jScrollPane12.setViewportView(category5Text);
-
-        categoryTextPanel.add(jScrollPane12);
+        category6TextButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        category6TextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                category6TextButtonActionPerformed(evt);
+            }
+        });
+        categoryTextPanel.add(category6TextButton);
 
         questionPanel.setBackground(new java.awt.Color(0, 0, 0));
         questionPanel.setLayout(new java.awt.GridLayout(5, 6, 10, 5));
@@ -538,27 +497,24 @@ public class MainWin extends javax.swing.JFrame{
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
+                .addContainerGap(443, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(endGameButton, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(categoryTextPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(questionPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1033, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(444, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(endGameButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(categoryTextPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
                 .addComponent(questionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
@@ -568,18 +524,18 @@ public class MainWin extends javax.swing.JFrame{
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
-        Player pickingPlayer = gameCore.getPlayer(gameCore.getAnsweringPlayerIndex());
-        this.pickingNameLabel.setText(pickingPlayer.getName() + ", please pick a question");
+        if(!gameIsEnded){
+            Player pickingPlayer = gameCore.getPlayer(gameCore.getAnsweringPlayerIndex());
+            this.pickingNameLabel.setText(pickingPlayer.getName() + ", please pick a question");
+        }
+        
         this.putPlayers();
         this.setLocationRelativeTo(null);
         this.creditPanel.setVisible(true);
+        
+        if(answeredQuestions == gameCore.getNumOfTotalQuestions())
+            endGame();
     }//GEN-LAST:event_formWindowActivated
-
-    private void endGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endGameButtonActionPerformed
-        // TODO add your handling code here:
-        new EndGameDialog(this).setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_endGameButtonActionPerformed
 
     private void c1q0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1q0ActionPerformed
         // TODO add your handling code here:
@@ -761,6 +717,10 @@ public class MainWin extends javax.swing.JFrame{
         this.showQuestionWindow(5, 4);
     }//GEN-LAST:event_c5q4ActionPerformed
 
+    private void category6TextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_category6TextButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_category6TextButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton c0q0;
     private javax.swing.JToggleButton c0q1;
@@ -792,23 +752,16 @@ public class MainWin extends javax.swing.JFrame{
     private javax.swing.JToggleButton c5q2;
     private javax.swing.JToggleButton c5q3;
     private javax.swing.JToggleButton c5q4;
-    private javax.swing.JTextArea category0Text;
-    private javax.swing.JTextArea category1Text;
-    private javax.swing.JTextArea category2Text;
-    private javax.swing.JTextArea category3Text;
-    private javax.swing.JTextArea category4Text;
-    private javax.swing.JTextArea category5Text;
+    private javax.swing.JButton category1TextButton;
+    private javax.swing.JButton category2TextButton;
+    private javax.swing.JButton category3TextButton;
+    private javax.swing.JButton category4TextButton;
+    private javax.swing.JButton category5TextButton;
+    private javax.swing.JButton category6TextButton;
     private javax.swing.JPanel categoryTextPanel;
     private javax.swing.JPanel creditPanel;
-    private javax.swing.JButton endGameButton;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane10;
-    private javax.swing.JScrollPane jScrollPane11;
-    private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JLabel pickingNameLabel;
     private javax.swing.JPanel questionPanel;
     // End of variables declaration//GEN-END:variables

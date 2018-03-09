@@ -120,6 +120,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
 
         wrongButton.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         wrongButton.setText("Wrong");
+        wrongButton.setToolTipText("");
         wrongButton.setPreferredSize(new java.awt.Dimension(200, 66));
         wrongButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
