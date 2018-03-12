@@ -12,7 +12,7 @@ import java.awt.Font;
  * @author student
  */
 public class JeopardyGameConstants {
-    public static final int INITIAL_CREDITS = 1000;
+    public static final int INITIAL_CREDITS = 0;
     public static final Dimension BUTTON_SIZE = new Dimension(350, 90);
     public static final Dimension CATEGORY_PANEL_SIZE = new Dimension(350, 100);
     public static final Dimension CREDIT_PANEL_SIZE = new Dimension(1871, 124);
