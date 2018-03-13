@@ -40,6 +40,8 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private final boolean isDoubleJeopardy;
     private final JeopardyGame gameCore;
     private Clip thinkingClip;
+    private Clip rightSoundClip;
+    private Clip wrongSoundClip;
     
     public QuestionWin(int categoryIndex, int questionIndex, JeopardyGame gameCore, MainWin theMainWindow, boolean isDoubleJeopardy) {
         initComponents();
@@ -66,15 +68,43 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         try{
             thinkingClip = AudioSystem.getClip();
 
-            AudioInputStream themeStream = AudioSystem.getAudioInputStream(new File("theme.wav"));
+            AudioInputStream themeStream = AudioSystem.getAudioInputStream(new File("thinkmusic.wav"));
             thinkingClip.open(themeStream);
             thinkingClip.start();
             
         }
         catch(LineUnavailableException | UnsupportedAudioFileException | IOException e){
-            System.err.println("Can't play theme music");
+            System.err.println("Can't play think music");
         }
         
+    }
+    
+    private void playRightSound(){
+        try{
+            rightSoundClip = AudioSystem.getClip();
+
+            AudioInputStream themeStream = AudioSystem.getAudioInputStream(new File("right.wav"));
+            thinkingClip.open(themeStream);
+            thinkingClip.start();
+            
+        }
+        catch(LineUnavailableException | UnsupportedAudioFileException | IOException e){
+            System.err.println("Can't play right sound");
+        }
+    }
+    
+    private void playWrongSound(){
+        try{
+            thinkingClip = AudioSystem.getClip();
+
+            AudioInputStream themeStream = AudioSystem.getAudioInputStream(new File("wrong.wav"));
+            thinkingClip.open(themeStream);
+            thinkingClip.start();
+            
+        }
+        catch(LineUnavailableException | UnsupportedAudioFileException | IOException e){
+            System.err.println("Can't play wrong sound");
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -228,6 +258,8 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     }
     
     private void showAnswer(){
+        this.rightSoundClip.stop();
+        this.wrongSoundClip.stop();
         this.isShowingAnswer = true;
         this.qaTextArea.setText(this.answer + "\n[Click Back to go back]");
         this.rightButton.setVisible(false);
@@ -249,6 +281,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private void rightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightButtonActionPerformed
         // TODO add your handling code here:
         this.stopAnswer();
+        this.playRightSound();
         this.gameCore.changeCredit(credits);
         this.showAnswer();
     }//GEN-LAST:event_rightButtonActionPerformed
@@ -267,6 +300,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     }
     
     private void startToWait(){
+        this.wrongSoundClip.stop();
         this.ignoreInput = false;
         this.timeRemaining = this.maxWaitTime;
         this.timeLabel.setText(Integer.toString(this.timeRemaining));
@@ -285,7 +319,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private void wrongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wrongButtonActionPerformed
         // TODO add your handling code here:
         this.stopAnswer();
-
+        this.playWrongSound();
         this.gameCore.changeCredit(-credits);
         if(isDoubleJeopardy){
             this.answeringName.setText("Sorry, that is wrong.");
