@@ -44,17 +44,16 @@ public class MainWin extends javax.swing.JFrame{
         ArrayList<Player> players = this.gameCore.getOrderedPlayers(false);
         int fontSize = (int)(80 - 60.0 / 24 * (this.gameCore.getNumOfCurrentPlayers() - 2));
         this.creditPanel.removeAll();
-        players.stream().map((player) -> {
+        
+        for(Player player : players) {
             JLabel playerLabel = new JLabel();
             playerLabel.setForeground(JeopardyColors.FONT);
-            playerLabel.setText(player.getName() + ": " + player.getCredits());
-            return playerLabel; 
-        }).map((playerLabel) -> {
             playerLabel.setFont(new java.awt.Font("Lucida Grande", 0, fontSize));
-            return playerLabel;
-        }).forEachOrdered((playerLabel) -> {
+            playerLabel.setText(player.getName() + ": " + player.getCredits());
             this.creditPanel.add(playerLabel);
-        });
+        }
+        
+        this.creditPanel.repaint();
     }
     
     @Override
@@ -221,21 +220,27 @@ public class MainWin extends javax.swing.JFrame{
         categoryTextPanel.setLayout(new java.awt.GridLayout(1, 6, 10, 10));
 
         category1TextButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        category1TextButton.setFocusable(false);
         categoryTextPanel.add(category1TextButton);
 
         category2TextButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        category2TextButton.setFocusable(false);
         categoryTextPanel.add(category2TextButton);
 
         category3TextButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        category3TextButton.setFocusable(false);
         categoryTextPanel.add(category3TextButton);
 
         category4TextButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        category4TextButton.setFocusable(false);
         categoryTextPanel.add(category4TextButton);
 
         category5TextButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        category5TextButton.setFocusable(false);
         categoryTextPanel.add(category5TextButton);
 
         category6TextButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        category6TextButton.setFocusable(false);
         category6TextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 category6TextButtonActionPerformed(evt);
@@ -531,7 +536,8 @@ public class MainWin extends javax.swing.JFrame{
         
         this.putPlayers();
         this.setLocationRelativeTo(null);
-        this.creditPanel.setVisible(true);
+        
+        this.setVisible(true);
         
         if(answeredQuestions == gameCore.getNumOfTotalQuestions())
             endGame();

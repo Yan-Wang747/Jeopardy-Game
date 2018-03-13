@@ -152,9 +152,6 @@ public class PlayerManager extends Observable implements Serializable{
         
         int newCredits = players.get(this.answeringPlayerIndex).getCredits() + offset;
         players.get(this.answeringPlayerIndex).setCredits(newCredits);
-        
-        this.setChanged();
-        this.notifyObservers();
     }
     
     public void clearForbiddenPlayers(){

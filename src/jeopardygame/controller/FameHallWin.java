@@ -40,7 +40,7 @@ public class FameHallWin extends javax.swing.JFrame {
         try{
             themeClip = AudioSystem.getClip();
 
-            AudioInputStream themeStream = AudioSystem.getAudioInputStream(new File("theme.wav"));
+            AudioInputStream themeStream = AudioSystem.getAudioInputStream(new File("music/theme.wav"));
             themeClip.open(themeStream);
             themeClip.loop(Clip.LOOP_CONTINUOUSLY);
             themeClip.start();

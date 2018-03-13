@@ -5,6 +5,7 @@
  */
 package jeopardygame.controller;
 
+import java.awt.Color;
 import jeopardygame.visualeffect.JeopardyColors;
 import jeopardygame.model.JeopardyGame;
 import javax.swing.Timer;
@@ -40,8 +41,6 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     private final boolean isDoubleJeopardy;
     private final JeopardyGame gameCore;
     private Clip thinkingClip;
-    private Clip rightSoundClip;
-    private Clip wrongSoundClip;
     
     public QuestionWin(int categoryIndex, int questionIndex, JeopardyGame gameCore, MainWin theMainWindow, boolean isDoubleJeopardy) {
         initComponents();
@@ -55,12 +54,19 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         this.waitTimer = new Timer(1000, new WaitTimerListener(this));
         isShowingAnswer = false;
         JeopardyColors.setComponentColor(this.rootPane);
+        this.wrongButton.setBackground(new Color(135, 0, 0));
+        this.rightButton.setBackground(new Color(0, 135, 0));
+        this.wrongButton.setForeground(new Color(220, 220, 220));
+        this.rightButton.setForeground(new Color(220, 220, 220));
         this.isDoubleJeopardy = isDoubleJeopardy;
+
         if(!isDoubleJeopardy)
             this.startToWait();
         else
             this.startToAnswer();
         this.setLocationRelativeTo(null);
+
+               
         this.backButton.setVisible(false);
     }
 
@@ -68,7 +74,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         try{
             thinkingClip = AudioSystem.getClip();
 
-            AudioInputStream themeStream = AudioSystem.getAudioInputStream(new File("thinkmusic.wav"));
+            AudioInputStream themeStream = AudioSystem.getAudioInputStream(new File("music/thinkmusic.wav"));
             thinkingClip.open(themeStream);
             thinkingClip.start();
             
@@ -81,12 +87,11 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     
     private void playRightSound(){
         try{
-            rightSoundClip = AudioSystem.getClip();
+            Clip rightSoundClip = AudioSystem.getClip();
 
-            AudioInputStream themeStream = AudioSystem.getAudioInputStream(new File("right.wav"));
-            thinkingClip.open(themeStream);
-            thinkingClip.start();
-            
+            AudioInputStream themeStream = AudioSystem.getAudioInputStream(new File("music/right.wav"));
+            rightSoundClip.open(themeStream);
+            rightSoundClip.start();
         }
         catch(LineUnavailableException | UnsupportedAudioFileException | IOException e){
             System.err.println("Can't play right sound");
@@ -95,12 +100,11 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     
     private void playWrongSound(){
         try{
-            thinkingClip = AudioSystem.getClip();
+            Clip wrongSoundClip = AudioSystem.getClip();
 
-            AudioInputStream themeStream = AudioSystem.getAudioInputStream(new File("wrong.wav"));
-            thinkingClip.open(themeStream);
-            thinkingClip.start();
-            
+            AudioInputStream themeStream = AudioSystem.getAudioInputStream(new File("music/wrong.wav"));
+            wrongSoundClip.open(themeStream); 
+            wrongSoundClip.start();
         }
         catch(LineUnavailableException | UnsupportedAudioFileException | IOException e){
             System.err.println("Can't play wrong sound");
@@ -149,7 +153,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 200, 5));
 
         wrongButton.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
-        wrongButton.setText("Wrong");
+        wrongButton.setText("X");
         wrongButton.setToolTipText("");
         wrongButton.setPreferredSize(new java.awt.Dimension(200, 66));
         wrongButton.addActionListener(new java.awt.event.ActionListener() {
@@ -160,7 +164,7 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
         jPanel1.add(wrongButton);
 
         rightButton.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
-        rightButton.setText("Right");
+        rightButton.setText("Right!");
         rightButton.setPreferredSize(new java.awt.Dimension(200, 66));
         rightButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -258,8 +262,6 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     }
     
     private void showAnswer(){
-        this.rightSoundClip.stop();
-        this.wrongSoundClip.stop();
         this.isShowingAnswer = true;
         this.qaTextArea.setText(this.answer + "\n[Click Back to go back]");
         this.rightButton.setVisible(false);
@@ -300,7 +302,6 @@ public class QuestionWin extends javax.swing.JFrame implements ActionListener {
     }
     
     private void startToWait(){
-        this.wrongSoundClip.stop();
         this.ignoreInput = false;
         this.timeRemaining = this.maxWaitTime;
         this.timeLabel.setText(Integer.toString(this.timeRemaining));
