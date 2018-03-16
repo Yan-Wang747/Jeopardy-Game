@@ -33,6 +33,7 @@ public class FameHallWin extends javax.swing.JFrame {
         JeopardyColors.setComponentColor(this.rootPane);
         initLabelArray();
         playThemeMusic();
+        
         this.setLocationRelativeTo(null);
     }
 

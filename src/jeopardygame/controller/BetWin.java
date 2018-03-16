@@ -8,6 +8,7 @@ package jeopardygame.controller;
 import jeopardygame.exception.CreditRangeException;
 import jeopardygame.visualeffect.JeopardyColors;
 import jeopardygame.model.JeopardyGame;
+import jeopardygame.constant.JeopardyGameConstants;
 /**
  *
  * @author student
@@ -22,7 +23,7 @@ public class BetWin extends javax.swing.JFrame {
     private final int questionIndex;
     private final JeopardyGame gameCore;
     private final MainWin theMainWindow;
-    private final int totalCredits;
+    private int totalCredits;
     
     public BetWin(int categoryIndex, int questionIndex, JeopardyGame gameCore, MainWin theMainWindow) {
         initComponents();
@@ -32,6 +33,9 @@ public class BetWin extends javax.swing.JFrame {
         this.theMainWindow = theMainWindow;
         int answeringPlayerIndex = this.gameCore.getAnsweringPlayerIndex();
         totalCredits = this.gameCore.getPlayer(answeringPlayerIndex).getCredits();
+        if (totalCredits <= 0)
+            totalCredits = JeopardyGameConstants.DEFAULT_CREDITS;
+        
         this.creditsTextField.setText(Integer.toString(totalCredits));
         this.creditSlider.setMaximum(totalCredits);
         this.creditSlider.setValue(totalCredits);
