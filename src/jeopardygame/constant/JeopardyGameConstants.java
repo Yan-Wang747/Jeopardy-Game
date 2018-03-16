@@ -20,5 +20,5 @@ public class JeopardyGameConstants {
     public static final Font DEFAULT_FONT = new Font("Lucida Grande", 0, 36);
     public static final String ALL_PLAYERS_FILE_PATH = "AllPlayers.ser";
     public static final Font TEXT_FIELD_FONT = new Font("Lucida Grande", 0, 36);
-    public static final int DEFAULT_CREDITS = 1000;
+    public static final int DEFAULT_CREDITS = 100;
 }

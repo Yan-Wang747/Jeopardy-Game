@@ -5,6 +5,7 @@
  */
 package jeopardygame.controller;
 
+import java.awt.Color;
 import jeopardygame.visualeffect.JeopardyColors;
 import jeopardygame.model.JeopardyGame;
 import jeopardygame.model.Player;
@@ -29,7 +30,7 @@ public class FameHallWin extends javax.swing.JFrame {
         initComponents();
         
         this.gameCore = gameCore;
-        nameLabels = new JLabel[5];
+        nameLabels = new JLabel[3];
         JeopardyColors.setComponentColor(this.rootPane);
         initLabelArray();
         playThemeMusic();
@@ -57,8 +58,6 @@ public class FameHallWin extends javax.swing.JFrame {
         nameLabels[0] = top1Label;
         nameLabels[1] = top2Label;
         nameLabels[2] = top3Label;
-        nameLabels[3] = top4Label;
-        nameLabels[4] = top5Label;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -74,22 +73,18 @@ public class FameHallWin extends javax.swing.JFrame {
         t1NameLabel = new javax.swing.JLabel();
         t2NameLabel = new javax.swing.JLabel();
         t3NameLabel = new javax.swing.JLabel();
-        t4NameLabel = new javax.swing.JLabel();
-        t5NameLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         top1Label = new javax.swing.JLabel();
         top2Label = new javax.swing.JLabel();
         top3Label = new javax.swing.JLabel();
-        top4Label = new javax.swing.JLabel();
-        top5Label = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         challengeButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Jeopardy Game");
         setLocation(new java.awt.Point(500, 500));
         setMinimumSize(new java.awt.Dimension(1920, 1080));
-        setPreferredSize(null);
         setResizable(false);
         setSize(new java.awt.Dimension(1920, 1080));
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -98,59 +93,41 @@ public class FameHallWin extends javax.swing.JFrame {
             }
         });
 
-        fameHallLabel.setFont(new java.awt.Font("Lucida Grande", 0, 100)); // NOI18N
+        fameHallLabel.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         fameHallLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         fameHallLabel.setText("Jeopardy Game");
         fameHallLabel.setToolTipText("");
 
-        jPanel1.setLayout(new java.awt.GridLayout(5, 1, 0, 30));
+        jPanel1.setLayout(new java.awt.GridLayout(3, 1, 0, 30));
 
-        t1NameLabel.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
+        t1NameLabel.setFont(new java.awt.Font("Lucida Grande", 1, 48)); // NOI18N
         t1NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        t1NameLabel.setText("Challenger:");
+        t1NameLabel.setText("The First is:");
         t1NameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel1.add(t1NameLabel);
 
-        t2NameLabel.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
+        t2NameLabel.setFont(new java.awt.Font("Lucida Grande", 2, 36)); // NOI18N
         t2NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        t2NameLabel.setText("Master:");
+        t2NameLabel.setText("Second:");
         t2NameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel1.add(t2NameLabel);
 
-        t3NameLabel.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
+        t3NameLabel.setFont(new java.awt.Font("Lucida Grande", 2, 36)); // NOI18N
         t3NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        t3NameLabel.setText("Diamond:");
+        t3NameLabel.setText("Third:");
         t3NameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel1.add(t3NameLabel);
 
-        t4NameLabel.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
-        t4NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        t4NameLabel.setText("Platinum:");
-        t4NameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jPanel1.add(t4NameLabel);
+        jPanel2.setLayout(new java.awt.GridLayout(3, 1, 0, 30));
 
-        t5NameLabel.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
-        t5NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        t5NameLabel.setText("Gold:");
-        t5NameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jPanel1.add(t5NameLabel);
-
-        jPanel2.setLayout(new java.awt.GridLayout(5, 1, 0, 30));
-
-        top1Label.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
+        top1Label.setFont(new java.awt.Font("Lucida Grande", 1, 48)); // NOI18N
         jPanel2.add(top1Label);
 
-        top2Label.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
+        top2Label.setFont(new java.awt.Font("Lucida Grande", 2, 36)); // NOI18N
         jPanel2.add(top2Label);
 
-        top3Label.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
+        top3Label.setFont(new java.awt.Font("Lucida Grande", 2, 36)); // NOI18N
         jPanel2.add(top3Label);
-
-        top4Label.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
-        jPanel2.add(top4Label);
-
-        top5Label.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
-        jPanel2.add(top5Label);
 
         challengeButton.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
         challengeButton.setText("Challenge");
@@ -177,12 +154,15 @@ public class FameHallWin extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
+        jLabel1.setText("Hall of Fame");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(276, Short.MAX_VALUE)
+                .addContainerGap(264, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -190,14 +170,20 @@ public class FameHallWin extends javax.swing.JFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 773, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(fameHallLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(276, Short.MAX_VALUE))
+                .addContainerGap(263, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
+                .addGap(40, 40, 40)
                 .addComponent(fameHallLabel)
-                .addGap(62, 62, 62)
+                .addGap(27, 27, 27)
+                .addComponent(jLabel1)
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 596, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -224,7 +210,7 @@ public class FameHallWin extends javax.swing.JFrame {
         // TODO add your handling code here:
         Iterator<Player> playerIterator = gameCore.getOrderedPlayers(true).iterator();
         
-        for(int index = 0; index < 5 && playerIterator.hasNext(); index++){
+        for(int index = 0; index < nameLabels.length && playerIterator.hasNext(); index++){
             Player thePlayer = playerIterator.next();
             String displayString = thePlayer.getName() + " " + thePlayer.getCredits(); 
             nameLabels[index].setText(displayString);
@@ -273,18 +259,15 @@ public class FameHallWin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton challengeButton;
     private javax.swing.JLabel fameHallLabel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel t1NameLabel;
     private javax.swing.JLabel t2NameLabel;
     private javax.swing.JLabel t3NameLabel;
-    private javax.swing.JLabel t4NameLabel;
-    private javax.swing.JLabel t5NameLabel;
     private javax.swing.JLabel top1Label;
     private javax.swing.JLabel top2Label;
     private javax.swing.JLabel top3Label;
-    private javax.swing.JLabel top4Label;
-    private javax.swing.JLabel top5Label;
     // End of variables declaration//GEN-END:variables
 }

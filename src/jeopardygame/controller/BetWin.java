@@ -33,14 +33,17 @@ public class BetWin extends javax.swing.JFrame {
         this.theMainWindow = theMainWindow;
         int answeringPlayerIndex = this.gameCore.getAnsweringPlayerIndex();
         totalCredits = this.gameCore.getPlayer(answeringPlayerIndex).getCredits();
-        if (totalCredits <= 0)
+        String promptText = this.gameCore.getPlayer(answeringPlayerIndex).getName() + ", please bet";
+        if (totalCredits <= 0) {
             totalCredits = JeopardyGameConstants.DEFAULT_CREDITS;
+            promptText += " (default value)";
+        }
         
         this.creditsTextField.setText(Integer.toString(totalCredits));
         this.creditSlider.setMaximum(totalCredits);
         this.creditSlider.setValue(totalCredits);
         this.creditsTextField.selectAll();
-        this.nameLabel.setText(this.gameCore.getPlayer(answeringPlayerIndex).getName() + ", please specify the amount.");
+        this.nameLabel.setText(promptText);
         JeopardyColors.setComponentColor(this.rootPane);
         this.setLocationRelativeTo(null);
     }
@@ -100,7 +103,7 @@ public class BetWin extends javax.swing.JFrame {
                 .addComponent(okButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(65, Short.MAX_VALUE)
+                .addContainerGap(235, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -108,7 +111,7 @@ public class BetWin extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(creditSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
                             .addComponent(creditsTextField))
-                        .addContainerGap(33, Short.MAX_VALUE))
+                        .addContainerGap(235, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 582, javax.swing.GroupLayout.PREFERRED_SIZE)
