@@ -1,0 +1,23 @@
+All Players list:
+=================
+Name: B
+Score: 671
+=================
+Name: A
+Score: 645
+=================
+Name: HH
+Score: 77
+=================
+Name: BB
+Score: 0
+=================
+Name: BBBB
+Score: 0
+=================
+Name: KRYSTAL
+Score: 0
+=================
+Name: BAOBA
+Score: -100
+=================

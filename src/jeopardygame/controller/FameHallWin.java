@@ -162,7 +162,7 @@ public class FameHallWin extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(264, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -170,8 +170,8 @@ public class FameHallWin extends javax.swing.JFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 773, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(fameHallLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(263, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -181,9 +181,9 @@ public class FameHallWin extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addComponent(fameHallLabel)
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addGap(37, 37, 37)
+                .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 596, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -209,11 +209,29 @@ public class FameHallWin extends javax.swing.JFrame {
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
         Iterator<Player> playerIterator = gameCore.getOrderedPlayers(true).iterator();
-        
-        for(int index = 0; index < nameLabels.length && playerIterator.hasNext(); index++){
-            Player thePlayer = playerIterator.next();
-            String displayString = thePlayer.getName() + " " + thePlayer.getCredits(); 
-            nameLabels[index].setText(displayString);
+        try{
+            PrintWriter allPlayerTextWriter = new PrintWriter(new File("AllPlayers.txt"));
+            allPlayerTextWriter.println("All Players list:");
+            allPlayerTextWriter.println("=================");
+            
+            for(int index = 0; index < nameLabels.length && playerIterator.hasNext(); index++){
+                Player thePlayer = playerIterator.next();
+                String displayString = thePlayer.getName() + " " + thePlayer.getCredits(); 
+                nameLabels[index].setText(displayString);
+            }
+            
+            playerIterator = gameCore.getOrderedPlayers(true).iterator();
+            
+            while(playerIterator.hasNext()) {
+                Player thePlayer = playerIterator.next();
+                allPlayerTextWriter.println("Name: " + thePlayer.getName());
+                allPlayerTextWriter.println("Score: " + thePlayer.getCredits());
+                allPlayerTextWriter.println("=================");
+            }
+            
+            allPlayerTextWriter.close();
+        } catch (IOException e){
+            
         }
     }//GEN-LAST:event_formWindowActivated
 
